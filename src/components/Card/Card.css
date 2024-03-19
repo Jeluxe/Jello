@@ -1,0 +1,32 @@
+.card-container {
+  display: flex;
+  min-width: 300px;
+  height: 160px;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.418);
+  cursor: pointer;
+}
+
+a.card-container {
+  padding: 0;
+  text-align: start;
+}
+
+.card-container img {
+  position: absolute;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+}
+
+.card-container div {
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.41);
+  width: 100%;
+  padding: 3px 10px;
+  border-radius: 0 0 15px 15px;
+}

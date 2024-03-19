@@ -1,0 +1,41 @@
+.project-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.336);
+  width: 100%;
+}
+
+.project-options {
+  display: flex;
+  gap: 10px;
+}
+
+.project-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: 0 0 2px 1px rgba(151, 151, 151, 0.36);
+  background-color: #ADA8B6;
+  width: 35px;
+  height: 35px;
+}
+
+.project-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px;
+  overflow: auto;
+  height: calc(100vh - 31px);
+  max-height: calc(100% - 81px);
+}

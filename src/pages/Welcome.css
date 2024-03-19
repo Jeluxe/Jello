@@ -1,0 +1,15 @@
+.wrapper {
+  padding: 20px 40px;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+.feature {
+  margin-bottom: 20px;
+}
+
+.feature h3 {
+  color: #5BC0DE;
+}

@@ -1,0 +1,13 @@
+.dots {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots div {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(199, 199, 199);
+  border-radius: 9999px;
+}

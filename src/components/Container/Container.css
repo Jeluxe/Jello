@@ -1,0 +1,29 @@
+.container {
+  min-width: 280px;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.container-title {
+  font-size: large;
+  font-weight: 500;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container-items {
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+}
