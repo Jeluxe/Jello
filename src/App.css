@@ -14,3 +14,15 @@
   flex-direction: column;
   overflow-y: auto;
 }
+
+.button {
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(.9);
+  }
+}

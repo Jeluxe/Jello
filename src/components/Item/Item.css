@@ -50,9 +50,14 @@
 .item-actions {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
   font-size: 14px;
   height: 100%;
+}
+
+.item-actions-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .item-participants {

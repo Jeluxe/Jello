@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core"
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
-import Button from "../Button/Button"
+import { PlusIcon } from "../../assets/icons"
 import Item from "../Item/Item"
 import "./Container.css"
 
@@ -46,7 +46,7 @@ const Container = ({ id, title, list, setContainers }: Props) => {
       <div id={title} className="container">
         <div className="container-header">
           <div className="container-title">{title}</div>
-          <Button className="new-card-btn" size={20} style={{ padding: "0", background: "transparent", color: "black" }} title="+" onClick={addItem}></Button>
+          <PlusIcon className="button" onClick={addItem} />
         </div>
         <div className="container-items" ref={setNodeRef}>
           {list.map((item, idx) => (

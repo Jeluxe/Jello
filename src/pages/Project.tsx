@@ -2,9 +2,11 @@ import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, TouchSensor, cl
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { useParams } from "react-router-dom";
+import { ThemeIcon } from '../assets/icons';
 import monica from "../assets/monic.jpg";
 import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
+import Dots from '../components/Dots/Dots';
 import Item from '../components/Item/Item';
 import "./Project.css";
 
@@ -134,8 +136,8 @@ const Project = () => {
       <div className="project-header">
         <div className='project-title'>project: {params.id}</div>
         <div className='project-options'>
-          <div className='project-option'>1</div>
-          <div className='project-option'>2</div>
+          <div className='project-option' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
+          <div className='project-option'><Dots vertical color="black" /></div>
         </div>
       </div>
       <div className="project-body">
