@@ -1,6 +1,6 @@
 .app {
   display: flex;
-  background-color: #E4E6E7;
+  background-color: #d7d7d7;
   height: 100%;
   flex-direction: column;
 }
@@ -13,6 +13,20 @@
   justify-content: center;
   flex-direction: column;
   overflow-y: auto;
+}
+
+.auth-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-wrapper {
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.6);
+  background-color: #34568B;
 }
 
 .button {
