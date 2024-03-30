@@ -1,8 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DescriptionIcon, PlusIcon } from "../../assets/icons";
 import monica from "../../assets/monic.jpg";
+import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Item.css";
 
@@ -24,6 +25,7 @@ enum Colors {
 
 const Item = ({ item, setContainers }: Props) => {
   const { id, content, tags } = item;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const filteredTags = useMemo(() => {
     return [...new Set(tags)]
@@ -68,6 +70,9 @@ const Item = ({ item, setContainers }: Props) => {
     }))
   }
 
+  const openMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
   return (
     <div
       ref={setNodeRef}
@@ -101,12 +106,15 @@ const Item = ({ item, setContainers }: Props) => {
         <div className="item-footer">
           <div className="item-actions">
             <div className="item-actions-wrapper">
-              <Dots
-                className="button"
-                color="black"
-                vertical
-                onClick={() => { console.log("first") }}
-              />
+              <div style={{ display: "flex", position: "relative" }}>
+                <Dots
+                  className="button"
+                  color="black"
+                  vertical
+                  onClick={openMenu}
+                />
+                {isMenuOpen ? <ContextMenu /> : ""}
+              </div>
               <DescriptionIcon
                 className="button"
                 onClick={handleOpenInfoModal} />
