@@ -1,8 +1,25 @@
 .app {
   display: flex;
-  background-color: #d7d7d7;
+  background-color: #fff;
   height: 100%;
   flex-direction: column;
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  background-color: #7b7b7b66;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.description-modal {
+  width: 400px;
+  height: 180px;
+  background: white;
 }
 
 .main-container {
@@ -33,10 +50,10 @@
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.02);
   }
 
   &:active {
-    transform: scale(.9);
+    transform: scale(.98);
   }
 }

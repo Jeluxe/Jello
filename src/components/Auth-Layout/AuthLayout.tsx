@@ -5,15 +5,13 @@ import "./AuthLayout.css"
 
 type Props = {
   header: string
-  fields: string[]
+  fields: string[],
+  onClick: (userInfo: any) => void
 }
 
-const AuthLayout = ({ header, fields }: Props) => {
-  const [userInfo, setUserInfo] = useState<{ [key: string]: string }>(arrayToObject(fields))
+const AuthLayout = ({ header, fields, onClick }: Props) => {
 
-  const handleClick = () => {
-    console.log(userInfo)
-  }
+  const [userInfo, setUserInfo] = useState<{ [key: string]: string }>(arrayToObject(fields))
 
   return (
     <div className="auth-layout">
@@ -28,7 +26,7 @@ const AuthLayout = ({ header, fields }: Props) => {
         }
       </div>
       <div className="footer">
-        <Button title={header} onClick={handleClick} />
+        <Button title={header} onClick={() => onClick(userInfo)} />
       </div>
     </div>
   )

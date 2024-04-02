@@ -26,6 +26,7 @@ enum Colors {
 const Item = ({ item, setContainers }: Props) => {
   const { id, content, tags } = item;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
 
   const filteredTags = useMemo(() => {
     return [...new Set(tags)]
@@ -45,11 +46,22 @@ const Item = ({ item, setContainers }: Props) => {
   }
 
   const handleOpenInfoModal = () => {
-    console.log("open")
+    if (document.querySelector(".overlay")) return;
+
+    const overlay = document.createElement("div");
+    const modal = document.createElement("div");
+    overlay.classList.add("overlay");
+    modal.classList.add("description-modal");
+    overlay.addEventListener("click", () => {
+      overlay.remove();
+    })
+
+    overlay.appendChild(modal)
+    document.querySelector("#root")?.appendChild(overlay)
   }
 
   const handleAddTags = (e: any) => {
-    const selectedContainer = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+    const selectedContainer = e.target.closest(".container").getAttribute("id");
 
     if (!selectedContainer) return;
 
@@ -73,6 +85,7 @@ const Item = ({ item, setContainers }: Props) => {
   const openMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
   return (
     <div
       ref={setNodeRef}
@@ -96,10 +109,11 @@ const Item = ({ item, setContainers }: Props) => {
           {
             filteredTags?.length < 3 ?
               <PlusIcon
+                size={12}
                 className="button"
                 onClick={handleAddTags}
               /> :
-              <Dots onClick={() => console.log("open list")} />
+              <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
         </div>
         <div className="item-body">{content}</div>
@@ -108,12 +122,13 @@ const Item = ({ item, setContainers }: Props) => {
             <div className="item-actions-wrapper">
               <div style={{ display: "flex", position: "relative" }}>
                 <Dots
+                  size={6}
                   className="button"
                   color="black"
                   vertical
                   onClick={openMenu}
                 />
-                {isMenuOpen ? <ContextMenu /> : ""}
+                {isMenuOpen ? <ContextMenu id={id} setIsMenuOpen={setIsMenuOpen} /> : ""}
               </div>
               <DescriptionIcon
                 className="button"

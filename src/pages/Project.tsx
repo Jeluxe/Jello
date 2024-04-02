@@ -136,8 +136,8 @@ const Project = () => {
       <div className="project-header">
         <div className='project-title'>project: {params.id}</div>
         <div className='project-options'>
-          <div className='project-option' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
-          <div className='project-option'><Dots vertical color="black" /></div>
+          <div className='project-option button' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
+          <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
         </div>
       </div>
       <div className="project-body">

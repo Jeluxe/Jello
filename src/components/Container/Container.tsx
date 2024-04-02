@@ -18,15 +18,19 @@ const Container = ({ id, title, list, setContainers }: Props) => {
     const selectedContainer = e.target.parentElement.parentElement.getAttribute("id");
 
     setContainers((prev: any) => {
-      if (prev[selectedContainer].length === 20) {
+      if (selectedContainer) {
+        if (prev[selectedContainer].length === 20) {
+          return prev;
+        }
+        return {
+          ...prev,
+          [selectedContainer]: [
+            ...prev[selectedContainer],
+            { id: getNewId(prev), content: "foos" }
+          ]
+        }
+      } else {
         return prev;
-      }
-      return {
-        ...prev,
-        [selectedContainer]: [
-          ...prev[selectedContainer],
-          { id: getNewId(prev), content: "foos" }
-        ]
       }
     })
   }
