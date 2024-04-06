@@ -1,6 +1,6 @@
 export const arrayToObject = (array: string[]) => {
   return array.reduce((obj: { [key: string]: string }, item: string) => {
-    obj[item] = '';
+    obj[item.toLowerCase()] = '';
     return obj;
   }, {});
 }

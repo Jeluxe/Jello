@@ -7,6 +7,7 @@ import monica from "../assets/monic.jpg";
 import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
+import IDM from '../components/Item-Description-Modal/IDM';
 import Item from '../components/Item/Item';
 import "./Project.css";
 
@@ -17,15 +18,26 @@ const isImgBg = (img: string) => ({
   backgroundPosition: "center center"
 })
 
-const Project = () => {
+type ContainerItem = {
+  id: string,
+  content: string,
+  tags?: string[]
+}
+
+type ContainerMap = {
+  [key: string]: ContainerItem[]
+}
+
+const Project: React.FC = () => {
   const params = useParams();
-  const [containers, setContainers] = useState<any>({
+  const [containers, setContainers] = useState<ContainerMap>({
     Planned: [{ id: "1", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", content: "ffooso1" }, { id: "3", content: "ffasooso" }],
     InProgress: [{ id: "4", content: "ffooso2", tags: ["bug", "info"] }, { id: "5", content: "ff2eeooso" }, { id: "6", content: "fsdssfooso" }],
     Completed: [{ id: "7", content: "ffoosoef32q", tags: ["info", "inspire"] }, { id: "8", content: "ffoosofsdf3" }, { id: "9", content: "fdfosadoso" }],
     Dropped: []
   })
   const [activeItem, setActiveItem] = useState<any | null>()
+  // const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const findContainer = (id: string) => {
     if (id in containers) {
@@ -132,31 +144,33 @@ const Project = () => {
   }
 
   return (
-    <div className="project-container" style={isImgBg(monica)}>
-      <div className="project-header">
-        <div className='project-title'>project: {params.id}</div>
-        <div className='project-options'>
-          <div className='project-option button' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
-          <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
+    <>
+      <div className="project-container" style={isImgBg(monica)}>
+        <div className="project-header">
+          <div className='project-title'>project: {params.id}</div>
+          <div className='project-options'>
+            <div className='project-option button' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
+            <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
+          </div>
         </div>
-      </div>
-      <div className="project-body">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-          onDragStart={handleDragStart}
-        >
-          {Object.entries(containers).map(([key, value]: any) => (
-            <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
-          ))}
-          <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
-          <DragOverlay>{activeItem ? <Item item={activeItem} /> : null}</DragOverlay>
-        </DndContext>
-      </div>
-    </div >
-
+        <div className="project-body">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+          >
+            {Object.entries(containers).map(([key, value]: any) => (
+              <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
+            ))}
+            <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
+            <DragOverlay>{activeItem ? <Item item={activeItem} /> : null}</DragOverlay>
+          </DndContext>
+        </div>
+      </div >
+      {<IDM />}
+    </>
   )
 }
 

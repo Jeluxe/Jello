@@ -13,7 +13,7 @@ const Navbar = ({ image = monica }: Props) => {
 
   return (
     <div className="navbar-container">
-      <div className="title-icon"><Link to={"/"}>website title</Link></div>
+      <div className="title-icon"><Link to={"/"}>Jello</Link></div>
       <ul className="navbar-items">
         <li><Link to={"/"}>Home</Link></li>
         {authenticated ? <li><Link to={"/my-projects"}>My Projects</Link></li> : ""}

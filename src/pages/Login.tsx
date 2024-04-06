@@ -15,11 +15,7 @@ const Login = () => {
   }
 
   return (
-    <div className="auth-container">
-      <div className="auth-wrapper">
-        <AuthLayout header={"Login"} fields={["Email", "Password"]} onClick={onClick} />
-      </div>
-    </div>
+    <AuthLayout header={"Login"} fields={["Email", "Password"]} onClick={onClick} />
   )
 }
 

@@ -15,11 +15,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="auth-container">
-      <div className="auth-wrapper">
-        <AuthLayout header={"Sign Up"} fields={["Username", "Email", "Password", "Confirm Password"]} onClick={onClick} />
-      </div>
-    </div>
+    <AuthLayout header={"Sign Up"} fields={["Username", "Email", "Password", "Confirm Password"]} onClick={onClick} />
   )
 }
 
