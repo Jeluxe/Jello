@@ -47,17 +47,8 @@ const Item = ({ item, setContainers }: Props) => {
 
   const handleOpenInfoModal = () => {
     if (document.querySelector(".overlay")) return;
-
-    const overlay = document.createElement("div");
-    const modal = document.createElement("div");
-    overlay.classList.add("overlay");
-    modal.classList.add("description-modal");
-    overlay.addEventListener("click", () => {
-      overlay.remove();
-    })
-
-    overlay.appendChild(modal)
-    document.querySelector("#root")?.appendChild(overlay)
+    // create context and add function to handle opening the description modal,
+    // and passing the item data.
   }
 
   const handleAddTags = (e: any) => {

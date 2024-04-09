@@ -7,7 +7,6 @@ import monica from "../assets/monic.jpg";
 import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
-import IDM from '../components/Item-Description-Modal/IDM';
 import Item from '../components/Item/Item';
 import "./Project.css";
 
@@ -144,33 +143,30 @@ const Project: React.FC = () => {
   }
 
   return (
-    <>
-      <div className="project-container" style={isImgBg(monica)}>
-        <div className="project-header">
-          <div className='project-title'>project: {params.id}</div>
-          <div className='project-options'>
-            <div className='project-option button' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
-            <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
-          </div>
+    <div className="project-container" style={isImgBg(monica)}>
+      <div className="project-header">
+        <div className='project-title'>project: {params.id}</div>
+        <div className='project-options'>
+          <div className='project-option button' style={isImgBg(monica)}><ThemeIcon color='white' size={20} /></div>
+          <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
         </div>
-        <div className="project-body">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragOver={handleDragOver}
-            onDragEnd={handleDragEnd}
-            onDragStart={handleDragStart}
-          >
-            {Object.entries(containers).map(([key, value]: any) => (
-              <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
-            ))}
-            <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
-            <DragOverlay>{activeItem ? <Item item={activeItem} /> : null}</DragOverlay>
-          </DndContext>
-        </div>
-      </div >
-      {<IDM />}
-    </>
+      </div>
+      <div className="project-body">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+        >
+          {Object.entries(containers).map(([key, value]: any) => (
+            <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
+          ))}
+          <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
+          <DragOverlay>{activeItem ? <Item item={activeItem} /> : null}</DragOverlay>
+        </DndContext>
+      </div>
+    </div >
   )
 }
 
