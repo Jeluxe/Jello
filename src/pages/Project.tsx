@@ -102,7 +102,7 @@ const Project: React.FC = () => {
       } else {
         newIndex = overIndex >= 0 ? overIndex + 1 : overItems.length + 1;
       }
-
+      console.log(activeContainer, overContainer)
       return {
         ...prev,
         [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== active.id)],
@@ -127,29 +127,14 @@ const Project: React.FC = () => {
       return
     }
 
-    if (id !== overId) {
-      const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current?.sortable.index;
+    const activeIndex = active.data.current.sortable.index;
+    const overIndex = over.data.current?.sortable?.index;
 
-      setContainers((items: any) => {
-        if (active.data.current.sortable.containerId === "container-list") {
-          const formattedObject = Object.entries(items)
-
-          const activeItem = formattedObject.find(item => item[0] === active.id)
-          const overItem = formattedObject.find(item => item[0] === over.id || item[0] === overContainer)
-
-          if (!activeItem || !overItem) return items;
-
-          const newActiveIndex = formattedObject.indexOf(activeItem);
-          const newOverIndex = formattedObject.indexOf(overItem);
-
-          return Object.fromEntries(arrayMove(formattedObject, newActiveIndex, newOverIndex))
-        }
-        return ({
-          ...items,
-          [activeContainer]: arrayMove(items[activeContainer], activeIndex, overIndex)
-        })
-      })
+    if (activeIndex !== overIndex) {
+      setContainers((prev: any) => ({
+        ...prev,
+        [overContainer]: arrayMove(prev[overContainer], activeIndex, overIndex)
+      }))
     }
     setActiveItem(null);
   }
