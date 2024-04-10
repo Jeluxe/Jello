@@ -32,6 +32,12 @@
   background-color: rgba(230, 230, 230, 0.262);
 }
 
+.navbar-profile {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
 .navbar-profile a {
   display: flex;
   flex-direction: row-reverse;

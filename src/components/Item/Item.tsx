@@ -1,19 +1,12 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { DescriptionIcon, PlusIcon } from "../../assets/icons";
 import monica from "../../assets/monic.jpg";
-import Button from "../Button/Button";
+import { ItemProps } from "../../pages/Project";
+import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Item.css";
-
-type Props = {
-  item: {
-    id: string,
-    content?: string,
-    tags?: string[] | null,
-  },
-  setContainers?: any
-}
 
 enum Colors {
   bug = "green",
@@ -22,8 +15,9 @@ enum Colors {
   danger = "red"
 }
 
-const Item = ({ item, setContainers }: Props) => {
-  const { id, content, tags } = item;
+const Item = ({ id, content, tags, setContainers }: ItemProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
 
   const filteredTags = useMemo(() => {
     return [...new Set(tags)]
@@ -35,7 +29,7 @@ const Item = ({ item, setContainers }: Props) => {
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id: item.id, data: item })
+  } = useSortable({ id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -43,18 +37,24 @@ const Item = ({ item, setContainers }: Props) => {
   }
 
   const handleOpenInfoModal = () => {
-    console.log("open")
+    if (document.querySelector(".overlay")) return;
+    // create context and add function to handle opening the description modal,
+    // and passing the item data.
   }
 
   const handleAddTags = (e: any) => {
-    const selectedContainer = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.getAttribute("id");
+    if (!setContainers) return;
+    const selectedContainer = e.target.closest(".container").getAttribute("id");
 
-    console.log("add tag/s", selectedContainer)
+    if (!selectedContainer) return;
+
     const newTag = "danger";
+
     setContainers((prev: any) => ({
       ...prev,
       [selectedContainer]: [...prev[selectedContainer].map((item: any) => {
         if (item.id === id) {
+          if (item?.tags?.includes(newTag)) return item;
           return {
             ...item,
             tags: (item?.tags) ? [...item.tags, newTag] : [newTag]
@@ -63,6 +63,10 @@ const Item = ({ item, setContainers }: Props) => {
         return item;
       })]
     }))
+  }
+
+  const openMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   return (
@@ -87,28 +91,33 @@ const Item = ({ item, setContainers }: Props) => {
           }))}
           {
             filteredTags?.length < 3 ?
-              <Button
-                className="new-card-btn"
-                size={20}
-                title="+"
+              <PlusIcon
+                size={12}
+                className="button"
                 onClick={handleAddTags}
               /> :
-              <Dots onClick={() => console.log("open list")} />
+              <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
         </div>
         <div className="item-body">{content}</div>
         <div className="item-footer">
           <div className="item-actions">
-            <Button
-              title="*"
-              size={16}
-              onClick={() => { console.log("first") }}
-            />
-            <Button
-              title="="
-              size={16}
-              onClick={handleOpenInfoModal} />
-            <div>july 15</div>
+            <div className="item-actions-wrapper">
+              <div style={{ display: "flex", position: "relative" }}>
+                <Dots
+                  size={6}
+                  className="button"
+                  color="black"
+                  vertical
+                  onClick={openMenu}
+                />
+                {isMenuOpen ? <ContextMenu id={id} setIsMenuOpen={setIsMenuOpen} /> : ""}
+              </div>
+              <DescriptionIcon
+                className="button"
+                onClick={handleOpenInfoModal} />
+              <div>july 15</div>
+            </div>
           </div>
           <div className="item-participants">
             <div className="item-participant">

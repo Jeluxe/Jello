@@ -2,7 +2,7 @@ import "./Welcome.css"
 
 const Welcome = () => {
   return (
-    <div className="container">
+    <div className="main-container">
       <div className="wrapper">
         <h1>Welcome to Jello - Your Ultimate Organizational Companion!</h1>
 
