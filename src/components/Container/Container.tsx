@@ -1,20 +1,28 @@
-import { useDroppable } from "@dnd-kit/core"
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
-import { PlusIcon } from "../../assets/icons"
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { DragIcon, PlusIcon } from "../../assets/icons"
+
+import { ContainerProps } from "../../pages/Project"
 import Item from "../Item/Item"
 import "./Container.css"
 
-type Props = {
-  id: string,
-  title: string,
-  list: any[],
-  setContainers: any
-}
+const Container = ({ id, title, list, setContainers }: ContainerProps) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    setActivatorNodeRef
+  } = useSortable({ id });
 
-const Container = ({ id, title, list, setContainers }: Props) => {
-  const { setNodeRef } = useDroppable({ id, data: list })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const addItem = (e: any) => {
+    if (!setContainers) return;
     const selectedContainer = e.target.parentElement.parentElement.getAttribute("id");
 
     setContainers((prev: any) => {
@@ -46,19 +54,28 @@ const Container = ({ id, title, list, setContainers }: Props) => {
   }
 
   return (
-    <SortableContext id={id} items={list} strategy={verticalListSortingStrategy}>
-      <div id={title} className="container">
-        <div className="container-header">
-          <div className="container-title">{title}</div>
-          <PlusIcon className="button" onClick={addItem} />
+    <div ref={setNodeRef} style={style}>
+      <SortableContext
+        id={id}
+        items={list}
+        strategy={verticalListSortingStrategy}
+      >
+        <div id={title} className="container">
+          <div className="container-header">
+            <div className="container-title">{title}</div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <PlusIcon className="button" onClick={addItem} />
+              <div ref={setActivatorNodeRef} {...attributes} {...listeners} style={{ height: '24px' }}>
+                <DragIcon className='grabbable' size={24} />
+              </div>
+            </div>
+          </div>
+          <div className="container-items">
+            {list.map((item) => <Item key={item.id} {...item} setContainers={setContainers} />)}
+          </div>
         </div>
-        <div className="container-items" ref={setNodeRef}>
-          {list.map((item, idx) => (
-            item && <Item key={idx} item={item} setContainers={setContainers} />
-          ))}
-        </div>
-      </div>
-    </SortableContext >
+      </SortableContext >
+    </div>
   )
 }
 
