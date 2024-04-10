@@ -1,5 +1,5 @@
-import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, TouchSensor, closestCorners, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, arrayMove, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, TouchSensor, closestCorners, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { ThemeIcon } from '../assets/icons';
@@ -17,52 +17,26 @@ const isImgBg = (img: string) => ({
   backgroundPosition: "center center"
 })
 
-export type ItemProps = {
-  key?: React.Key | null | undefined,
+type ContainerItem = {
   id: string,
   content: string,
-  tags?: string[],
-  setContainers?: React.Dispatch<any>
+  tags?: string[]
 }
 
-export type ContainerMapProps = {
-  [key: string]: ItemProps[]
+type ContainerMap = {
+  [key: string]: ContainerItem[]
 }
-
-export type ContainerProps = {
-  key?: React.Key | null | undefined;
-  id: string,
-  title: string,
-  list: ItemProps[],
-  setContainers?: React.Dispatch<any>
-}
-
-type ActiveProps = (Omit<ItemProps, 'setContainers' | 'key'> | Omit<ContainerProps, 'setContainers' | 'key'>);
 
 const Project: React.FC = () => {
   const params = useParams();
-  const { setNodeRef } = useDroppable({ id: "container-list" });
-  const [containers, setContainers] = useState<ContainerMapProps>({
+  const [containers, setContainers] = useState<ContainerMap>({
     Planned: [{ id: "1", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", content: "ffooso1" }, { id: "3", content: "ffasooso" }],
     InProgress: [{ id: "4", content: "ffooso2", tags: ["bug", "info"] }, { id: "5", content: "ff2eeooso" }, { id: "6", content: "fsdssfooso" }],
     Completed: [{ id: "7", content: "ffoosoef32q", tags: ["info", "inspire"] }, { id: "8", content: "ffoosofsdf3" }, { id: "9", content: "fdfosadoso" }],
     Dropped: []
   })
-
-  const [activeItem, setActiveItem] = useState<ActiveProps | null>(null)
+  const [activeItem, setActiveItem] = useState<any | null>()
   // const [modalOpen, setModalOpen] = useState<boolean>(false)
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      }
-    }),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
 
   const findContainer = (id: string) => {
     if (id in containers) {
@@ -72,32 +46,36 @@ const Project: React.FC = () => {
     return Object.keys(containers).find(key => containers[key].find((item: any) => item && item.id === id))
   }
 
-  const handleDragStart = ({ active }: any) => {
-    const { id, data: { current: { sortable: { containerId, index } } } } = active;
-    if (containerId === "container-list") {
-      setActiveItem({ id, title: id, list: containers[id] })
-    } else {
-      setActiveItem({ ...containers[containerId][index] })
-    }
+  const handleDragStart = (event: any) => {
+    const item = event.active.data.current;
+    setActiveItem(item);
   }
 
   const handleDragOver = (event: any) => {
     const { active, over } = event;
+    const { id } = active;
+    const { id: overId } = over;
 
-    const activeContainer = findContainer(active.id)
-    const overContainer = findContainer(over?.id)
+    const activeContainer = findContainer(id)
+    const overContainer = findContainer(overId)
 
-    if (active.data.current.sortable.containerId === "container-list") return;
-
-    if (!activeContainer || !overContainer || activeContainer === overContainer) return;
+    if (!activeContainer || !overContainer || activeContainer === overContainer) {
+      return;
+    }
 
     setContainers((prev: any) => {
-      const overItems = prev[activeContainer];
+      const overItems = prev[overContainer];
+
+      if (overItems.length === 20) {
+        return prev;
+      }
+
       const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current?.sortable.index;
+      const overIndex = over.data.current?.sortable?.index;
+
       let newIndex;
 
-      if (overContainer in prev) {
+      if (overId in prev) {
         newIndex = overItems.length + 1;
       } else {
         newIndex = overIndex >= 0 ? overIndex + 1 : overItems.length + 1;
@@ -105,7 +83,7 @@ const Project: React.FC = () => {
 
       return {
         ...prev,
-        [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== active.id)],
+        [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== id)],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
           containers[activeContainer][activeIndex],
@@ -123,36 +101,34 @@ const Project: React.FC = () => {
     const activeContainer = findContainer(id)
     const overContainer = findContainer(overId)
 
-    if (!activeContainer || !overContainer || (activeContainer !== overContainer && active.data.current.sortable.containerId !== "container-list")) {
-      return
+    if (!activeContainer || !overContainer || activeContainer !== overContainer) {
+      return;
     }
 
-    if (id !== overId) {
-      const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current?.sortable.index;
+    const activeIndex = active.data.current.sortable.index;
+    const overIndex = over.data.current?.sortable?.index;
 
-      setContainers((items: any) => {
-        if (active.data.current.sortable.containerId === "container-list") {
-          const formattedObject = Object.entries(items)
-
-          const activeItem = formattedObject.find(item => item[0] === active.id)
-          const overItem = formattedObject.find(item => item[0] === over.id || item[0] === overContainer)
-
-          if (!activeItem || !overItem) return items;
-
-          const newActiveIndex = formattedObject.indexOf(activeItem);
-          const newOverIndex = formattedObject.indexOf(overItem);
-
-          return Object.fromEntries(arrayMove(formattedObject, newActiveIndex, newOverIndex))
-        }
-        return ({
-          ...items,
-          [activeContainer]: arrayMove(items[activeContainer], activeIndex, overIndex)
-        })
-      })
+    if (activeIndex !== overIndex) {
+      setContainers((prev: any) => ({
+        ...prev,
+        [overContainer]: arrayMove(prev[overContainer], activeIndex, overIndex)
+      }))
     }
+
     setActiveItem(null);
   }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    }),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   const handleNewContainer = () => {
     if (Object.keys(containers).length > 8) {
@@ -161,7 +137,7 @@ const Project: React.FC = () => {
     }
     setContainers((prev: any) => ({
       ...prev,
-      ["A" + Math.floor(Math.random() * 100000001)]: []
+      ["aaaabbccdeaaa" + Math.random() * 1000]: []
     }))
     console.log("created new container")
   }
@@ -175,32 +151,21 @@ const Project: React.FC = () => {
           <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
         </div>
       </div>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragOver={handleDragOver}
-      >
-        <SortableContext
-          id='container-list'
-          items={Object.keys(containers)}
-          strategy={horizontalListSortingStrategy}
+      <div className="project-body">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
         >
-          <div className="project-body" ref={setNodeRef}>
-
-            {Object.entries(containers).map(([key, value]: any) => (
-              <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
-            ))}
-          </div>
-        </SortableContext>
-        <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
-        <DragOverlay>{
-          activeItem ?
-            ('list' in activeItem) ? <Container key={activeItem.id} id={activeItem.id} title={activeItem.id} list={activeItem.list} /> :
-              ('content' in activeItem) ? <Item key={activeItem.id} {...activeItem} /> : "" : ""
-        }</DragOverlay>
-      </DndContext>
+          {Object.entries(containers).map(([key, value]: any) => (
+            <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
+          ))}
+          <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
+          <DragOverlay>{activeItem ? <Item item={activeItem} /> : null}</DragOverlay>
+        </DndContext>
+      </div>
     </div >
   )
 }

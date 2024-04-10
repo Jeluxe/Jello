@@ -3,10 +3,18 @@ import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { DescriptionIcon, PlusIcon } from "../../assets/icons";
 import monica from "../../assets/monic.jpg";
-import { ItemProps } from "../../pages/Project";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Item.css";
+
+type Props = {
+  item: {
+    id: string,
+    content?: string,
+    tags?: string[],
+  },
+  setContainers?: any
+}
 
 enum Colors {
   bug = "green",
@@ -15,7 +23,8 @@ enum Colors {
   danger = "red"
 }
 
-const Item = ({ id, content, tags, setContainers }: ItemProps) => {
+const Item = ({ item, setContainers }: Props) => {
+  const { id, content, tags } = item;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
 
@@ -29,7 +38,7 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id })
+  } = useSortable({ id: item.id, data: item })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -43,7 +52,6 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
   }
 
   const handleAddTags = (e: any) => {
-    if (!setContainers) return;
     const selectedContainer = e.target.closest(".container").getAttribute("id");
 
     if (!selectedContainer) return;
