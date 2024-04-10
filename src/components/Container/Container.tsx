@@ -23,7 +23,8 @@ const Container = ({ id, title, list, setContainers }: ContainerProps) => {
 
   const addItem = (e: any) => {
     if (!setContainers) return;
-    const selectedContainer = e.target.parentElement.parentElement.getAttribute("id");
+
+    const selectedContainer = e.target.closest(".container").getAttribute("id");
 
     setContainers((prev: any) => {
       if (selectedContainer) {

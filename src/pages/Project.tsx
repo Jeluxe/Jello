@@ -192,9 +192,9 @@ const Project: React.FC = () => {
             {Object.entries(containers).map(([key, value]: any) => (
               <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
             ))}
+            <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
           </div>
         </SortableContext>
-        <Button title='add container' style={{ width: 320, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
         <DragOverlay>{
           activeItem ?
             ('list' in activeItem) ? <Container key={activeItem.id} id={activeItem.id} title={activeItem.id} list={activeItem.list} /> :
