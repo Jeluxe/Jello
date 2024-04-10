@@ -102,7 +102,7 @@ const Project: React.FC = () => {
       } else {
         newIndex = overIndex >= 0 ? overIndex + 1 : overItems.length + 1;
       }
-
+      console.log(activeContainer, overContainer)
       return {
         ...prev,
         [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== active.id)],
