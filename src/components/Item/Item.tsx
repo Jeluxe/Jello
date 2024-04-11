@@ -4,20 +4,13 @@ import { useMemo, useState } from "react";
 import { DescriptionIcon, PlusIcon } from "../../assets/icons";
 import monica from "../../assets/monic.jpg";
 import { ItemProps } from "../../pages/Project";
+import { Colors } from "../../types/global";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Item.css";
 
-enum Colors {
-  bug = "green",
-  info = "lightblue",
-  inspire = "yellow",
-  danger = "red"
-}
-
-const Item = ({ id, content, tags, setContainers }: ItemProps) => {
+const Item = ({ id, title, content, tags, participants, setContainers, openModal }: ItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
 
   const filteredTags = useMemo(() => {
     return [...new Set(tags)]
@@ -34,12 +27,6 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  }
-
-  const handleOpenInfoModal = () => {
-    if (document.querySelector(".overlay")) return;
-    // create context and add function to handle opening the description modal,
-    // and passing the item data.
   }
 
   const handleAddTags = (e: any) => {
@@ -76,7 +63,7 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
       {...attributes}
       {...listeners}
     >
-      <div className="item" style={{ backgroundColor: "white" }}>
+      <div id={id} className="item" style={{ backgroundColor: "white" }}>
         <div className="item-tags">
           {filteredTags?.slice(0, 4).map(((tag: string, idx: number) => {
             return (idx > 2) ?
@@ -99,6 +86,7 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
               <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
         </div>
+        <div className="item-title"><b>{title}</b></div>
         <div className="item-body">{content}</div>
         <div className="item-footer">
           <div className="item-actions">
@@ -115,11 +103,12 @@ const Item = ({ id, content, tags, setContainers }: ItemProps) => {
               </div>
               <DescriptionIcon
                 className="button"
-                onClick={handleOpenInfoModal} />
+                onClick={openModal} />
               <div>july 15</div>
             </div>
           </div>
           <div className="item-participants">
+            {participants?.map((participant: any) => <div key={participant.id} className="item-participant">{participant.avatar ? <img src={participant.avatar} width={35} height={35} /> : participant.username[0].toUpperCase()}</div>)}
             <div className="item-participant">
               <img src={monica} width={35} height={35} />
             </div>

@@ -8,6 +8,8 @@ import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
 import Item from '../components/Item/Item';
+import Modal from '../components/Modal/Modal';
+import useModal from '../hooks/ModalHook';
 import "./Project.css";
 
 const isImgBg = (img: string) => ({
@@ -17,12 +19,21 @@ const isImgBg = (img: string) => ({
   backgroundPosition: "center center"
 })
 
+type User = {
+  id: string,
+  avatar?: string | null,
+  username: string,
+}
+
 export type ItemProps = {
   key?: React.Key | null | undefined,
   id: string,
+  title: string,
   content: string,
   tags?: string[],
-  setContainers?: React.Dispatch<any>
+  participants?: User[],
+  setContainers?: React.Dispatch<any>,
+  openModal?: (data: any) => void
 }
 
 export type ContainerMapProps = {
@@ -30,27 +41,30 @@ export type ContainerMapProps = {
 }
 
 export type ContainerProps = {
-  key?: React.Key | null | undefined;
+  key?: React.Key | null | undefined,
   id: string,
   title: string,
   list: ItemProps[],
-  setContainers?: React.Dispatch<any>
+  setContainers?: React.Dispatch<any>,
+  openModal?: (data: any) => void
 }
 
-type ActiveProps = (Omit<ItemProps, 'setContainers' | 'key'> | Omit<ContainerProps, 'setContainers' | 'key'>);
+type PropsToRemove = 'setContainers' | 'key';
+
+type ActiveProps = (Omit<ItemProps, PropsToRemove> | Omit<ContainerProps, PropsToRemove>);
 
 const Project: React.FC = () => {
   const params = useParams();
+  const { isModalOpen, setIsModalOpen, modalData, setModalData } = useModal()
   const { setNodeRef } = useDroppable({ id: "container-list" });
   const [containers, setContainers] = useState<ContainerMapProps>({
-    Planned: [{ id: "1", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", content: "ffooso1" }, { id: "3", content: "ffasooso" }],
-    InProgress: [{ id: "4", content: "ffooso2", tags: ["bug", "info"] }, { id: "5", content: "ff2eeooso" }, { id: "6", content: "fsdssfooso" }],
-    Completed: [{ id: "7", content: "ffoosoef32q", tags: ["info", "inspire"] }, { id: "8", content: "ffoosofsdf3" }, { id: "9", content: "fdfosadoso" }],
+    Planned: [{ id: "1", title: "Mofus", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", title: "Yofus", content: "ffooso1" }, { id: "3", title: "Bofus", content: "ffasooso" }],
+    InProgress: [{ id: "4", title: "Rofus", content: "ffooso2", tags: ["bug", "info"] }, { id: "5", title: "Gofus", content: "ff2eeooso" }, { id: "6", title: "Nofus", content: "fsdssfooso" }],
+    Completed: [{ id: "7", title: "Dofus", content: "ffoosoef32q", tags: ["info", "inspire"] }, { id: "8", title: "Jofus", content: "ffoosofsdf3" }, { id: "9", title: "Aofus", content: "fdfosadoso" }],
     Dropped: []
   })
 
   const [activeItem, setActiveItem] = useState<ActiveProps | null>(null)
-  // const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -166,6 +180,32 @@ const Project: React.FC = () => {
     console.log("created new container")
   }
 
+  const openModal = ({ target }: any) => {
+    const foundItem = target.closest(".item");
+    if (foundItem) {
+      const foundID = foundItem.getAttribute("id");
+      const returnedItem = findItemById(foundID);
+      if (returnedItem) {
+        setIsModalOpen(true);
+        setModalData(returnedItem)
+      }
+    }
+  }
+
+  const findItemById = (id: string): ItemProps | null => {
+    for (const category in containers) {
+      const categoryData = containers[category];
+      for (const item of categoryData) {
+        if (item.id === id) {
+          return {
+            ...item
+          };
+        }
+      }
+    }
+    return null; // Return null if ID is not found
+  }
+
   return (
     <div className="project-container" style={isImgBg(monica)}>
       <div className="project-header">
@@ -190,7 +230,7 @@ const Project: React.FC = () => {
           <div className="project-body" ref={setNodeRef}>
 
             {Object.entries(containers).map(([key, value]: any) => (
-              <Container key={key} id={key} title={key} list={value} setContainers={setContainers} />
+              <Container key={key} id={key} title={key} list={value} setContainers={setContainers} openModal={openModal} />
             ))}
             <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={handleNewContainer}></Button>
           </div>
@@ -201,7 +241,8 @@ const Project: React.FC = () => {
               ('content' in activeItem) ? <Item key={activeItem.id} {...activeItem} /> : "" : ""
         }</DragOverlay>
       </DndContext>
-    </div >
+      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
+    </div>
   )
 }
 

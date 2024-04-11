@@ -6,7 +6,7 @@ import { ContainerProps } from "../../pages/Project"
 import Item from "../Item/Item"
 import "./Container.css"
 
-const Container = ({ id, title, list, setContainers }: ContainerProps) => {
+const Container = ({ id, title, list, setContainers, openModal }: ContainerProps) => {
   const {
     attributes,
     listeners,
@@ -72,7 +72,7 @@ const Container = ({ id, title, list, setContainers }: ContainerProps) => {
             </div>
           </div>
           <div className="container-items">
-            {list.map((item) => <Item key={item.id} {...item} setContainers={setContainers} />)}
+            {list.map((item) => <Item key={item.id} {...item} setContainers={setContainers} openModal={openModal} />)}
           </div>
         </div>
       </SortableContext >
