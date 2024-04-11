@@ -40,6 +40,11 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  background-color: rgba(218, 228, 240, 0.6);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 14px;
+  box-shadow: 0 0 2px .1px rgb(151, 151, 151) inset;
 }
 
 .item-footer {
