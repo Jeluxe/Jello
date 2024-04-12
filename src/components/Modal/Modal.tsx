@@ -1,5 +1,7 @@
+import { PlusIcon } from "../../assets/icons";
 import { Colors } from "../../types/global";
 import Divider from "../Divider/Divider";
+import Dots from "../Dots/Dots";
 import Overlay from "../Overlay/Overlay";
 import "./Modal.css";
 
@@ -13,12 +15,31 @@ const style = { display: "flex", justifyContent: "space-between" }
 
 const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
   const { title, content, tags, participants } = modalData;
+
+  if (!isModalOpen) return;
+
   return (
-    isModalOpen && <Overlay clickable isVisible={isModalOpen} setIsVisible={setIsModalOpen}>
+    <Overlay clickable isVisible={isModalOpen} setIsVisible={setIsModalOpen}>
       <div className="modal">
         <div style={style}>
           <div><b>{title}</b></div>
-          <div className="item-tags">{tags?.map((tag: string, idx: number) => <div key={idx} className="item-tag" style={{ backgroundColor: Colors[tag as keyof typeof Colors] }}>{tag}</div>)}</div>
+          <div className="modal-tags item-tags">
+            {tags?.splice(0, 11).map((tag: string, idx: number) => (
+              <div key={idx}
+                className="item-tag"
+                style={{ backgroundColor: Colors[tag as keyof typeof Colors] }}
+              >
+                {tag}
+              </div>
+            ))}
+            {tags?.length < 10 ?
+              <PlusIcon
+                size={12}
+                className="button"
+              // onClick={addTag}
+              /> :
+              <Dots size={6} className="button" onClick={() => console.log("open list")} />}
+          </div>
         </div>
         <div className="item-body">{content}</div>
         <div style={style}>

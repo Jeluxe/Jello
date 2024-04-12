@@ -2,9 +2,16 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 400px;
+  min-width: 600px;
+  max-width: 800px;
   padding: 20px;
   border-radius: 6px;
   background-color: white;
   box-shadow: 0 0 6px 1px rgb(107, 107, 107);
+}
+
+.modal-tags {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
 }
