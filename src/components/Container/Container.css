@@ -1,5 +1,5 @@
 .container {
-  min-width: 280px;
+  width: 280px;
   min-height: 100px;
   padding: 10px;
   border-radius: 15px;
@@ -12,6 +12,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  column-gap: 4px;
 }
 
 .container-title {

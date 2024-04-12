@@ -1,6 +1,6 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { DragIcon, PlusIcon } from "../../assets/icons"
+import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 
 import { ContainerProps } from "../../pages/Project"
 import Item from "../Item/Item"
@@ -63,6 +63,12 @@ const Container = ({ id, title, list, setContainers, openModal }: ContainerProps
       >
         <div id={title} className="container">
           <div className="container-header">
+            <SettingsIcon
+              size={20}
+              className="button"
+              color="black"
+            // onClick={openMenu}
+            />
             <div className="container-title">{title}</div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <PlusIcon className="button" onClick={addItem} />
