@@ -55,14 +55,16 @@ type ActiveProps = (Omit<ItemProps, PropsToRemove> | Omit<ContainerProps, PropsT
 
 const Project: React.FC = () => {
   const params = useParams();
-  const { isModalOpen, setIsModalOpen, modalData, setModalData } = useModal()
+
   const { setNodeRef } = useDroppable({ id: "container-list" });
+  const { isModalOpen, setIsModalOpen, modalData, setModalData } = useModal()
+
   const [containers, setContainers] = useState<ContainerMapProps>({
     Planned: [{ id: "1", title: "Mofus", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", title: "Yofus", content: "ffooso1" }, { id: "3", title: "Bofus", content: "ffasooso" }],
-    InProgress: [{ id: "4", title: "Rofus", content: "ffooso2", tags: ["bug", "info"] }, { id: "5", title: "Gofus", content: "ff2eeooso" }, { id: "6", title: "Nofus", content: "fsdssfooso" }],
+    InProgress: [{ id: "4", title: "Rofus", content: " Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis assumenda commodi sunt animi praesentium tempora est inventore eveniet nostrum incidunt. Quasi minus voluptas ea quo! Iste, tempora omnis. At, eaque.", tags: ["bug", "info"] }, { id: "5", title: "Gofus", content: "ff2eeooso" }, { id: "6", title: "Nofus", content: "fsdssfooso" }],
     Completed: [{ id: "7", title: "Dofus", content: "ffoosoef32q", tags: ["info", "inspire"] }, { id: "8", title: "Jofus", content: "ffoosofsdf3" }, { id: "9", title: "Aofus", content: "fdfosadoso" }],
     Dropped: []
-  })
+  });
 
   const [activeItem, setActiveItem] = useState<ActiveProps | null>(null)
 
@@ -237,7 +239,7 @@ const Project: React.FC = () => {
         </SortableContext>
         <DragOverlay>{
           activeItem ?
-            ('list' in activeItem) ? <Container key={activeItem.id} id={activeItem.id} title={activeItem.id} list={activeItem.list} /> :
+            ('list' in activeItem) ? <Container key={activeItem.id} {...activeItem} /> :
               ('content' in activeItem) ? <Item key={activeItem.id} {...activeItem} /> : "" : ""
         }</DragOverlay>
       </DndContext>
