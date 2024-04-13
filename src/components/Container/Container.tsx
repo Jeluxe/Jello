@@ -1,12 +1,12 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
-
-import { ContainerProps } from "../../pages/Project"
+import { useProjectProvider } from "../../context/ProjectContext"
+import { ContainerProps } from "../../types/global"
 import Item from "../Item/Item"
 import "./Container.css"
 
-const Container = ({ id, title, list, setContainers, openModal }: ContainerProps) => {
+const Container = ({ id, title, list, openModal }: ContainerProps) => {
   const {
     attributes,
     listeners,
@@ -15,44 +15,12 @@ const Container = ({ id, title, list, setContainers, openModal }: ContainerProps
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
+  const { addItem } = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
-  const addItem = (e: any) => {
-    if (!setContainers) return;
-
-    const selectedContainer = e.target.closest(".container").getAttribute("id");
-
-    setContainers((prev: any) => {
-      if (selectedContainer) {
-        if (prev[selectedContainer].length === 20) {
-          return prev;
-        }
-        return {
-          ...prev,
-          [selectedContainer]: [
-            ...prev[selectedContainer],
-            { id: getNewId(prev), content: "foos" }
-          ]
-        }
-      } else {
-        return prev;
-      }
-    })
-  }
-
-  const getNewId = (list: any[]): number => {
-    let totalLength: number = 0;
-
-    Object.values(list).forEach(item => {
-      totalLength += item.length;
-    })
-    console.log(totalLength)
-    return totalLength + 1;
-  }
 
   return (
     <div ref={setNodeRef} style={style}>
@@ -65,6 +33,7 @@ const Container = ({ id, title, list, setContainers, openModal }: ContainerProps
           <div className="container-header">
             <SettingsIcon
               size={20}
+              id="settings"
               className="button"
               color="black"
             // onClick={openMenu}
@@ -78,7 +47,7 @@ const Container = ({ id, title, list, setContainers, openModal }: ContainerProps
             </div>
           </div>
           <div className="container-items">
-            {list.map((item) => <Item key={item.id} {...item} setContainers={setContainers} openModal={openModal} />)}
+            {list.map((item) => <Item key={item.id} {...item} openModal={openModal} />)}
           </div>
         </div>
       </SortableContext >

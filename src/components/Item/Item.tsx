@@ -2,20 +2,14 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { DescriptionIcon, PlusIcon } from "../../assets/icons";
-import monica from "../../assets/monic.jpg";
-import { ItemProps } from "../../pages/Project";
-import { Colors } from "../../types/global";
+import { useProjectProvider } from "../../context/ProjectContext";
+import { Colors, ItemProps } from "../../types/global";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Item.css";
 
-const Item = ({ id, title, content, tags, participants, setContainers, openModal }: ItemProps) => {
+const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const filteredTags = useMemo(() => {
-    return [...new Set(tags)]
-  }, [tags]);
-
   const {
     attributes,
     listeners,
@@ -24,37 +18,27 @@ const Item = ({ id, title, content, tags, participants, setContainers, openModal
     transition
   } = useSortable({ id })
 
+  const { addTags } = useProjectProvider();
+
+  const filteredTags = useMemo(() => {
+    return [...new Set(tags)]
+  }, [tags]);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   }
 
-  const handleAddTags = (e: any) => {
-    if (!setContainers) return;
-    const selectedContainer = e.target.closest(".container").getAttribute("id");
-
-    if (!selectedContainer) return;
-
-    const newTag = "danger";
-
-    setContainers((prev: any) => ({
-      ...prev,
-      [selectedContainer]: [...prev[selectedContainer].map((item: any) => {
-        if (item.id === id) {
-          if (item?.tags?.includes(newTag)) return item;
-          return {
-            ...item,
-            tags: (item?.tags) ? [...item.tags, newTag] : [newTag]
-          }
-        }
-        return item;
-      })]
-    }))
-  }
-
-  const openMenu = () => {
+  const openMenu = (e: any) => {
+    e.stopPropagation();
     setIsMenuOpen(!isMenuOpen)
   }
+
+  document.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (isMenuOpen) setIsMenuOpen(false);
+  })
 
   return (
     <div
@@ -63,7 +47,7 @@ const Item = ({ id, title, content, tags, participants, setContainers, openModal
       {...attributes}
       {...listeners}
     >
-      <div id={id} className="item" style={{ backgroundColor: "white" }}>
+      <div id={id} className="item">
         <div className="item-tags">
           {filteredTags?.slice(0, 4).map(((tag: string, idx: number) => {
             return (idx > 2) ?
@@ -80,8 +64,8 @@ const Item = ({ id, title, content, tags, participants, setContainers, openModal
             filteredTags?.length < 3 ?
               <PlusIcon
                 size={12}
-                className="button"
-                onClick={handleAddTags}
+                className="button plus-button"
+                onClick={(e) => addTags(e, id)}
               /> :
               <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
@@ -108,11 +92,15 @@ const Item = ({ id, title, content, tags, participants, setContainers, openModal
             </div>
           </div>
           <div className="item-participants">
-            {participants?.map((participant: any) => <div key={participant.id} className="item-participant">{participant.avatar ? <img src={participant.avatar} width={35} height={35} /> : participant.username[0].toUpperCase()}</div>)}
-            <div className="item-participant">
-              <img src={monica} width={35} height={35} />
-            </div>
-            <div className="item-participant">D</div>
+            {participants?.splice(0, 3)?.map((participant: any) => (
+              <div key={participant.id} className="item-participant">
+                {
+                  participant.avatar ?
+                    <img src={participant.avatar} /> :
+                    participant.username[0].toUpperCase()
+                }
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
+import { ProjectProvider } from './context/ProjectContext';
 import './index.css';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -22,7 +23,7 @@ const router = createBrowserRouter(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
       <Route path='' element={<Welcome />} />
       <Route path='my-projects' element={<Projects />} />
-      <Route path='my-projects/:id' element={<Project />} />
+      <Route path='my-projects/:id' element={<ProjectProvider><Project /></ProjectProvider>} />
       <Route path='contact' element={<Contact />} />
       <Route path='about' element={<About />} />
       <Route path='profile' element={<Profile />} />
