@@ -11,7 +11,7 @@ export type ContainerMapProps = {
 
 type User = {
   id: string,
-  avatar?: string | null,
+  avatar: string | null,
   username: string,
 }
 
@@ -20,9 +20,8 @@ export type ItemProps = {
   id: string,
   title: string,
   content: string,
-  tags?: string[],
-  participants?: User[],
-  setContainers?: React.Dispatch<any>,
+  tags: string[],
+  participants: User[],
   openModal?: (data: any) => void
 }
 
@@ -31,12 +30,7 @@ export type ContainerProps = {
   id: string,
   title: string,
   list: ItemProps[],
-  setContainers?: React.Dispatch<any>,
   openModal?: (data: any) => void
 }
 
-
-
-type PropsToRemove = 'setContainers' | 'key';
-
-export type ActiveProps = (Omit<ItemProps, PropsToRemove> | Omit<ContainerProps, PropsToRemove>);
+export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>);
