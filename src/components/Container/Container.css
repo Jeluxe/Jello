@@ -28,3 +28,17 @@
   flex-direction: column;
   row-gap: 14px;
 }
+
+#settings:hover {
+  animation: rotate .8s;
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0;
+  }
+
+  100% {
+    rotate: 180deg;
+  }
+}

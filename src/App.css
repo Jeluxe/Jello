@@ -50,3 +50,7 @@
 .grabbable {
   cursor: grab;
 }
+
+.plus-button {
+  position: relative;
+}

@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 4px;
   width: inherit;
+  background-color: white;
 }
 
 .item button {
