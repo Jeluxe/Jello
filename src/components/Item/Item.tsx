@@ -17,7 +17,6 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
     transform,
     transition
   } = useSortable({ id })
-
   const { addTags } = useProjectProvider();
 
   const filteredTags = useMemo(() => {
@@ -92,8 +91,8 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
             </div>
           </div>
           <div className="item-participants">
-            {participants?.splice(0, 3)?.map((participant: any) => (
-              <div key={participant.id} className="item-participant">
+            {participants?.slice(0, 2).map((participant: any) => (
+              <div key={participant.id} className="item-participant-avatar">
                 {
                   participant.avatar ?
                     <img src={participant.avatar} /> :
