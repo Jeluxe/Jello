@@ -7,22 +7,21 @@ export const ProjectContext = createContext<any>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
   const [projectData, setProjectData] = useState<ContainerMapProps>({
-    Planned: [{ id: "1", title: "Mofus", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"] }, { id: "2", title: "Yofus", content: "ffooso1" }, { id: "3", title: "Bofus", content: "ffasooso" }],
-    InProgress: [{ id: "4", title: "Rofus", content: " Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis assumenda commodi sunt animi praesentium tempora est inventore eveniet nostrum incidunt. Quasi minus voluptas ea quo! Iste, tempora omnis. At, eaque.", tags: ["bug", "info"] }, { id: "5", title: "Gofus", content: "ff2eeooso" }, { id: "6", title: "Nofus", content: "fsdssfooso" }],
-    Completed: [{ id: "7", title: "Dofus", content: "ffoosoef32q", tags: ["info", "inspire"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "8", title: "Jofus", content: "ffoosofsdf3" }, { id: "9", title: "Aofus", content: "fdfosadoso" }],
+    Planned: [{ id: "1", title: "Mofus", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "2", title: "Yofus", content: "ffooso1", tags: [], participants: [] }, { id: "3", title: "Bofus", content: "ffasooso", tags: [], participants: [] }],
+    InProgress: [{ id: "4", title: "Rofus", content: " Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis assumenda commodi sunt animi praesentium tempora est inventore eveniet nostrum incidunt. Quasi minus voluptas ea quo! Iste, tempora omnis. At, eaque.", tags: ["bug", "info"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "5", title: "Gofus", content: "ff2eeooso", tags: [], participants: [] }, { id: "6", title: "Nofus", content: "fsdssfooso", tags: [], participants: [] }],
+    Completed: [{ id: "7", title: "Dofus", content: "ffoosoef32q", tags: ["info", "inspire"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "8", title: "Jofus", content: "ffoosofsdf3", tags: [], participants: [] }, { id: "9", title: "Aofus", content: "fdfosadoso", tags: [], participants: [] }],
     Dropped: []
   });
 
   const [activeItem, setActiveItem] = useState<ActiveProps | null>(null);
 
-
   const getNewId = (list: any[]): number => {
     let totalLength: number = 0;
 
-    Object.values(list).forEach(item => {
-      totalLength += item.length;
+    Object.keys(list).forEach((key: any) => {
+      totalLength += list[key].length;
     })
-    console.log(totalLength)
+
     return totalLength + 1;
   }
 
@@ -41,6 +40,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   const addItem = (e: any) => {
     const selectedContainer = e.target.closest(".container").getAttribute("id");
 
+    if (!selectedContainer) return;
+
     setProjectData((prev: any) => {
       if (selectedContainer) {
         if (prev[selectedContainer].length === 20) {
@@ -50,7 +51,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
           ...prev,
           [selectedContainer]: [
             ...prev[selectedContainer],
-            { id: getNewId(prev), content: "foos" }
+            { id: getNewId(prev), content: "foos", tags: [], participants: [] }
           ]
         }
       } else {
@@ -70,10 +71,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       ...prev,
       [selectedContainer]: [...prev[selectedContainer].map((item: any) => {
         if (item.id === id) {
-          if (item?.tags?.includes(newTag)) return item;
+          if (item.tags.includes(newTag)) return item;
           return {
             ...item,
-            tags: (item?.tags) ? [...item.tags, newTag] : [newTag]
+            tags: (item.tags.length) ? [...item.tags, newTag] : [newTag]
           }
         }
         return item;
@@ -103,6 +104,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
   const handleDragStart = ({ active }: any) => {
     const { id, data: { current: { sortable: { containerId, index } } } } = active;
+
     if (containerId === "container-list") {
       setActiveItem({ id, title: id, list: projectData[id] });
     } else {
@@ -137,7 +139,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== active.id)],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
-          projectData[activeContainer][activeIndex],
+          prev[activeContainer][activeIndex],
           ...prev[overContainer].slice(newIndex, prev[overContainer].length)
         ]
       }
@@ -220,4 +222,4 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   )
 }
 
-export const useProjectProvider = () => ({ ...useContext(ProjectContext) });
+export const useProjectProvider = () => useContext(ProjectContext);
