@@ -41,13 +41,13 @@ const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
               <Dots size={6} className="button" onClick={() => console.log("open list")} />}
           </div>
         </div>
-        <div className="ticket-content modal-content">{content}</div>
+        <div className="card-content modal-content">{content}</div>
         <div className="modal-footer" style={style}>
           <div className="changelog">
             <h4>Changelog</h4>
             <div className="changelog-container">
               <div className="changelog">
-                <div className="changelog-content">Changed ticket name to Mofus</div>
+                <div className="changelog-content">Changed card name to Mofus</div>
                 <div className="changelog-reviser" style={{ display: "flex", gap: 2, transform: "scale(.9)" }}>
                   <span>By</span>
                   <div className="participant-avatar">{"D".toUpperCase()}</div>

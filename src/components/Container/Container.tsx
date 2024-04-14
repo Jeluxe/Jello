@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext"
 import { ContainerProps } from "../../types/global"
-import Ticket from "../Ticket/Ticket"
+import Card from "../Card/Card"
 import "./Container.css"
 
 const Container = ({ id, title, list, openModal }: ContainerProps) => {
@@ -15,7 +15,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
-  const { addTicket }: Pick<ProjectProviderOperations, "addTicket"> = useProjectProvider()
+  const { addCard }: Pick<ProjectProviderOperations, "addCard"> = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -32,21 +32,21 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
         <div id={title} className="container">
           <div className="container-header">
             <SettingsIcon
-              size={20}
+              size={24}
               id="settings"
               className="button"
             // onClick={openMenu}
             />
             <div className="container-title">{title}</div>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <PlusIcon className="button" onClick={addTicket} />
+              <PlusIcon className="button" onClick={addCard} />
               <div ref={setActivatorNodeRef} {...attributes} {...listeners} style={{ height: '24px' }}>
                 <DragIcon className='grabbable' size={24} />
               </div>
             </div>
           </div>
           <div className="container-items">
-            {list.map((ticket) => <Ticket key={ticket.id} {...ticket} openModal={openModal} />)}
+            {list.map((card) => <Card key={card.id} {...card} openModal={openModal} />)}
           </div>
         </div>
       </SortableContext >

@@ -1,32 +1,56 @@
-.card-container {
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.195);
+  border-radius: 6px;
+  user-select: none;
+  padding: 8px;
+  margin: 0;
   display: flex;
-  min-width: 300px;
-  height: 160px;
-  position: relative;
-  border-radius: 15px;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.418);
-  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  width: inherit;
+  background-color: white;
 }
 
-a.card-container {
+.card button {
   padding: 0;
-  text-align: start;
+  background: transparent;
+  color: gray;
 }
 
-.card-container img {
-  position: absolute;
-  object-fit: cover;
-  width: 100%;
+.card-content {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  background-color: rgba(218, 228, 240, 0.6);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 14px;
+  box-shadow: 0 0 2px .1px rgb(151, 151, 151) inset;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  height: 30px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: flex-end;
+  font-size: 14px;
   height: 100%;
-  border-radius: 15px;
 }
 
-.card-container div {
-  z-index: 1;
-  position: absolute;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.41);
-  width: 100%;
-  padding: 3px 10px;
-  border-radius: 0 0 15px 15px;
+.card-actions-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-participants {
+  display: flex;
+  column-gap: 4px;
 }

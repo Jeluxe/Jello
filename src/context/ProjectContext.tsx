@@ -9,13 +9,13 @@ export type ProjectProviderData = {
 
 export type ProjectProviderOperations = {
   addContainer: () => void,
-  addTicket: (e: any) => void,
+  addCard: (e: any) => void,
   addTags: (e: any, id: string) => void,
   updateContainer: () => void,
-  updateTicket: () => void,
+  updateCard: () => void,
   updateTags: () => void,
   removeContainer: () => void,
-  removeTicket: () => void,
+  removeCard: () => void,
   removeTags: () => void,
   findContainer: (id: string) => string | undefined,
   handleDragStart: ({ active }: { active: any }) => void,
@@ -60,7 +60,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     console.log("created new container");
   }
 
-  const addTicket = (e: any) => {
+  const addCard = (e: any) => {
     const selectedContainer = e.target.closest(".container").getAttribute("id");
 
     if (!selectedContainer) return;
@@ -92,28 +92,28 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
     setProjectData((prev: any) => ({
       ...prev,
-      [selectedContainer]: [...prev[selectedContainer].map((ticket: any) => {
-        if (ticket.id === id) {
-          if (ticket.tags.includes(newTag)) return ticket;
+      [selectedContainer]: [...prev[selectedContainer].map((card: any) => {
+        if (card.id === id) {
+          if (card.tags.includes(newTag)) return card;
           return {
-            ...ticket,
-            tags: (ticket.tags.length) ? [...ticket.tags, newTag] : [newTag]
+            ...card,
+            tags: (card.tags.length) ? [...card.tags, newTag] : [newTag]
           }
         }
-        return ticket;
+        return card;
       })]
     }))
   }
 
   const updateContainer = () => { }
 
-  const updateTicket = () => { }
+  const updateCard = () => { }
 
   const updateTags = () => { }
 
   const removeContainer = () => { }
 
-  const removeTicket = () => { }
+  const removeCard = () => { }
 
   const removeTags = () => { }
 
@@ -122,7 +122,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       return id;
     }
 
-    return Object.keys(projectData).find(key => projectData[key].find((ticket: any) => ticket && ticket.id === id));
+    return Object.keys(projectData).find(key => projectData[key].find((card: any) => card && card.id === id));
   }
 
   const handleDragStart: ProjectProviderOperations["handleDragStart"] = (e) => {
@@ -159,7 +159,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
       return {
         ...prev,
-        [activeContainer]: [...prev[activeContainer].filter((ticket: any) => ticket.id !== active.id)],
+        [activeContainer]: [...prev[activeContainer].filter((card: any) => card.id !== active.id)],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
           prev[activeContainer][activeIndex],
@@ -189,8 +189,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         if (active.data.current.sortable.containerId === "container-list") {
           const formattedObject = Object.entries(items);
 
-          const activeItem = formattedObject.find(ticket => ticket[0] === active.id);
-          const overItem = formattedObject.find(ticket => ticket[0] === over.id || ticket[0] === overContainer);
+          const activeItem = formattedObject.find(card => card[0] === active.id);
+          const overItem = formattedObject.find(card => card[0] === over.id || card[0] === overContainer);
 
           if (!activeItem || !overItem) return items;
 
@@ -211,10 +211,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   const findItemById: ProjectProviderOperations["findItemById"] = (id) => {
     for (const category in projectData) {
       const categoryData = projectData[category];
-      for (const ticket of categoryData) {
-        if (ticket.id === id) {
+      for (const card of categoryData) {
+        if (card.id === id) {
           return {
-            ...ticket
+            ...card
           };
         }
       }
@@ -227,13 +227,13 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       projectData,
       activeItem,
       addContainer,
-      addTicket,
+      addCard,
       addTags,
       updateContainer,
-      updateTicket,
+      updateCard,
       updateTags,
       removeContainer,
-      removeTicket,
+      removeCard,
       removeTags,
       handleDragStart,
       handleDragOver,
