@@ -1,7 +1,7 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
-import { useProjectProvider } from "../../context/ProjectContext"
+import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext"
 import { ContainerProps } from "../../types/global"
 import Ticket from "../Ticket/Ticket"
 import "./Container.css"
@@ -15,7 +15,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
-  const { addTicket } = useProjectProvider()
+  const { addTicket }: Pick<ProjectProviderOperations, "addTicket"> = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -35,7 +35,6 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
               size={20}
               id="settings"
               className="button"
-              color="black"
             // onClick={openMenu}
             />
             <div className="container-title">{title}</div>

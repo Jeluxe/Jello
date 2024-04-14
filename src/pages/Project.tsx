@@ -10,7 +10,7 @@ import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
 import Modal from '../components/Modal/Modal';
 import Ticket from '../components/Ticket/Ticket';
-import { useProjectProvider } from '../context/ProjectContext';
+import { ProjectProviderData, selectedFunctions, useProjectProvider } from '../context/ProjectContext';
 import useModal from '../hooks/ModalHook';
 import "./Project.css";
 
@@ -34,7 +34,7 @@ const Project: React.FC = () => {
     handleDragOver,
     handleDragEnd,
     findItemById
-  } = useProjectProvider();
+  }: ProjectProviderData & selectedFunctions = useProjectProvider();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

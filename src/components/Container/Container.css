@@ -16,9 +16,10 @@
 }
 
 .container-title {
-  font-size: large;
-  font-weight: 500;
-  width: 90%;
+  font-size: 1.4rem;
+  font-weight: 1000;
+  width: 100%;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
   overflow: hidden;
   text-overflow: ellipsis;
 }

@@ -2,6 +2,29 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { createContext, useContext, useState } from "react";
 import { ActiveProps, ContainerMapProps, ItemProps } from "../types/global";
 
+export type ProjectProviderData = {
+  projectData: ContainerMapProps,
+  activeItem: ActiveProps
+}
+
+export type ProjectProviderOperations = {
+  addContainer: () => void,
+  addTicket: (e: any) => void,
+  addTags: (e: any, id: string) => void,
+  updateContainer: () => void,
+  updateTicket: () => void,
+  updateTags: () => void,
+  removeContainer: () => void,
+  removeTicket: () => void,
+  removeTags: () => void,
+  findContainer: (id: string) => string | undefined,
+  handleDragStart: ({ active }: { active: any }) => void,
+  handleDragOver: ({ active, over }: { active: any, over: any }) => void,
+  handleDragEnd: ({ active, over }: { active: any, over: any }) => void,
+  findItemById: (id: string) => ItemProps | null
+}
+
+export type selectedFunctions = Pick<ProjectProviderOperations, "addContainer" | "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById">
 
 export const ProjectContext = createContext<any>(null);
 
@@ -82,19 +105,19 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     }))
   }
 
-  const UpdateContainer = () => { }
+  const updateContainer = () => { }
 
-  const UpdateTicket = () => { }
+  const updateTicket = () => { }
 
-  const UpdateTag = () => { }
+  const updateTags = () => { }
 
   const removeContainer = () => { }
 
   const removeTicket = () => { }
 
-  const removeTag = () => { }
+  const removeTags = () => { }
 
-  const findContainer = (id: string) => {
+  const findContainer: ProjectProviderOperations["findContainer"] = (id) => {
     if (id in projectData) {
       return id;
     }
@@ -102,8 +125,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     return Object.keys(projectData).find(key => projectData[key].find((ticket: any) => ticket && ticket.id === id));
   }
 
-  const handleDragStart = ({ active }: any) => {
-    const { id, data: { current: { sortable: { containerId, index } } } } = active;
+  const handleDragStart: ProjectProviderOperations["handleDragStart"] = (e) => {
+    const { id, data: { current: { sortable: { containerId, index } } } } = e.active;
 
     if (containerId === "container-list") {
       setActiveItem({ id, title: id, list: projectData[id] });
@@ -112,7 +135,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     }
   }
 
-  const handleDragOver = (event: any) => {
+  const handleDragOver: ProjectProviderOperations["handleDragOver"] = (event) => {
     const { active, over } = event;
 
     const activeContainer = findContainer(active.id);
@@ -146,7 +169,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     });
   }
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd: ProjectProviderOperations["handleDragEnd"] = (event) => {
     const { active, over } = event;
     const { id } = active;
     const { id: overId } = over;
@@ -185,7 +208,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     setActiveItem(null);
   }
 
-  const findItemById = (id: string): ItemProps | null => {
+  const findItemById: ProjectProviderOperations["findItemById"] = (id) => {
     for (const category in projectData) {
       const categoryData = projectData[category];
       for (const ticket of categoryData) {
@@ -206,12 +229,12 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       addContainer,
       addTicket,
       addTags,
-      UpdateContainer,
-      UpdateTicket,
-      UpdateTag,
+      updateContainer,
+      updateTicket,
+      updateTags,
       removeContainer,
       removeTicket,
-      removeTag,
+      removeTags,
       handleDragStart,
       handleDragOver,
       handleDragEnd,

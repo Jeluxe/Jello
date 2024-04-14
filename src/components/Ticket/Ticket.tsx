@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { DescriptionIcon, PlusIcon } from "../../assets/icons";
-import { useProjectProvider } from "../../context/ProjectContext";
+import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext";
 import { Colors, ItemProps } from "../../types/global";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
@@ -17,9 +17,9 @@ const Ticket = ({ id, title, content, tags, participants, openModal }: ItemProps
     transform,
     transition
   } = useSortable({ id })
-  const { addTags } = useProjectProvider();
+  const { addTags }: Pick<ProjectProviderOperations, "addTags"> = useProjectProvider();
 
-  const filteredTags = useMemo(() => {
+  const uniqueTags = useMemo(() => {
     return [...new Set(tags)]
   }, [tags]);
 
@@ -48,7 +48,7 @@ const Ticket = ({ id, title, content, tags, participants, openModal }: ItemProps
     >
       <div id={id} className="ticket">
         <div className="tags">
-          {filteredTags?.slice(0, 4).map(((tag: string, idx: number) => {
+          {uniqueTags?.slice(0, 4).map(((tag: string, idx: number) => {
             return (idx > 2) ?
               null :
               <div
@@ -60,7 +60,7 @@ const Ticket = ({ id, title, content, tags, participants, openModal }: ItemProps
               </div>
           }))}
           {
-            filteredTags?.length < 3 ?
+            uniqueTags?.length < 3 ?
               <PlusIcon
                 size={12}
                 className="button plus-button"
@@ -100,6 +100,7 @@ const Ticket = ({ id, title, content, tags, participants, openModal }: ItemProps
                 }
               </div>
             ))}
+            {participants.length >= 3 ? <Dots size={6} /> : null}
           </div>
         </div>
       </div>
