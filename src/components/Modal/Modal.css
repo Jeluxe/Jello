@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 600px;
+  min-width: 700px;
   max-width: 800px;
+  height: 500px;
   padding: 20px;
   border-radius: 6px;
   background-color: white;
@@ -17,46 +18,62 @@
   height: 100%;
 }
 
-.modal .item-body {
+.modal-content {
   min-height: 100px;
+  height: 100%;
+}
+
+.modal-footer {
+  max-height: 200px;
 }
 
 .modal h4 {
   margin-bottom: 12px;
 }
 
-.item-changelog-container {
+.changelog {
   width: 100%;
   display: flex;
   flex-direction: column;
+  row-gap: 4px;
 }
 
-.item-changelog {
-  color: rgb(227, 210, 210)
+.changelog-container {
+  color: rgb(177, 177, 177);
 }
 
-.item-participants-container {
+.changelog .participant-avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+
+.changelog-content {}
+
+.changelog-reviser {}
+
+.modal .participants {
+  display: flex;
+  flex-direction: column;
   width: 60%;
   padding: 4px 10px;
 }
 
-.modal .item-participants {
-  display: flex;
-  flex-direction: column;
+.participants-container {
+  display: grid;
   row-gap: 6px;
   overflow-y: auto;
-  max-height: 160px;
   padding: 2px;
 }
 
-.modal .item-participant {
+.modal .participant {
   display: flex;
   align-items: center;
   column-gap: 6px;
   padding: 2px;
 }
 
-.item-participant-username {
+.participant-username {
   max-width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;

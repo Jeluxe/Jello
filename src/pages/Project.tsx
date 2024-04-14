@@ -8,8 +8,8 @@ import monica from "../assets/monic.jpg";
 import Button from '../components/Button/Button';
 import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
-import Item from '../components/Item/Item';
 import Modal from '../components/Modal/Modal';
+import Ticket from '../components/Ticket/Ticket';
 import { useProjectProvider } from '../context/ProjectContext';
 import useModal from '../hooks/ModalHook';
 import "./Project.css";
@@ -49,7 +49,7 @@ const Project: React.FC = () => {
   );
 
   const openModal = ({ target }: any) => {
-    const foundItem = target.closest(".item");
+    const foundItem = target.closest(".ticket");
     if (foundItem) {
       const foundID = foundItem.getAttribute("id");
       const returnedItem = findItemById(foundID);
@@ -91,7 +91,7 @@ const Project: React.FC = () => {
         <DragOverlay>{
           activeItem ?
             ('list' in activeItem) ? <Container key={activeItem.id} {...activeItem} /> :
-              ('content' in activeItem) ? <Item key={activeItem.id} {...activeItem} /> : "" : ""
+              ('content' in activeItem) ? <Ticket key={activeItem.id} {...activeItem} /> : "" : ""
         }</DragOverlay>
       </DndContext>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />

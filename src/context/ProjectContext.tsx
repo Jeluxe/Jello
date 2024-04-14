@@ -69,15 +69,15 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
     setProjectData((prev: any) => ({
       ...prev,
-      [selectedContainer]: [...prev[selectedContainer].map((item: any) => {
-        if (item.id === id) {
-          if (item.tags.includes(newTag)) return item;
+      [selectedContainer]: [...prev[selectedContainer].map((ticket: any) => {
+        if (ticket.id === id) {
+          if (ticket.tags.includes(newTag)) return ticket;
           return {
-            ...item,
-            tags: (item.tags.length) ? [...item.tags, newTag] : [newTag]
+            ...ticket,
+            tags: (ticket.tags.length) ? [...ticket.tags, newTag] : [newTag]
           }
         }
-        return item;
+        return ticket;
       })]
     }))
   }
@@ -99,7 +99,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       return id;
     }
 
-    return Object.keys(projectData).find(key => projectData[key].find((item: any) => item && item.id === id));
+    return Object.keys(projectData).find(key => projectData[key].find((ticket: any) => ticket && ticket.id === id));
   }
 
   const handleDragStart = ({ active }: any) => {
@@ -136,7 +136,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
       return {
         ...prev,
-        [activeContainer]: [...prev[activeContainer].filter((item: any) => item.id !== active.id)],
+        [activeContainer]: [...prev[activeContainer].filter((ticket: any) => ticket.id !== active.id)],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),
           prev[activeContainer][activeIndex],
@@ -166,8 +166,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         if (active.data.current.sortable.containerId === "container-list") {
           const formattedObject = Object.entries(items);
 
-          const activeItem = formattedObject.find(item => item[0] === active.id);
-          const overItem = formattedObject.find(item => item[0] === over.id || item[0] === overContainer);
+          const activeItem = formattedObject.find(ticket => ticket[0] === active.id);
+          const overItem = formattedObject.find(ticket => ticket[0] === over.id || ticket[0] === overContainer);
 
           if (!activeItem || !overItem) return items;
 
@@ -188,10 +188,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   const findItemById = (id: string): ItemProps | null => {
     for (const category in projectData) {
       const categoryData = projectData[category];
-      for (const item of categoryData) {
-        if (item.id === id) {
+      for (const ticket of categoryData) {
+        if (ticket.id === id) {
           return {
-            ...item
+            ...ticket
           };
         }
       }

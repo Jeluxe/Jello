@@ -6,9 +6,9 @@ import { useProjectProvider } from "../../context/ProjectContext";
 import { Colors, ItemProps } from "../../types/global";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
-import "./Item.css";
+import "./Ticket.css";
 
-const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) => {
+const Ticket = ({ id, title, content, tags, participants, openModal }: ItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     attributes,
@@ -46,14 +46,14 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
       {...attributes}
       {...listeners}
     >
-      <div id={id} className="item">
-        <div className="item-tags">
+      <div id={id} className="ticket">
+        <div className="tags">
           {filteredTags?.slice(0, 4).map(((tag: string, idx: number) => {
             return (idx > 2) ?
               null :
               <div
                 key={idx}
-                className="item-tag"
+                className="tag"
                 style={{ backgroundColor: Colors[tag as keyof typeof Colors] }}
               >
                 {tag}
@@ -69,11 +69,11 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
               <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
         </div>
-        <div className="item-title"><b>{title}</b></div>
-        <div className="item-body">{content}</div>
-        <div className="item-footer">
-          <div className="item-actions">
-            <div className="item-actions-wrapper">
+        <div className="ticket-title"><b>{title}</b></div>
+        <div className="ticket-content">{content}</div>
+        <div className="ticket-footer">
+          <div className="ticket-actions">
+            <div className="ticket-actions-wrapper">
               <div style={{ display: "flex", position: "relative" }}>
                 <Dots
                   size={6}
@@ -90,9 +90,9 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
               <div>july 15</div>
             </div>
           </div>
-          <div className="item-participants">
+          <div className="ticket-participants">
             {participants?.slice(0, 2).map((participant: any) => (
-              <div key={participant.id} className="item-participant-avatar">
+              <div key={participant.id} className="participant-avatar">
                 {
                   participant.avatar ?
                     <img src={participant.avatar} /> :
@@ -107,4 +107,4 @@ const Item = ({ id, title, content, tags, participants, openModal }: ItemProps) 
   )
 }
 
-export default Item
+export default Ticket

@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 import { useProjectProvider } from "../../context/ProjectContext"
 import { ContainerProps } from "../../types/global"
-import Item from "../Item/Item"
+import Ticket from "../Ticket/Ticket"
 import "./Container.css"
 
 const Container = ({ id, title, list, openModal }: ContainerProps) => {
@@ -47,7 +47,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
             </div>
           </div>
           <div className="container-items">
-            {list.map((item) => <Item key={item.id} {...item} openModal={openModal} />)}
+            {list.map((ticket) => <Ticket key={ticket.id} {...ticket} openModal={openModal} />)}
           </div>
         </div>
       </SortableContext >

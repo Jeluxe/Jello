@@ -23,10 +23,10 @@ const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
       <div className="modal">
         <div style={style}>
           <div><b>{title}</b></div>
-          <div className="modal-tags item-tags">
+          <div className="modal-tags tags">
             {tags?.slice(0, 11).map((tag: string, idx: number) => (
               <div key={idx}
-                className="item-tag"
+                className="modal-tag tag"
                 style={{ backgroundColor: Colors[tag as keyof typeof Colors] }}
               >
                 {tag}
@@ -41,29 +41,36 @@ const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
               <Dots size={6} className="button" onClick={() => console.log("open list")} />}
           </div>
         </div>
-        <div className="item-body">{content}</div>
-        <div style={style}>
-          <div className="item-changelog-container">
+        <div className="ticket-content modal-content">{content}</div>
+        <div className="modal-footer" style={style}>
+          <div className="changelog">
             <h4>Changelog</h4>
-            <div className="item-changelog">
-              <div>ds</div>
+            <div className="changelog-container">
+              <div className="changelog">
+                <div className="changelog-content">Changed ticket name to Mofus</div>
+                <div className="changelog-reviser" style={{ display: "flex", gap: 2, transform: "scale(.9)" }}>
+                  <span>By</span>
+                  <div className="participant-avatar">{"D".toUpperCase()}</div>
+                  <div className="participant-username">{"droos"}</div>
+                </div>
+              </div>
             </div>
           </div>
           <Divider type="v" />
-          <div className="item-participants-container">
+          <div className="participants">
             <h4>Participants</h4>
-            <div className="item-participants">
+            <div className="participants-container">
               {participants?.map(({ id, username, avatar }: any) => (
-                <div key={id} className="item-participant">
-                  <div className="item-participant-avatar">{avatar ? avatar : username[0].toUpperCase()}</div>
-                  <div className="item-participant-username">{username}</div>
+                <div key={id} className="participant">
+                  <div className="participant-avatar">{avatar ? avatar : username[0].toUpperCase()}</div>
+                  <div className="participant-username">{username}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-    </Overlay>
+    </Overlay >
   )
 }
 
