@@ -15,7 +15,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
-  const { addItem } = useProjectProvider()
+  const { addTicket } = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -40,7 +40,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
             />
             <div className="container-title">{title}</div>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <PlusIcon className="button" onClick={addItem} />
+              <PlusIcon className="button" onClick={addTicket} />
               <div ref={setActivatorNodeRef} {...attributes} {...listeners} style={{ height: '24px' }}>
                 <DragIcon className='grabbable' size={24} />
               </div>

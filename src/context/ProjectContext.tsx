@@ -37,7 +37,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     console.log("created new container");
   }
 
-  const addItem = (e: any) => {
+  const addTicket = (e: any) => {
     const selectedContainer = e.target.closest(".container").getAttribute("id");
 
     if (!selectedContainer) return;
@@ -84,13 +84,13 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
   const UpdateContainer = () => { }
 
-  const UpdateItem = () => { }
+  const UpdateTicket = () => { }
 
   const UpdateTag = () => { }
 
   const removeContainer = () => { }
 
-  const removeItem = () => { }
+  const removeTicket = () => { }
 
   const removeTag = () => { }
 
@@ -204,13 +204,13 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       projectData,
       activeItem,
       addContainer,
-      addItem,
+      addTicket,
       addTags,
       UpdateContainer,
-      UpdateItem,
+      UpdateTicket,
       UpdateTag,
       removeContainer,
-      removeItem,
+      removeTicket,
       removeTag,
       handleDragStart,
       handleDragOver,
