@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { arrayToObject } from "../../helpers"
 import Button from "../Button/Button"
+import Input from "../Input/Input"
 import "./AuthLayout.css"
 
 type Props = {
@@ -21,8 +22,16 @@ const AuthLayout = ({ header, fields, onClick }: Props) => {
           <div className="body">
             {
               fields?.map((field: string, idx: number) => {
+                field = field.toLowerCase();
                 return <div className="auth-field" key={idx}>
-                  <span>{field}</span> <input onChange={({ target: { value } }) => setUserInfo(prevInfo => ({ ...prevInfo, [field.toLowerCase()]: value }))} />
+                  <span>{field.toCapitalize()}</span>
+                  <Input
+                    className="auth-input"
+                    value={userInfo[field]}
+                    onChange={({ target: { value } }) => (
+                      setUserInfo(prevInfo => ({ ...prevInfo, [field]: value })
+                      ))}
+                  />
                 </div>
               })
             }

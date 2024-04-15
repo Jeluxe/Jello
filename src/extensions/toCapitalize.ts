@@ -1,3 +1,3 @@
 String.prototype.toCapitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
+  return this.split(" ").map(val => val.charAt(0).toUpperCase() + val.slice(1)).join(" ");
 };
