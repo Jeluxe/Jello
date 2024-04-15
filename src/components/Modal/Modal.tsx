@@ -43,12 +43,12 @@ const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
         </div>
         <div className="card-content modal-content">{content}</div>
         <div className="modal-footer" style={style}>
-          <div className="changelog">
-            <h4>Changelog</h4>
-            <div className="changelog-container">
-              <div className="changelog">
-                <div className="changelog-content">Changed card name to Mofus</div>
-                <div className="changelog-reviser" style={{ display: "flex", gap: 2, transform: "scale(.9)" }}>
+          <div className="activity">
+            <h4>Activity</h4>
+            <div className="activity-container">
+              <div className="activity">
+                <div className="activity-content">Changed card name to Mofus</div>
+                <div className="activity-reviser" style={{ display: "flex", gap: 2, transform: "scale(.9)" }}>
                   <span>By</span>
                   <div className="participant-avatar">{"D".toUpperCase()}</div>
                   <div className="participant-username">{"droos"}</div>

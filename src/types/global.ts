@@ -15,22 +15,22 @@ type User = {
   username: string,
 }
 
-export type ItemProps = {
+type SharedProps = {
   key?: React.Key | null | undefined,
   id: string,
-  title: string,
-  content: string,
-  tags: string[],
-  participants: User[],
   openModal?: (data: any) => void
 }
 
-export type ContainerProps = {
-  key?: React.Key | null | undefined,
-  id: string,
+export interface ItemProps extends SharedProps {
+  title: string,
+  content?: string,
+  tags: string[],
+  participants: User[],
+}
+
+export interface ContainerProps extends SharedProps {
   title: string,
   list: ItemProps[],
-  openModal?: (data: any) => void
 }
 
 export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>);
