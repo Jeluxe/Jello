@@ -8,7 +8,7 @@ export type ProjectProviderData = {
 }
 
 export type ProjectProviderOperations = {
-  addContainer: () => void,
+  addContainer: (name: string) => void,
   addCard: (e: any) => void,
   addTags: (e: any, id: string) => void,
   updateContainer: () => void,
@@ -48,14 +48,14 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     return totalLength + 1;
   }
 
-  const addContainer = () => {
+  const addContainer = (name: string) => {
     if (Object.keys(projectData).length > 8) {
       console.log("no more slots left");
       return;
     }
     setProjectData((prev: any) => ({
       ...prev,
-      ["A" + Math.floor(Math.random() * 100000001)]: []
+      [name.toCapitalize()]: []
     }));
     console.log("created new container");
   }
