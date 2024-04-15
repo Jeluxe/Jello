@@ -39,3 +39,12 @@
   height: calc(100vh - 31px);
   max-height: calc(100% - 81px);
 }
+
+.new-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .4rem;
+  min-height: 0;
+  position: relative;
+}
