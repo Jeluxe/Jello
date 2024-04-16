@@ -68,6 +68,7 @@ const Project: React.FC = () => {
   }
 
   const onAction = () => {
+    console.log("here")
     let text = newContainer.name.trim()
     if (!text) {
       setError({ error: true, message: "No text inserted" })
@@ -131,7 +132,7 @@ const Project: React.FC = () => {
                       className={"container-input"}
                       value={newContainer.name}
                       onKeydown={onKeyDown}
-                      onBlur={cancel}
+                      onBlur={() => setTimeout(() => { cancel() }, 100)}
                       onChange={({ target: { value } }: { target: { value: string } }) => setNewContainer(prev => ({ ...prev, name: value }))}
                       maxLength={24}
                     />
