@@ -138,7 +138,7 @@ const Project: React.FC = () => {
                   <PlusIcon className='button' onClick={onAction} />
                   {error.error ? <span style={{ position: "absolute", bottom: 0, transform: "translateY(40px)", color: "red", background: "rgba(0, 0, 0,.6)", padding: "4px 8px", borderRadius: "6px" }}>{error.message}</span> : null}
                 </div> :
-                <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={containerCreation}></Button>
+                <>{!activeItem ? <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={containerCreation} /> : ""}</>
             }
           </div>
         </SortableContext>
