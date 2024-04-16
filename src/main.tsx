@@ -24,9 +24,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
       <Route path='' element={<Welcome />} />
-      <Route path='my-projects' element={<ProtectedRoute><Projects /></ProtectedRoute>}>
-        <Route path=':id' element={<ProjectProvider><Project /></ProjectProvider>} />
-      </Route>
+      <Route path='my-projects' element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+      <Route path='my-projects/:id' element={<ProjectProvider><Project /></ProjectProvider>} />
       <Route path='contact' element={<Contact />} />
       <Route path='about' element={<About />} />
       <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
