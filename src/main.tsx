@@ -23,9 +23,9 @@ import ProtectedRoute from './routes/protectedRoute';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
-      <Route path='' element={<Welcome />} />
+      <Route index element={<Welcome />} />
       <Route path='my-projects' element={<ProtectedRoute><Projects /></ProtectedRoute>} />
-      <Route path='my-projects/:id' element={<ProjectProvider><Project /></ProjectProvider>} />
+      <Route path='my-projects/:id' element={<ProtectedRoute><ProjectProvider><Project /></ProjectProvider></ProtectedRoute>} />
       <Route path='contact' element={<Contact />} />
       <Route path='about' element={<About />} />
       <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
