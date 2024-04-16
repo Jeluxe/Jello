@@ -131,6 +131,7 @@ const Project: React.FC = () => {
                       className={"container-input"}
                       value={newContainer.name}
                       onKeydown={onKeyDown}
+                      onBlur={cancel}
                       onChange={({ target: { value } }: { target: { value: string } }) => setNewContainer(prev => ({ ...prev, name: value }))}
                       maxLength={24}
                     />
