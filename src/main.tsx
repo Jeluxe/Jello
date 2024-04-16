@@ -18,16 +18,18 @@ import Project from './pages/Project';
 import Projects from './pages/Projects';
 import Signup from './pages/Signup';
 import Welcome from './pages/Welcome';
+import ProtectedRoute from './routes/protectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
       <Route path='' element={<Welcome />} />
-      <Route path='my-projects' element={<Projects />} />
-      <Route path='my-projects/:id' element={<ProjectProvider><Project /></ProjectProvider>} />
+      <Route path='my-projects' element={<ProtectedRoute><Projects /></ProtectedRoute>}>
+        <Route path=':id' element={<ProjectProvider><Project /></ProjectProvider>} />
+      </Route>
       <Route path='contact' element={<Contact />} />
       <Route path='about' element={<About />} />
-      <Route path='profile' element={<Profile />} />
+      <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path='login' element={<Login />} />
       <Route path='sign-up' element={<Signup />} />
     </Route>
