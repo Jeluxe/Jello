@@ -8,7 +8,7 @@ export type User = {
 
 export type AuthProps = {
   user: User,
-  authenticated: boolean,
+  isAuthenticated: boolean,
   login: (obj: any) => void,
   signup: (obj: any) => void,
   logout: () => void
@@ -27,7 +27,7 @@ const INIT_USER = { id: null, username: null, avatar: null }
 
 export const useAuth = () => {
   const [user, setUser] = useState<User>(INIT_USER);
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +38,7 @@ export const useAuth = () => {
       console.log(loginData)
       // const { data } = await axios.post("/login", loginData)
       setUser({ id: "fh34q6vh74erfr", username: "fooster", avatar: "fhdsyfh.image" });
-      setAuthenticated(true);
+      setIsAuthenticated(true);
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Login failed. Please try again later.";
       setError(errorMessage);
@@ -54,7 +54,7 @@ export const useAuth = () => {
       console.log(signupData)
       // const { data } = await axios.post("/Signup", SignupData)
       setUser({ id: "fh34q6vh74erfr", username: "fooster", avatar: "fhdsyfh.image" });
-      setAuthenticated(true);
+      setIsAuthenticated(true);
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Signup failed. Please try again later.";
       setError(errorMessage);
@@ -69,7 +69,7 @@ export const useAuth = () => {
     try {
       // await axios.get("/logout");
       setUser(INIT_USER);
-      setAuthenticated(false);
+      setIsAuthenticated(false);
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Something went wrong.";
       setError(errorMessage);
@@ -79,6 +79,6 @@ export const useAuth = () => {
   }
 
   return {
-    user, authenticated, login, signup, logout, error, loading
+    user, isAuthenticated, login, signup, logout, error, loading
   }
 }

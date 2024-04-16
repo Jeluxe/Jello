@@ -9,19 +9,19 @@ type Props = {
 }
 
 const Navbar = ({ image = monica }: Props) => {
-  const { logout, user, authenticated } = useAuthProvider();
+  const { logout, user, isAuthenticated } = useAuthProvider();
 
   return (
     <div className="navbar-container">
       <div className="title-icon"><Link to={"/"}>Jello</Link></div>
       <ul className="navbar-items">
         <li><Link to={"/"}>Home</Link></li>
-        {authenticated ? <li><Link to={"/my-projects"}>My Projects</Link></li> : ""}
+        {isAuthenticated ? <li><Link to={"/my-projects"}>My Projects</Link></li> : ""}
         <li><Link to={"/contact"}>Contact</Link></li>
         <li><Link to={"/about"}>About</Link></li>
       </ul>
       {
-        authenticated && user ?
+        isAuthenticated && user ?
           <div className="navbar-profile">
             <Link to={"/profile"}>
               <img width={35} height={35} src={image} />
