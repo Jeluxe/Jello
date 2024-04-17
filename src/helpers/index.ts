@@ -6,12 +6,6 @@ export const arrayToObject = (array: string[]) => {
 }
 
 export const separateClasses = (...args: any[]): string => {
-  const flattenArray = (arr: any[]): any[] => {
-    return arr.reduce((acc, val) => {
-      return acc.concat(Array.isArray(val) ? flattenArray(val) : val);
-    }, []);
-  };
-
-  const flattenedArgs = flattenArray(args);
+  const flattenedArgs = args.flattenArray();
   return flattenedArgs.join(" ");
 };
