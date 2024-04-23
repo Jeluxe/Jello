@@ -64,7 +64,7 @@ const Card = ({ id, title, content, tags, participants, openModal }: ItemProps) 
               <PlusIcon
                 size={12}
                 className="button plus-button"
-                onClick={(e) => addTags(e, id)}
+                onClick={(e) => addTags({ e, id })}
               /> :
               <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }

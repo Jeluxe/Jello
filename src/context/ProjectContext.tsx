@@ -10,7 +10,7 @@ export type ProjectProviderData = {
 export type ProjectProviderOperations = {
   addContainer: (name: string) => void,
   addCard: (e: any) => void,
-  addTags: (e: any, id: string) => void,
+  addTags: (e?: any, id?: string, containerId?: string) => void,
   updateContainer: () => void,
   updateCard: () => void,
   updateTags: () => void,
@@ -83,8 +83,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     })
   }
 
-  const addTags = (e: any, id: string) => {
-    const selectedContainer = e.target.closest(".container").getAttribute("id");
+  const addTags = ({ e, id, containerId }: { e?: any, id?: string, containerId?: string }) => {
+    const selectedContainer = e?.target.closest(".container")?.getAttribute("id") || containerId;
 
     if (!selectedContainer) return;
 

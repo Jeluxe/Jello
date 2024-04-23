@@ -52,13 +52,13 @@ const Project: React.FC = () => {
   );
 
   const openModal = ({ target }: any) => {
-    const foundItem = target.closest(".card");
-    if (foundItem) {
-      const foundID = foundItem.getAttribute("id");
-      const returnedItem = findItemById(foundID);
-      if (returnedItem) {
+    const cardId = target.closest(".card")?.getAttribute("id");
+    const containerId = target.closest(".container")?.getAttribute("id");
+    if (cardId && containerId) {
+      const returnedCard = findItemById(cardId);
+      if (returnedCard) {
         setIsModalOpen(true);
-        setModalData(returnedItem);
+        setModalData({ ...returnedCard, containerId });
       }
     }
   }
