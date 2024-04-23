@@ -8,7 +8,7 @@ import {
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ProjectProvider } from './context/ProjectContext';
-import './extensions/toCapitalize';
+import './extensions';
 import './index.css';
 import About from './pages/About';
 import Contact from './pages/Contact';

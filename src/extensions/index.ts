@@ -1,0 +1,2 @@
+import "./flattenArray"
+import "./toCapitalize"
