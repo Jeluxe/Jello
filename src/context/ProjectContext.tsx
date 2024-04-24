@@ -30,8 +30,6 @@ export type ProjectProviderOperations = {
   openModal: ({ target }: { target: any }) => void,
 }
 
-export type selectedFunctions = Pick<ProjectProviderOperations, "addContainer" | "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
-
 export const ProjectContext = createContext<any>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
