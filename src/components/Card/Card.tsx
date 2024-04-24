@@ -1,17 +1,15 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
-import { DescriptionIcon, PlusIcon } from "../../assets/icons";
+import { useMemo } from "react";
+import { Dots } from "..";
+import { DescriptionIcon, PlusIcon, TrashIcon } from "../../assets/icons";
 import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext";
 import { Colors, ItemProps } from "../../types/global";
-import ContextMenu from "../ContextMenu/ContextMenu";
-import Dots from "../Dots/Dots";
 import "./Card.css";
 
-type CardContextOperations = Pick<ProjectProviderOperations, "addTags" | "openModal">
+type CardContextOperations = Pick<ProjectProviderOperations, "addTag" | "openModal" | "removeCard">
 
 const Card = ({ id, title, content, tags, participants }: ItemProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     attributes,
     listeners,
@@ -19,7 +17,7 @@ const Card = ({ id, title, content, tags, participants }: ItemProps) => {
     transform,
     transition
   } = useSortable({ id })
-  const { addTags, openModal }: CardContextOperations = useProjectProvider();
+  const { addTag, openModal, removeCard }: CardContextOperations = useProjectProvider();
 
   const uniqueTags = useMemo(() => {
     return [...new Set(tags)]
@@ -29,17 +27,6 @@ const Card = ({ id, title, content, tags, participants }: ItemProps) => {
     transform: CSS.Transform.toString(transform),
     transition,
   }
-
-  const openMenu = (e: any) => {
-    e.stopPropagation();
-    setIsMenuOpen(!isMenuOpen)
-  }
-
-  document.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (isMenuOpen) setIsMenuOpen(false);
-  })
 
   return (
     <div
@@ -66,7 +53,7 @@ const Card = ({ id, title, content, tags, participants }: ItemProps) => {
               <PlusIcon
                 size={12}
                 className="button plus-button"
-                onClick={(e) => addTags({ e, id })}
+                onClick={(e) => addTag({ e, id })}
               /> :
               <Dots size={6} className="button" onClick={() => console.log("open list")} />
           }
@@ -76,19 +63,14 @@ const Card = ({ id, title, content, tags, participants }: ItemProps) => {
         <div className="card-footer">
           <div className="card-actions">
             <div className="card-actions-wrapper">
-              <div style={{ display: "flex", position: "relative" }}>
-                <Dots
-                  size={6}
-                  className="button"
-                  color="black"
-                  vertical
-                  onClick={openMenu}
-                />
-                {isMenuOpen ? <ContextMenu id={id} setIsMenuOpen={setIsMenuOpen} /> : ""}
-              </div>
+              <TrashIcon
+                className="button"
+                onClick={() => removeCard(id)}
+              />
               <DescriptionIcon
                 className="button"
-                onClick={openModal} />
+                onClick={openModal}
+              />
               <div>july 15</div>
             </div>
           </div>

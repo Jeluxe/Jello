@@ -1,9 +1,7 @@
+import { Divider, Dots, Overlay } from "..";
 import { PlusIcon } from "../../assets/icons";
 import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext";
 import { Colors } from "../../types/global";
-import Divider from "../Divider/Divider";
-import Dots from "../Dots/Dots";
-import Overlay from "../Overlay/Overlay";
 import "./Modal.css";
 
 type ModalProps = {
@@ -16,7 +14,7 @@ const style = { display: "flex", justifyContent: "space-between" }
 
 const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
   const { id, title, content, tags, participants, containerId } = modalData;
-  const { addTags }: Pick<ProjectProviderOperations, "addTags"> = useProjectProvider()
+  const { addTag }: Pick<ProjectProviderOperations, "addTag"> = useProjectProvider()
 
   if (!isModalOpen) return;
 
@@ -38,7 +36,7 @@ const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
               <PlusIcon
                 size={12}
                 className="button plus-button"
-                onClick={() => addTags({ id, containerId })}
+                onClick={() => addTag({ id, containerId })}
               /> :
               <Dots size={6} className="button" onClick={() => console.log("open list")} />}
           </div>

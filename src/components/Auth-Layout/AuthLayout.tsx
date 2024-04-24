@@ -1,7 +1,6 @@
 import { useState } from "react"
+import { Button, Input } from ".."
 import { arrayToObject } from "../../helpers"
-import Button from "../Button/Button"
-import Input from "../Input/Input"
 import "./AuthLayout.css"
 
 type Props = {

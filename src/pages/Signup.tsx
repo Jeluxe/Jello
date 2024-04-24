@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import AuthLayout from "../components/Auth-Layout/AuthLayout"
+import { AuthLayout } from "../components"
 import { useAuthProvider } from "../context/AuthContext"
 import { SignupProps } from "../hooks/AuthHook"
 

@@ -13,13 +13,13 @@ export type ProjectProviderData = {
 export type ProjectProviderOperations = {
   addContainer: (name: string) => void,
   addCard: (e: any) => void,
-  addTags: (e?: any, id?: string, containerId?: string) => void,
+  addTag: (e?: any, id?: string, containerId?: string) => void,
   updateContainer: () => void,
   updateCard: () => void,
-  updateTags: () => void,
-  removeContainer: () => void,
-  removeCard: () => void,
-  removeTags: () => void,
+  updateTag: () => void,
+  removeContainer: (id: string) => void,
+  removeCard: (id: string) => void,
+  removeTag: (id: string) => void,
   findContainer: (id: string) => string | undefined,
   handleDragStart: ({ active }: { active: any }) => void,
   handleDragOver: ({ active, over }: { active: any, over: any }) => void,
@@ -88,7 +88,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     })
   }
 
-  const addTags: ProjectProviderOperations["addTags"] = ({ e, id, containerId }) => {
+  const addTag: ProjectProviderOperations["addTag"] = ({ e, id, containerId }) => {
     const selectedContainer = e?.target.closest(".container")?.getAttribute("id") || containerId;
 
     if (!selectedContainer) return;
@@ -101,16 +101,17 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         if (card.id === id) {
           if (card.tags.includes(newTag)) return card;
 
-          setModalData({
-            ...card,
-            tags: (card.tags.length) ? [...card.tags, newTag] : [newTag],
-            containerId: selectedContainer
-          })
-
-          return {
+          const updatedCardTags = {
             ...card,
             tags: (card.tags.length) ? [...card.tags, newTag] : [newTag]
           }
+
+          setModalData({
+            ...updatedCardTags,
+            containerId: selectedContainer
+          })
+
+          return updatedCardTags
         }
         return card;
       })]
@@ -121,13 +122,19 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
   const updateCard: ProjectProviderOperations["updateCard"] = () => { }
 
-  const updateTags: ProjectProviderOperations["updateTags"] = () => { }
+  const updateTag: ProjectProviderOperations["updateTag"] = () => { }
 
-  const removeContainer: ProjectProviderOperations["removeContainer"] = () => { }
+  const removeContainer: ProjectProviderOperations["removeContainer"] = (id) => {
+    console.log(id)
+  }
 
-  const removeCard: ProjectProviderOperations["removeCard"] = () => { }
+  const removeCard: ProjectProviderOperations["removeCard"] = (id) => {
+    console.log(id)
+  }
 
-  const removeTags: ProjectProviderOperations["removeTags"] = () => { }
+  const removeTag: ProjectProviderOperations["removeTag"] = (id) => {
+    console.log(id)
+  }
 
   const findContainer: ProjectProviderOperations["findContainer"] = (id) => {
     if (id in projectData) {
@@ -252,13 +259,13 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       activeItem,
       addContainer,
       addCard,
-      addTags,
+      addTag,
       updateContainer,
       updateCard,
-      updateTags,
+      updateTag,
       removeContainer,
       removeCard,
-      removeTags,
+      removeTag,
       handleDragStart,
       handleDragOver,
       handleDragEnd,

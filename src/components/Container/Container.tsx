@@ -1,9 +1,11 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+
+import { Card } from ".."
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext"
 import { ContainerProps } from "../../types/global"
-import Card from "../Card/Card"
+
 import "./Container.css"
 
 type ContainerContextOperations = Pick<ProjectProviderOperations, "addCard">

@@ -1,18 +1,15 @@
 import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, TouchSensor, closestCorners, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { useParams } from "react-router-dom";
 
 import { PlusIcon, ThemeIcon } from '../assets/icons';
 import monica from "../assets/monic.jpg";
 
-import { useCallback, useState } from 'react';
-import Button from '../components/Button/Button';
-import Card from '../components/Card/Card';
-import Container from '../components/Container/Container';
-import Dots from '../components/Dots/Dots';
-import Input from '../components/Input/Input';
-import Modal from '../components/Modal/Modal';
+import { Button, Card, Container, Dots, Input, Modal } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
+import { ItemProps } from '../types/global';
+
 import "./Project.css";
 
 type ProjectContextOperations = Pick<ProjectProviderOperations, "addContainer" | "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
@@ -26,8 +23,8 @@ const ImageBackgroundStyle = (img: string) => ({
 
 const Project: React.FC = () => {
   const params = useParams();
-  const [newContainer, setNewContainer] = useState({ creatingNewContainer: false, name: "" });
-  const [error, setError] = useState({ error: false, message: "" });
+  const [newContainer, setNewContainer] = useState<{ creatingNewContainer: boolean, name: string }>({ creatingNewContainer: false, name: "" });
+  const [error, setError] = useState<{ error: boolean, message: string }>({ error: false, message: "" });
   const { setNodeRef } = useDroppable({ id: "container-list" });
   const {
     projectData,
@@ -55,10 +52,10 @@ const Project: React.FC = () => {
 
   const cancel = () => {
     setNewContainer({ creatingNewContainer: false, name: "" });
+    setError({ error: false, message: "" })
   }
 
   const onAction = () => {
-    console.log("here")
     let text = newContainer.name.trim()
     if (!text) {
       setError({ error: true, message: "No text inserted" })
@@ -70,22 +67,27 @@ const Project: React.FC = () => {
     }
 
     addContainer(text)
-    cancel()
   }
 
-  const onKeyDown = useCallback((e: any) => {
+  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
     setError({ error: false, message: "" })
-    if (newContainer.creatingNewContainer && e.key === 'Escape' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
-      cancel()
+    if (newContainer.creatingNewContainer && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+      if (e.key === 'Escape') {
+        cancel()
+      }
+      else if (e.key === 'Enter') {
+        onAction()
+      }
     }
-    if (newContainer.creatingNewContainer && e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
-      onAction()
-    }
-  }, [newContainer])
+  }, [newContainer, setError, cancel, onAction])
 
   const containerCreation = () => {
     setNewContainer(prev => ({ ...prev, creatingNewContainer: true }));
   }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewContainer(prev => ({ ...prev, name: e.target.value }));
+  };
 
   return (
     <div className="project-container" style={ImageBackgroundStyle(monica)}>
@@ -109,7 +111,7 @@ const Project: React.FC = () => {
           strategy={horizontalListSortingStrategy}
         >
           <div className="project-body" ref={setNodeRef}>
-            {Object.entries(projectData).map(([key, value]: any) => (
+            {Object.entries(projectData).map(([key, value]: [string, ItemProps[]]) => (
               <Container key={key} id={key} title={key} list={value} />
             ))}
             {
@@ -122,8 +124,7 @@ const Project: React.FC = () => {
                       className={"container-input"}
                       value={newContainer.name}
                       onKeydown={onKeyDown}
-                      onBlur={() => setTimeout(() => { cancel() }, 100)}
-                      onChange={({ target: { value } }: { target: { value: string } }) => setNewContainer(prev => ({ ...prev, name: value }))}
+                      onChange={handleChange}
                       maxLength={24}
                     />
                   </div>

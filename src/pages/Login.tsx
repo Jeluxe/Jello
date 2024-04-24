@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import AuthLayout from "../components/Auth-Layout/AuthLayout";
+import { AuthLayout } from "../components";
 import { useAuthProvider } from "../context/AuthContext";
 import { LoginProps } from "../hooks/AuthHook";
 
@@ -19,4 +19,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
