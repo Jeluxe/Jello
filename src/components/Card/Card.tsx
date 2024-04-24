@@ -8,7 +8,9 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 import Dots from "../Dots/Dots";
 import "./Card.css";
 
-const Card = ({ id, title, content, tags, participants, openModal }: ItemProps) => {
+type CardContextOperations = Pick<ProjectProviderOperations, "addTags" | "openModal">
+
+const Card = ({ id, title, content, tags, participants }: ItemProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     attributes,
@@ -17,7 +19,7 @@ const Card = ({ id, title, content, tags, participants, openModal }: ItemProps) 
     transform,
     transition
   } = useSortable({ id })
-  const { addTags }: Pick<ProjectProviderOperations, "addTags"> = useProjectProvider();
+  const { addTags, openModal }: CardContextOperations = useProjectProvider();
 
   const uniqueTags = useMemo(() => {
     return [...new Set(tags)]

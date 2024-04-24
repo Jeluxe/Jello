@@ -12,9 +12,10 @@ import Container from '../components/Container/Container';
 import Dots from '../components/Dots/Dots';
 import Input from '../components/Input/Input';
 import Modal from '../components/Modal/Modal';
-import { ProjectProviderData, selectedFunctions, useProjectProvider } from '../context/ProjectContext';
-import useModal from '../hooks/ModalHook';
+import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
 import "./Project.css";
+
+type ProjectContextOperations = Pick<ProjectProviderOperations, "addContainer" | "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
 
 const ImageBackgroundStyle = (img: string) => ({
   background: `url(${img})`,
@@ -28,16 +29,17 @@ const Project: React.FC = () => {
   const [newContainer, setNewContainer] = useState({ creatingNewContainer: false, name: "" });
   const [error, setError] = useState({ error: false, message: "" });
   const { setNodeRef } = useDroppable({ id: "container-list" });
-  const { isModalOpen, setIsModalOpen, modalData, setModalData } = useModal();
   const {
     projectData,
     activeItem,
+    isModalOpen,
+    modalData,
+    setIsModalOpen,
     addContainer,
     handleDragStart,
     handleDragOver,
     handleDragEnd,
-    findItemById
-  }: ProjectProviderData & selectedFunctions = useProjectProvider();
+  }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -50,18 +52,6 @@ const Project: React.FC = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  const openModal = ({ target }: any) => {
-    const cardId = target.closest(".card")?.getAttribute("id");
-    const containerId = target.closest(".container")?.getAttribute("id");
-    if (cardId && containerId) {
-      const returnedCard = findItemById(cardId);
-      if (returnedCard) {
-        setIsModalOpen(true);
-        setModalData({ ...returnedCard, containerId });
-      }
-    }
-  }
 
   const cancel = () => {
     setNewContainer({ creatingNewContainer: false, name: "" });
@@ -120,7 +110,7 @@ const Project: React.FC = () => {
         >
           <div className="project-body" ref={setNodeRef}>
             {Object.entries(projectData).map(([key, value]: any) => (
-              <Container key={key} id={key} title={key} list={value} openModal={openModal} />
+              <Container key={key} id={key} title={key} list={value} />
             ))}
             {
               newContainer.creatingNewContainer ?

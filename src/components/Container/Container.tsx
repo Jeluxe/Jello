@@ -6,7 +6,9 @@ import { ContainerProps } from "../../types/global"
 import Card from "../Card/Card"
 import "./Container.css"
 
-const Container = ({ id, title, list, openModal }: ContainerProps) => {
+type ContainerContextOperations = Pick<ProjectProviderOperations, "addCard">
+
+const Container = ({ id, title, list }: ContainerProps) => {
   const {
     attributes,
     listeners,
@@ -15,7 +17,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
-  const { addCard }: Pick<ProjectProviderOperations, "addCard"> = useProjectProvider()
+  const { addCard }: ContainerContextOperations = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -46,7 +48,7 @@ const Container = ({ id, title, list, openModal }: ContainerProps) => {
             </div>
           </div>
           <div className="container-items">
-            {list.map((card) => <Card key={card.id} {...card} openModal={openModal} />)}
+            {list.map((card) => <Card key={card.id} {...card} />)}
           </div>
         </div>
       </SortableContext >
