@@ -1,0 +1,17 @@
+.trash-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 0;
+  border: 3px solid rgb(232, 64, 64);
+  border-radius: 6px;
+  background-color: rgba(255, 160, 122, 0.303);
+  z-index: 999
+}
+
+.trash-container.dragover {
+  background-color: rgba(232, 92, 92, 0.707);
+}

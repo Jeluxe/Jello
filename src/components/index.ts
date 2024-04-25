@@ -1,12 +1,13 @@
-import Container from '../components/Container/Container';
-import Dots from '../components/Dots/Dots';
-import Input from '../components/Input/Input';
-import Item from "../components/Item/Item";
-import Modal from '../components/Modal/Modal';
 import AuthLayout from "./Auth-Layout/AuthLayout";
 import Button from "./Button/Button";
 import Card from "./Card/Card";
+import Container from './Container/Container';
+import TrashContainer from './Container/TrashContainer/TrashContainer';
 import Divider from './Divider/Divider';
+import Dots from './Dots/Dots';
+import Input from './Input/Input';
+import Item from "./Item/Item";
+import Modal from './Modal/Modal';
 import Navbar from './Navbar/Navbar';
 import Overlay from './Overlay/Overlay';
 
@@ -21,6 +22,7 @@ export {
   Item,
   Modal,
   Navbar,
-  Overlay
+  Overlay,
+  TrashContainer
 };
 

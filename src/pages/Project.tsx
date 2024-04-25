@@ -1,12 +1,12 @@
-import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, TouchSensor, closestCorners, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, horizontalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { DndContext, DragOverlay, PointerSensor, TouchSensor, closestCenter, getFirstCollision, pointerWithin, rectIntersection, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { ChangeEvent, useCallback, useState } from 'react';
 import { useParams } from "react-router-dom";
 
 import { PlusIcon, ThemeIcon } from '../assets/icons';
 import monica from "../assets/monic.jpg";
 
-import { Button, Card, Container, Dots, Input, Modal } from '../components';
+import { Button, Card, Container, Dots, Input, Modal, TrashContainer } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
 import { ItemProps } from '../types/global';
 
@@ -26,6 +26,7 @@ const Project: React.FC = () => {
   const [newContainer, setNewContainer] = useState<{ creatingNewContainer: boolean, name: string }>({ creatingNewContainer: false, name: "" });
   const [error, setError] = useState<{ error: boolean, message: string }>({ error: false, message: "" });
   const { setNodeRef } = useDroppable({ id: "container-list" });
+
   const {
     projectData,
     activeItem,
@@ -36,6 +37,8 @@ const Project: React.FC = () => {
     handleDragStart,
     handleDragOver,
     handleDragEnd,
+    isTrashable,
+    isOverTrash
   }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
 
   const sensors = useSensors(
@@ -45,9 +48,6 @@ const Project: React.FC = () => {
       }
     }),
     useSensor(TouchSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
   );
 
   const cancel = () => {
@@ -89,6 +89,34 @@ const Project: React.FC = () => {
     setNewContainer(prev => ({ ...prev, name: e.target.value }));
   };
 
+  const collisionDetectionStrategy: (arg: any) => any = useCallback((args) => {
+    // Start by finding any intersecting droppable
+    const pointerIntersections = pointerWithin(args);
+    const intersections =
+      pointerIntersections.length > 0
+        ? // If there are droppables intersecting with the pointer, return those
+        pointerIntersections
+        : rectIntersection(args);
+
+    let overId = getFirstCollision(intersections, 'id');
+    const activeItemContainerId = args.active.data.current?.sortable?.containerId;
+
+    if (activeItemContainerId === "container-list") {
+      return closestCenter({
+        ...args,
+        droppableContainers: [...args.droppableContainers.filter(({ data: { current } }: { data: { current: any } }) => current?.sortable?.containerId === "container-list")]
+      });
+    }
+    if (overId != null) {
+      if (overId === "trash-container") {
+        // If the intersecting droppable is the trash, return early
+        return intersections;
+      }
+
+    }
+    return [{ id: overId }]
+  }, []);
+
   return (
     <div className="project-container" style={ImageBackgroundStyle(monica)}>
       <div className="project-header">
@@ -100,7 +128,7 @@ const Project: React.FC = () => {
       </div>
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={collisionDetectionStrategy}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
@@ -133,12 +161,13 @@ const Project: React.FC = () => {
                 </div> :
                 <>{!activeItem ? <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={containerCreation} /> : ""}</>
             }
+            {isTrashable && <TrashContainer onTrash={isOverTrash} />}
           </div>
         </SortableContext>
         <DragOverlay>{
           activeItem ?
-            ('list' in activeItem) ? <Container key={activeItem.id} {...activeItem} /> :
-              ('content' in activeItem) ? <Card key={activeItem.id} {...activeItem} /> : "" : ""
+            ('list' in activeItem) ? <Container key={activeItem.id + "overlay"} {...activeItem} /> :
+              ('content' in activeItem) ? <Card key={activeItem.id + "overlay"} {...activeItem} /> : "" : ""
         }</DragOverlay>
       </DndContext>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />

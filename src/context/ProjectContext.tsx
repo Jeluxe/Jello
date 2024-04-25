@@ -8,6 +8,8 @@ export type ProjectProviderData = {
   activeItem: ActiveProps,
   isModalOpen: boolean,
   modalData: ItemProps,
+  isTrashable: boolean,
+  isOverTrash: boolean,
 }
 
 export type ProjectProviderOperations = {
@@ -28,6 +30,8 @@ export type ProjectProviderOperations = {
   setIsModalOpen: React.Dispatch<boolean>,
   setModalData: React.Dispatch<ItemProps>,
   openModal: ({ target }: { target: any }) => void,
+  setIsTrashable: React.Dispatch<boolean>,
+  setIsOverTrash: React.Dispatch<boolean>,
 }
 
 export const ProjectContext = createContext<any>(null);
@@ -41,6 +45,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     Dropped: []
   });
 
+  const [isTrashable, setIsTrashable] = useState<boolean>(false);
+  const [isOverTrash, setIsOverTrash] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState<ActiveProps | null>(null);
 
   const getNewId = (list: any[]): number => {
@@ -137,7 +143,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   }
 
   const findContainer: ProjectProviderOperations["findContainer"] = (id) => {
-    if (id in projectData) {
+    if (id in projectData || id === "trash-container") {
       return id;
     }
 
@@ -151,16 +157,24 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       setActiveItem({ id, title: id, list: projectData[id] });
     } else {
       setActiveItem({ ...projectData[containerId][index] });
+      setIsTrashable(true)
     }
   }
 
   const handleDragOver: ProjectProviderOperations["handleDragOver"] = (event) => {
     const { active, over } = event;
 
+    if (over?.id === "trash-container" && active.data.current.sortable.containerId !== "container-list") {
+      setIsOverTrash(true);
+      return;
+    } else {
+      setIsOverTrash(false)
+    };
+
     const activeContainer = findContainer(active.id);
     const overContainer = findContainer(over?.id);
 
-    if (active.data.current.sortable.containerId === "container-list") return;
+    if (active.data.current.sortable?.containerId === "container-list") return;
 
     if (!activeContainer || !overContainer || activeContainer === overContainer) return;
 
@@ -189,18 +203,33 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   }
 
   const handleDragEnd: ProjectProviderOperations["handleDragEnd"] = (event) => {
+    setIsTrashable(false);
     const { active, over } = event;
-    const { id } = active;
+
+    if (!active || !over) return;
+
+    const { id: activeId } = active;
     const { id: overId } = over;
 
-    const activeContainer = findContainer(id);
+    const activeContainer = findContainer(activeId);
     const overContainer = findContainer(overId);
 
-    if (!activeContainer || !overContainer || (activeContainer !== overContainer && active.data.current.sortable.containerId !== "container-list")) {
+    if (!activeContainer || !overContainer) return;
+
+    if (overContainer == 'trash-container') {
+      if (confirm("will you delete this item?")) {
+        setProjectData((items: any) => {
+          return ({
+            ...items,
+            [activeContainer]: [...items[activeContainer].filter(({ id }: { id: string }) => id !== activeId)]
+          });
+        });
+      }
+      setIsOverTrash(false);
       return;
     }
 
-    if (id !== overId) {
+    if (activeId !== overId) {
       const activeIndex = active.data.current.sortable.index;
       const overIndex = over.data.current?.sortable.index;
 
@@ -274,7 +303,9 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       modalData,
       setIsModalOpen,
       setModalData,
-      openModal
+      openModal,
+      isTrashable,
+      isOverTrash
     }}>
       {children}
     </ProjectContext.Provider>

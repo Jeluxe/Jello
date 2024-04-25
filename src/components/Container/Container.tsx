@@ -50,7 +50,7 @@ const Container = ({ id, title, list }: ContainerProps) => {
             </div>
           </div>
           <div className="container-items">
-            {list.map((card) => <Card key={card.id} {...card} />)}
+            {list.map((card) => card && <Card key={card.id} {...card} />)}
           </div>
         </div>
       </SortableContext >
