@@ -3,7 +3,7 @@ import { ProjectProviderOperations, useProjectProvider } from "../../../context/
 import { InputHook } from "../../../hooks/InputHook";
 import Button from "../../Button/Button";
 import Input from "../../Input/Input";
-import "./NewCard.css";
+import "./NewCardForm.css";
 
 type NewCardProps = { setIsOpen: React.Dispatch<boolean>, containerId: string }
 

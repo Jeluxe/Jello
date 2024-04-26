@@ -2,7 +2,7 @@ import { PlusIcon } from '../../../assets/icons';
 import { ProjectProviderOperations, useProjectProvider } from '../../../context/ProjectContext';
 import { InputHook } from '../../../hooks/InputHook';
 import Input from '../../Input/Input';
-import './NewContainer.css';
+import './NewContainerForm.css';
 
 type NewContainerProps = { setIsOpen: React.Dispatch<boolean> }
 
