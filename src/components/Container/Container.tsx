@@ -1,16 +1,16 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
+import { useState } from "react"
 
-import { Card } from ".."
+import { Card, NewCardForm } from ".."
+
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
-import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext"
 import { ContainerProps } from "../../types/global"
 
 import "./Container.css"
 
-type ContainerContextOperations = Pick<ProjectProviderOperations, "addCard">
-
 const Container = ({ id, title, list }: ContainerProps) => {
+  const [newCard, setNewCard] = useState(false)
   const {
     attributes,
     listeners,
@@ -19,7 +19,6 @@ const Container = ({ id, title, list }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
-  const { addCard }: ContainerContextOperations = useProjectProvider()
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -43,7 +42,7 @@ const Container = ({ id, title, list }: ContainerProps) => {
             />
             <div className="container-title">{title}</div>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <PlusIcon className="button" onClick={addCard} />
+              <PlusIcon className="button" onClick={() => setNewCard(!newCard)} />
               <div ref={setActivatorNodeRef} {...attributes} {...listeners} style={{ height: '24px' }}>
                 <DragIcon className='grabbable' size={24} />
               </div>
@@ -51,6 +50,7 @@ const Container = ({ id, title, list }: ContainerProps) => {
           </div>
           <div className="container-items">
             {list.map((card) => card && <Card key={card.id} {...card} />)}
+            {newCard && <NewCardForm setIsOpen={setNewCard} containerId={title} />}
           </div>
         </div>
       </SortableContext >

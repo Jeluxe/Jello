@@ -1,0 +1,8 @@
+.new-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .4rem;
+  min-height: 0;
+  position: relative;
+}

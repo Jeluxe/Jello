@@ -14,7 +14,7 @@ export type ProjectProviderData = {
 
 export type ProjectProviderOperations = {
   addContainer: (name: string) => void,
-  addCard: (e: any) => void,
+  addCard: (containerId: string, name: string) => void,
   addTag: (e?: any, id?: string, containerId?: string) => void,
   updateContainer: () => void,
   updateCard: () => void,
@@ -29,7 +29,7 @@ export type ProjectProviderOperations = {
   findItemById: (id: string) => ItemProps | null,
   setIsModalOpen: React.Dispatch<boolean>,
   setModalData: React.Dispatch<ItemProps>,
-  openModal: ({ target }: { target: any }) => void,
+  openModal: (id: string) => void,
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
 }
@@ -71,21 +71,17 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     console.log("created new container");
   }
 
-  const addCard: ProjectProviderOperations["addCard"] = (e) => {
-    const selectedContainer = e.target.closest(".container").getAttribute("id");
-
-    if (!selectedContainer) return;
-
+  const addCard: ProjectProviderOperations["addCard"] = (containerId, name) => {
     setProjectData((prev: any) => {
-      if (selectedContainer) {
-        if (prev[selectedContainer].length === 20) {
+      if (containerId) {
+        if (prev[containerId].length === 20) {
           return prev;
         }
         return {
           ...prev,
-          [selectedContainer]: [
-            ...prev[selectedContainer],
-            { id: getNewId(prev), content: "foos", tags: [], participants: [] }
+          [containerId]: [
+            ...prev[containerId],
+            { id: getNewId(prev), title: name, tags: [], participants: [] }
           ]
         }
       } else {
@@ -134,8 +130,19 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     console.log(id)
   }
 
-  const removeCard: ProjectProviderOperations["removeCard"] = (id) => {
-    console.log(id)
+  const removeCard: ProjectProviderOperations["removeCard"] = (activeId) => {
+    const activeContainer = findContainer(activeId);
+
+    if (!activeContainer) return;
+
+    if (confirm("will you delete this item?")) {
+      setProjectData((items: any) => {
+        return ({
+          ...items,
+          [activeContainer]: [...items[activeContainer].filter(({ id }: { id: string }) => id !== activeId)]
+        });
+      });
+    }
   }
 
   const removeTag: ProjectProviderOperations["removeTag"] = (id) => {
@@ -217,14 +224,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     if (!activeContainer || !overContainer) return;
 
     if (overContainer == 'trash-container') {
-      if (confirm("will you delete this item?")) {
-        setProjectData((items: any) => {
-          return ({
-            ...items,
-            [activeContainer]: [...items[activeContainer].filter(({ id }: { id: string }) => id !== activeId)]
-          });
-        });
-      }
+      removeCard(activeId)
       setIsOverTrash(false);
       return;
     }
@@ -237,8 +237,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         if (active.data.current.sortable.containerId === "container-list") {
           const formattedObject = Object.entries(items);
 
-          const activeItem = formattedObject.find(card => card[0] === active.id);
-          const overItem = formattedObject.find(card => card[0] === over.id || card[0] === overContainer);
+          const activeItem = formattedObject.find(card => card[0] === activeId);
+          const overItem = formattedObject.find(card => card[0] === overId || card[0] === overContainer);
 
           if (!activeItem || !overItem) return items;
 
@@ -270,11 +270,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     return null;
   }
 
-  const openModal: ProjectProviderOperations["openModal"] = ({ target }) => {
-    const cardId = target.closest(".card")?.getAttribute("id");
-    const containerId = target.closest(".container")?.getAttribute("id");
-    if (cardId && containerId) {
-      const returnedCard = findItemById(cardId);
+  const openModal: ProjectProviderOperations["openModal"] = (id: string) => {
+    const containerId = findContainer(id);
+    if (id && containerId) {
+      const returnedCard = findItemById(id);
       if (returnedCard) {
         setIsModalOpen(true);
         setModalData({ ...returnedCard, containerId });

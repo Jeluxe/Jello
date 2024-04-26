@@ -40,11 +40,12 @@
   max-height: calc(100% - 81px);
 }
 
-.new-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: .4rem;
-  min-height: 0;
-  position: relative;
+.error-message {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(40px);
+  color: red;
+  background: rgba(0, 0, 0, .6);
+  padding: 4px 8px;
+  border-radius: 6px;
 }

@@ -1,7 +1,9 @@
 import AuthLayout from "./Auth-Layout/AuthLayout";
 import Button from "./Button/Button";
 import Card from "./Card/Card";
+import NewCardForm from "./Card/NewCardForm/NewCardForm";
 import Container from './Container/Container';
+import NewContainerForm from './Container/NewContainerForm/NewContainerForm';
 import TrashContainer from './Container/TrashContainer/TrashContainer';
 import Divider from './Divider/Divider';
 import Dots from './Dots/Dots';
@@ -22,6 +24,8 @@ export {
   Item,
   Modal,
   Navbar,
+  NewCardForm,
+  NewContainerForm,
   Overlay,
   TrashContainer
 };

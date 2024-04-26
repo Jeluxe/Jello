@@ -1,18 +1,18 @@
 import { DndContext, DragOverlay, PointerSensor, TouchSensor, closestCenter, getFirstCollision, pointerWithin, rectIntersection, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useParams } from "react-router-dom";
 
-import { PlusIcon, ThemeIcon } from '../assets/icons';
+import { ThemeIcon } from '../assets/icons';
 import monica from "../assets/monic.jpg";
 
-import { Button, Card, Container, Dots, Input, Modal, TrashContainer } from '../components';
+import { Button, Card, Container, Dots, Modal, NewContainerForm, TrashContainer } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
 import { ItemProps } from '../types/global';
 
 import "./Project.css";
 
-type ProjectContextOperations = Pick<ProjectProviderOperations, "addContainer" | "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
+type ProjectContextOperations = Pick<ProjectProviderOperations, "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
 
 const ImageBackgroundStyle = (img: string) => ({
   background: `url(${img})`,
@@ -23,8 +23,7 @@ const ImageBackgroundStyle = (img: string) => ({
 
 const Project: React.FC = () => {
   const params = useParams();
-  const [newContainer, setNewContainer] = useState<{ creatingNewContainer: boolean, name: string }>({ creatingNewContainer: false, name: "" });
-  const [error, setError] = useState<{ error: boolean, message: string }>({ error: false, message: "" });
+  const [newContainer, setNewContainer] = useState<boolean>(false);
   const { setNodeRef } = useDroppable({ id: "container-list" });
 
   const {
@@ -33,7 +32,6 @@ const Project: React.FC = () => {
     isModalOpen,
     modalData,
     setIsModalOpen,
-    addContainer,
     handleDragStart,
     handleDragOver,
     handleDragEnd,
@@ -49,45 +47,6 @@ const Project: React.FC = () => {
     }),
     useSensor(TouchSensor),
   );
-
-  const cancel = () => {
-    setNewContainer({ creatingNewContainer: false, name: "" });
-    setError({ error: false, message: "" })
-  }
-
-  const onAction = () => {
-    let text = newContainer.name.trim()
-    if (!text) {
-      setError({ error: true, message: "No text inserted" })
-      return;
-    }
-    if (!/[A-Za-z]/g.test(text[0])) {
-      setError({ error: true, message: "First char must be letter" })
-      return;
-    }
-
-    addContainer(text)
-  }
-
-  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
-    setError({ error: false, message: "" })
-    if (newContainer.creatingNewContainer && !e.shiftKey && !e.ctrlKey && !e.altKey) {
-      if (e.key === 'Escape') {
-        cancel()
-      }
-      else if (e.key === 'Enter') {
-        onAction()
-      }
-    }
-  }, [newContainer, setError, cancel, onAction])
-
-  const containerCreation = () => {
-    setNewContainer(prev => ({ ...prev, creatingNewContainer: true }));
-  }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewContainer(prev => ({ ...prev, name: e.target.value }));
-  };
 
   const collisionDetectionStrategy: (arg: any) => any = useCallback((args) => {
     // Start by finding any intersecting droppable
@@ -143,23 +102,14 @@ const Project: React.FC = () => {
               <Container key={key} id={key} title={key} list={value} />
             ))}
             {
-              newContainer.creatingNewContainer ?
-                <div
-                  className='container new-container'
-                >
-                  <div>
-                    <Input
-                      className={"container-input"}
-                      value={newContainer.name}
-                      onKeydown={onKeyDown}
-                      onChange={handleChange}
-                      maxLength={24}
-                    />
-                  </div>
-                  <PlusIcon className='button' onClick={onAction} />
-                  {error.error ? <span style={{ position: "absolute", bottom: 0, transform: "translateY(40px)", color: "red", background: "rgba(0, 0, 0,.6)", padding: "4px 8px", borderRadius: "6px" }}>{error.message}</span> : null}
-                </div> :
-                <>{!activeItem ? <Button title='add container' style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }} onClick={containerCreation} /> : ""}</>
+              newContainer ?
+                <NewContainerForm setIsOpen={setNewContainer} /> :
+                !activeItem &&
+                <Button
+                  title='add container'
+                  style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }}
+                  onClick={() => setNewContainer(!newContainer)}
+                />
             }
             {isTrashable && <TrashContainer onTrash={isOverTrash} />}
           </div>

@@ -5,13 +5,20 @@ input {
   background: rgba(255, 255, 255, 0.418);
 }
 
-.container-input {
+.container-input,
+.card-input {
   height: 30px;
-  min-width: 230px;
   width: 100%;
-  font-size: 20px;
   font-weight: 600;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.container-input {
+  font-size: 20px;
+}
+
+.card-input {
+  font-size: 16px;
 }
 
 .auth-input {
