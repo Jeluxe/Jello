@@ -17,19 +17,18 @@ type User = {
 
 type SharedProps = {
   key?: React.Key | null | undefined,
+  title: string,
   id: string,
   openModal?: (data: any) => void
 }
 
 export interface ItemProps extends SharedProps {
-  title: string,
   content?: string,
   tags: string[],
   participants: User[],
 }
 
 export interface ContainerProps extends SharedProps {
-  title: string,
   list: ItemProps[],
 }
 
