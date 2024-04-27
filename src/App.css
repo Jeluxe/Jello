@@ -39,11 +39,11 @@
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.1);
   }
 
   &:active {
-    transform: scale(.98);
+    transform: scale(.9);
   }
 }
 

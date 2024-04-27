@@ -1,9 +1,9 @@
 import { DndContext, DragOverlay, PointerSensor, TouchSensor, closestCenter, getFirstCollision, pointerWithin, rectIntersection, useDroppable, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { useCallback, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { ThemeIcon } from '../assets/icons';
+import { ExitIcon, ThemeIcon } from '../assets/icons';
 import monica from "../assets/monic.jpg";
 
 import { Button, Card, Container, Dots, Modal, NewContainerForm, TrashContainer } from '../components';
@@ -22,6 +22,7 @@ const ImageBackgroundStyle = (img: string) => ({
 });
 
 const Project: React.FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const [newContainer, setNewContainer] = useState<boolean>(false);
   const { setNodeRef } = useDroppable({ id: "container-list" });
@@ -79,7 +80,10 @@ const Project: React.FC = () => {
   return (
     <div className="project-container" style={ImageBackgroundStyle(monica)}>
       <div className="project-header">
-        <div className='project-title'>project: {params.id}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <ExitIcon className='button' size={24} onClick={() => navigate(-1)} />
+          <div className='project-title'>project: {params.id}</div>
+        </div>
         <div className='project-options'>
           <div className='project-option button' style={ImageBackgroundStyle(monica)}><ThemeIcon color='white' size={20} /></div>
           <div><Dots className={["button", "project-option"]} vertical color="black" /></div>

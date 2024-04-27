@@ -1,9 +1,10 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useMatch } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
 import { useAuthProvider } from './context/AuthContext';
 
 function App() {
+  const match = useMatch("/my-projects/:id")
   const { loading } = useAuthProvider();
 
   if (loading) {
@@ -12,7 +13,7 @@ function App() {
 
   return (
     <div className='app'>
-      <Navbar />
+      {!match && <Navbar />}
       <Outlet />
     </div>
   )
