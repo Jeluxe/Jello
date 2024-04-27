@@ -16,7 +16,7 @@ const NewCard = ({ setIsOpen, containerId }: NewCardProps) => {
     <div className="card new-card">
       <Input className={"card-input"} value={value} onChange={handleChange} onKeydown={onKeyDown} maxLength={24} />
       {error.error && <span className='error-message'>{error.message}</span>}
-      <Button className='button' title={<PlusIcon />} onClick={onAction}></Button>
+      <Button title={<PlusIcon />} onClick={onAction}></Button>
     </div>
   )
 };
