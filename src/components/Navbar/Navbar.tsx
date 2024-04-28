@@ -19,7 +19,7 @@ const Navbar = ({ image = monica }: Props) => {
     const checkSize = () => {
       if (pageWidthRef.current) {
         const width = pageWidthRef.current.getBoundingClientRect().width;
-        setIsSmallDevice(width < 606);
+        setIsSmallDevice(width < 768);
       }
     };
 
@@ -72,8 +72,8 @@ const Navbar = ({ image = monica }: Props) => {
         isSmallDevice ?
           <>
             <div className="navbar-sm">
-              <div className="button burger-menu">
-                <BurgerMenuIcon size={24} onClick={() => setIsMenuOpen(!isMenuOpen)} />
+              <div className="button burger-menu" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <BurgerMenuIcon size={24} />
               </div>
               <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
             </div>

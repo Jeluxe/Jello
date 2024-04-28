@@ -14,3 +14,9 @@
 .feature h3 {
   color: #5BC0DE;
 }
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    width: inherit;
+  }
+}

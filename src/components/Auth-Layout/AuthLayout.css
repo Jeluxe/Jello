@@ -22,3 +22,9 @@
   padding: 5px 10px;
   font-size: 18px;
 }
+
+@media screen and (max-width: 768px) {
+  .auth-layout {
+    padding: 40px;
+  }
+}

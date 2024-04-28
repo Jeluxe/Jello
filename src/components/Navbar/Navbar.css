@@ -39,8 +39,7 @@
 }
 
 .burger-menu {
-  padding-left: 12px;
-  padding-top: 2px;
+  padding: 12px;
   align-self: center;
 }
 
@@ -48,12 +47,12 @@
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-  padding: 12px;
+  padding: 8px 12px;
 }
 
 
 
-@media screen and (max-width: 606px) {
+@media screen and (max-width: 768px) {
   .navbar-container.open {
     height: 100vh;
     width: 100%;
