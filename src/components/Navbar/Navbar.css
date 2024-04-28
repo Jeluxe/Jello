@@ -21,10 +21,10 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+  display: flex;
 }
 
 .navbar-container li {
-  float: left;
   cursor: pointer;
 }
 
@@ -43,4 +43,34 @@
   flex-direction: row-reverse;
   align-items: center;
   padding: 8px 12px;
+}
+
+
+
+@media screen and (max-width: 500px) {
+  .navbar-container.open {
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    align-items: start;
+    justify-content: flex-start;
+    flex-direction: column;
+    z-index: 2;
+  }
+
+  .navbar-container.open ul {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .navbar-profile {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-menu-sm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }

@@ -3,10 +3,11 @@ import { FaArrowUpRightFromSquare, FaPlus } from "react-icons/fa6";
 import { HiOutlinePhoto } from "react-icons/hi2";
 import { IoExitOutline, IoSettingsSharp } from "react-icons/io5";
 import { MdDragIndicator } from "react-icons/md";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 
 export {
-  FaArrowUpRightFromSquare as DescriptionIcon,
+  RxHamburgerMenu as BurgerMenuIcon, FaArrowUpRightFromSquare as DescriptionIcon,
   MdDragIndicator as DragIcon,
   IoExitOutline as ExitIcon,
   FaPlus as PlusIcon,

@@ -1,5 +1,6 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { ExitIcon } from "../../assets/icons"
+import { BurgerMenuIcon, ExitIcon } from "../../assets/icons"
 import monica from "../../assets/monic.jpg"
 import { useAuthProvider } from "../../context/AuthContext"
 import "./Navbar.css"
@@ -10,31 +11,75 @@ type Props = {
 
 const Navbar = ({ image = monica }: Props) => {
   const { logout, user, isAuthenticated } = useAuthProvider();
+  const [isSmallDevice, setIsSmallDevice] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false)
+  }
+
+  const UserControls = () => (
+    <div className="navbar-profile">
+      <Link to="/profile" onClick={handleLinkClick}>
+        <img width={35} height={35} src={image} alt="Profile" />
+        <span>{user?.username}</span>
+      </Link>
+      <Link to="/" onClick={() => { handleLinkClick(); logout() }}>
+        <ExitIcon size={24} className="button" />
+      </Link>
+    </div>
+  );
+
+  const GuestControls = () => (
+    <>
+      <Link to="/login" onClick={toggleMenu}>Login</Link>
+      <Link to="/sign-up" onClick={toggleMenu}>Sign Up</Link>
+    </>
+  );
+
+  const Links = () => (
+    <>
+      <Link to="/" onClick={handleLinkClick}>Home</Link>
+      {isAuthenticated && <Link to="/my-projects" onClick={handleLinkClick}>My Projects</Link>}
+      <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
+      <Link to="/about" onClick={handleLinkClick}>About</Link>
+    </>
+  );
 
   return (
-    <div className="navbar-container">
-      <div className="title-icon"><Link to={"/"}>Jello</Link></div>
-      <ul className="navbar-items">
-        <li><Link to={"/"}>Home</Link></li>
-        {isAuthenticated ? <li><Link to={"/my-projects"}>My Projects</Link></li> : ""}
-        <li><Link to={"/contact"}>Contact</Link></li>
-        <li><Link to={"/about"}>About</Link></li>
-      </ul>
+    <div className={`navbar-container ${isSmallDevice && isMenuOpen && "open"}`}>
       {
-        isAuthenticated && user ?
-          <div className="navbar-profile">
-            <Link to={"/profile"}>
-              <img width={35} height={35} src={image} />
-              <span>{user.username}</span>
-            </Link>
-            <Link to={"/"} onClick={logout} style={{ padding: "14px" }}>
-              <ExitIcon size={24} className="button" />
-            </Link>
-          </div> :
-          <div style={{ display: "flex" }}>
-            <Link to={"/login"}>Login</Link>
-            <Link to={"/sign-up"}>Sign Up</Link>
-          </div>
+        isSmallDevice ?
+          <>
+            <div style={{ padding: " 10px" }}>
+              <BurgerMenuIcon size={24} onClick={() => setIsMenuOpen(!isMenuOpen)} />
+            </div>
+            {isMenuOpen ?
+              <div className="navbar-menu-sm">
+                <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
+                <Links />
+                {isAuthenticated && user ?
+                  <UserControls /> :
+                  <GuestControls />
+                }
+              </div> : null
+            }
+          </> :
+          <>
+            <div className="title-icon">
+              <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
+            </div>
+            <div style={{ display: "flex" }}>
+              <Links />
+            </div>
+            {
+              isAuthenticated && user ?
+                <UserControls /> :
+                <div style={{ display: "flex" }}><GuestControls /></div>
+            }
+          </>
       }
     </div>
   )
