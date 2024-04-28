@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { BurgerMenuIcon, ExitIcon } from "../../assets/icons"
 import monica from "../../assets/monic.jpg"
@@ -10,9 +10,27 @@ type Props = {
 }
 
 const Navbar = ({ image = monica }: Props) => {
+  const pageWidthRef = useRef<any>(null);
   const { logout, user, isAuthenticated } = useAuthProvider();
   const [isSmallDevice, setIsSmallDevice] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    const checkSize = () => {
+      if (pageWidthRef.current) {
+        const width = pageWidthRef.current.getBoundingClientRect().width;
+        setIsSmallDevice(width < 606);
+      }
+    };
+
+    checkSize();
+
+    window.addEventListener('resize', checkSize);
+
+    return () => {
+      window.removeEventListener('resize', checkSize);
+    };
+  }, [])
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -26,8 +44,8 @@ const Navbar = ({ image = monica }: Props) => {
         <img width={35} height={35} src={image} alt="Profile" />
         <span>{user?.username}</span>
       </Link>
-      <Link to="/" onClick={() => { handleLinkClick(); logout() }}>
-        <ExitIcon size={24} className="button" />
+      <Link to="/" onClick={() => { handleLinkClick(); logout() }} style={{ padding: 14 }}>
+        <ExitIcon size={24} />
       </Link>
     </div>
   );
@@ -49,16 +67,18 @@ const Navbar = ({ image = monica }: Props) => {
   );
 
   return (
-    <div className={`navbar-container ${isSmallDevice && isMenuOpen && "open"}`}>
+    <div ref={pageWidthRef} className={`navbar-container ${isSmallDevice && isMenuOpen && "open"}`}>
       {
         isSmallDevice ?
           <>
-            <div style={{ padding: " 10px" }}>
-              <BurgerMenuIcon size={24} onClick={() => setIsMenuOpen(!isMenuOpen)} />
+            <div className="navbar-sm">
+              <div className="button burger-menu">
+                <BurgerMenuIcon size={24} onClick={() => setIsMenuOpen(!isMenuOpen)} />
+              </div>
+              <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
             </div>
             {isMenuOpen ?
               <div className="navbar-menu-sm">
-                <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
                 <Links />
                 {isAuthenticated && user ?
                   <UserControls /> :
@@ -71,9 +91,7 @@ const Navbar = ({ image = monica }: Props) => {
             <div className="title-icon">
               <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
             </div>
-            <div style={{ display: "flex" }}>
-              <Links />
-            </div>
+            <div style={{ display: "flex" }}><Links /></div>
             {
               isAuthenticated && user ?
                 <UserControls /> :
