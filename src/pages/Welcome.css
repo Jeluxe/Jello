@@ -1,6 +1,5 @@
 .wrapper {
-  padding: 20px 40px;
-  width: 60%;
+  width: 80%;
 }
 
 .content {
@@ -18,5 +17,6 @@
 @media screen and (max-width: 768px) {
   .wrapper {
     width: inherit;
+    padding: 20px;
   }
 }
