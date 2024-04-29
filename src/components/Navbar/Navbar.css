@@ -8,6 +8,10 @@
   color: #CAD2D3;
 }
 
+.navbar-container a {
+  height: 52px;
+}
+
 .title-icon {
   padding: 16px 0;
 }

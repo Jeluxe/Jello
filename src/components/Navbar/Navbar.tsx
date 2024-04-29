@@ -50,20 +50,20 @@ const Navbar = ({ image = monica }: Props) => {
     </div>
   );
 
-  const GuestControls = () => (
-    <>
+  const GuestControls = ({ flex }: { flex?: boolean }) => (
+    <div style={{ display: flex ? "flex" : "block" }}>
       <Link to="/login" onClick={toggleMenu}>Login</Link>
       <Link to="/sign-up" onClick={toggleMenu}>Sign Up</Link>
-    </>
+    </div>
   );
 
-  const Links = () => (
-    <>
+  const Links = ({ flex }: { flex?: boolean }) => (
+    <div style={{ display: flex ? "flex" : "block" }}>
       <Link to="/" onClick={handleLinkClick}>Home</Link>
       {isAuthenticated && <Link to="/my-projects" onClick={handleLinkClick}>My Projects</Link>}
       <Link to="/contact" onClick={handleLinkClick}>Contact</Link>
       <Link to="/about" onClick={handleLinkClick}>About</Link>
-    </>
+    </div>
   );
 
   return (
@@ -91,11 +91,11 @@ const Navbar = ({ image = monica }: Props) => {
             <div className="title-icon">
               <Link to={"/"} onClick={handleLinkClick}>Jello</Link>
             </div>
-            <div style={{ display: "flex" }}><Links /></div>
+            <Links flex />
             {
               isAuthenticated && user ?
                 <UserControls /> :
-                <div style={{ display: "flex" }}><GuestControls /></div>
+                <GuestControls flex />
             }
           </>
       }
