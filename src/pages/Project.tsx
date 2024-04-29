@@ -85,8 +85,10 @@ const Project: React.FC = () => {
           <div className='project-title'>project: {params.id}</div>
         </div>
         <div className='project-options'>
-          <div className='project-option button' style={ImageBackgroundStyle(monica)}><ThemeIcon color='white' size={20} /></div>
-          <div><Dots className={["button", "project-option"]} vertical color="black" /></div>
+          <div className='project-option button' style={ImageBackgroundStyle(monica)}>
+            <ThemeIcon color='white' size={20} />
+          </div>
+          <Dots className={["button", "project-option"]} vertical color="black" />
         </div>
       </div>
       <DndContext
@@ -120,8 +122,12 @@ const Project: React.FC = () => {
         </SortableContext>
         <DragOverlay>{
           activeItem ?
-            ('list' in activeItem) ? <Container key={activeItem.id + "overlay"} {...activeItem} /> :
-              ('content' in activeItem) ? <Card key={activeItem.id + "overlay"} {...activeItem} /> : "" : ""
+            ('list' in activeItem) ?
+              <Container key={activeItem.id + "overlay"} {...activeItem} /> :
+              ('content' in activeItem) ?
+                <Card key={activeItem.id + "overlay"} {...activeItem} /> :
+                null :
+            null
         }</DragOverlay>
       </DndContext>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
