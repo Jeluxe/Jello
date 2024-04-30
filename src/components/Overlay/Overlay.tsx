@@ -13,7 +13,7 @@ const Overlay = ({ clickable = false, isVisible, setIsVisible, children }: Overl
 
   return isVisible ? (
     <div className="overlay" ref={overlayRef} onClick={() => clickable ? setIsVisible(false) : null}>
-      <div onClick={stopPropagation}>
+      <div style={{ alignItems: "center", display: "flex", height: "100%" }} onClick={stopPropagation}>
         {children}
       </div>
     </div>
