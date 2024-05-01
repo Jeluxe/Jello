@@ -1,4 +1,3 @@
-import { arrayMove } from "@dnd-kit/sortable";
 import { createContext, useContext, useState } from "react";
 import useModal from "../hooks/useModal";
 import { ActiveProps, ContainerMapProps, ItemProps } from "../types/global";
@@ -23,15 +22,14 @@ export type ProjectProviderOperations = {
   removeCard: (id: string) => void,
   removeTag: (id: string) => void,
   findContainer: (id: string) => string | undefined,
-  handleDragStart: ({ active }: { active: any }) => void,
-  handleDragOver: ({ active, over }: { active: any, over: any }) => void,
-  handleDragEnd: ({ active, over }: { active: any, over: any }) => void,
   findItemById: (id: string) => ItemProps | null,
   setIsModalOpen: React.Dispatch<boolean>,
   setModalData: React.Dispatch<ItemProps>,
   openModal: (id: string) => void,
+  setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
+  setActiveItem: React.Dispatch<ActiveProps | null>
 }
 
 export const ProjectContext = createContext<any>(null);
@@ -157,105 +155,6 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     return Object.keys(projectData).find(key => projectData[key].find((card: any) => card && card.id === id));
   }
 
-  const handleDragStart: ProjectProviderOperations["handleDragStart"] = (e) => {
-    const { id, data: { current: { sortable: { containerId, index } } } } = e.active;
-
-    if (containerId === "container-list") {
-      setActiveItem({ id, title: id, list: projectData[id] });
-    } else {
-      setActiveItem({ ...projectData[containerId][index] });
-      setIsTrashable(true)
-    }
-  }
-
-  const handleDragOver: ProjectProviderOperations["handleDragOver"] = (event) => {
-    const { active, over } = event;
-
-    if (over?.id === "trash-container" && active.data.current.sortable.containerId !== "container-list") {
-      setIsOverTrash(true);
-      return;
-    } else {
-      setIsOverTrash(false)
-    };
-
-    const activeContainer = findContainer(active.id);
-    const overContainer = findContainer(over?.id);
-
-    if (active.data.current.sortable?.containerId === "container-list") return;
-
-    if (!activeContainer || !overContainer || activeContainer === overContainer) return;
-
-    setProjectData((prev: any) => {
-      const overItems = prev[activeContainer];
-      const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current?.sortable.index;
-      let newIndex;
-
-      if (overContainer in prev) {
-        newIndex = overItems.length + 1;
-      } else {
-        newIndex = overIndex >= 0 ? overIndex + 1 : overItems.length + 1;
-      }
-
-      return {
-        ...prev,
-        [activeContainer]: [...prev[activeContainer].filter((card: any) => card.id !== active.id)],
-        [overContainer]: [
-          ...prev[overContainer].slice(0, newIndex),
-          prev[activeContainer][activeIndex],
-          ...prev[overContainer].slice(newIndex, prev[overContainer].length)
-        ]
-      }
-    });
-  }
-
-  const handleDragEnd: ProjectProviderOperations["handleDragEnd"] = (event) => {
-    setIsTrashable(false);
-    const { active, over } = event;
-
-    if (!active || !over) return;
-
-    const { id: activeId } = active;
-    const { id: overId } = over;
-
-    const activeContainer = findContainer(activeId);
-    const overContainer = findContainer(overId);
-
-    if (!activeContainer || !overContainer) return;
-
-    if (overContainer == 'trash-container') {
-      removeCard(activeId)
-      setIsOverTrash(false);
-      return;
-    }
-
-    if (activeId !== overId) {
-      const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current?.sortable.index;
-
-      setProjectData((items: any) => {
-        if (active.data.current.sortable.containerId === "container-list") {
-          const formattedObject = Object.entries(items);
-
-          const activeItem = formattedObject.find(card => card[0] === activeId);
-          const overItem = formattedObject.find(card => card[0] === overId || card[0] === overContainer);
-
-          if (!activeItem || !overItem) return items;
-
-          const newActiveIndex = formattedObject.indexOf(activeItem);
-          const newOverIndex = formattedObject.indexOf(overItem);
-
-          return Object.fromEntries(arrayMove(formattedObject, newActiveIndex, newOverIndex));
-        }
-        return ({
-          ...items,
-          [activeContainer]: arrayMove(items[activeContainer], activeIndex, overIndex)
-        });
-      });
-    }
-    setActiveItem(null);
-  }
-
   const findItemById: ProjectProviderOperations["findItemById"] = (id) => {
     for (const category in projectData) {
       const categoryData = projectData[category];
@@ -294,17 +193,18 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       removeContainer,
       removeCard,
       removeTag,
-      handleDragStart,
-      handleDragOver,
-      handleDragEnd,
       findItemById,
+      findContainer,
       isModalOpen,
       modalData,
       setIsModalOpen,
       setModalData,
       openModal,
       isTrashable,
-      isOverTrash
+      isOverTrash,
+      setIsTrashable,
+      setIsOverTrash,
+      setActiveItem,
     }}>
       {children}
     </ProjectContext.Provider>

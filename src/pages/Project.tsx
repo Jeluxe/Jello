@@ -2,7 +2,7 @@
 import { DndContext } from '@dnd-kit/core';
 
 // Project components and contexts
-import { Modal, ProjectBody, ProjectHeader, Sidebar } from '../components';
+import { Modal, ProjectBody, ProjectHeader } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
 
 // images
@@ -13,31 +13,29 @@ import { ImageBackgroundStyle } from '../helpers';
 import useDragOperations from '../hooks/useDragOperations';
 import "./Project.css";
 
-type ProjectContextOperations = Pick<ProjectProviderOperations, "handleDragStart" | "handleDragOver" | "handleDragEnd" | "findItemById" | "setIsModalOpen">
+type ProjectContextOperations = Pick<ProjectProviderOperations, "setProjectData" | "setActiveItem" | "removeCard" | "findContainer" | "setIsTrashable" | "setIsOverTrash" | "setIsModalOpen">
 
 const Project: React.FC = () => {
   const {
     isModalOpen,
     modalData,
+    projectData,
     setIsModalOpen,
-    handleDragStart,
-    handleDragOver,
-    handleDragEnd,
+    setProjectData,
+    setActiveItem,
+    removeCard,
+    findContainer,
+    setIsTrashable,
+    setIsOverTrash
   }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
-  const operations = useDragOperations()
+  const operations = useDragOperations({ projectData, setProjectData, setActiveItem, removeCard, findContainer, setIsTrashable, setIsOverTrash })
 
   return (
     <div className="project-container" style={ImageBackgroundStyle(monica)}>
       <ProjectHeader />
-      <DndContext
-        {...operations}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragOver={handleDragOver}
-      >
+      <DndContext {...operations}>
         <ProjectBody />
       </DndContext>
-      <Sidebar type={"theme"} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
     </div>
   )
