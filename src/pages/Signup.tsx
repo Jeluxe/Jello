@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { AuthLayout } from "../components"
 import { useAuthProvider } from "../context/AuthContext"
-import { SignupProps } from "../hooks/AuthHook"
+import { SignupProps } from "../hooks/useAuth"
 
 const Signup = () => {
   const navigate = useNavigate();

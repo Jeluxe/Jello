@@ -1,6 +1,6 @@
 import { arrayMove } from "@dnd-kit/sortable";
 import { createContext, useContext, useState } from "react";
-import useModal from "../hooks/ModalHook";
+import useModal from "../hooks/useModal";
 import { ActiveProps, ContainerMapProps, ItemProps } from "../types/global";
 
 export type ProjectProviderData = {

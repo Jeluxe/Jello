@@ -1,6 +1,6 @@
 import { PlusIcon } from "../../../assets/icons";
 import { ProjectProviderOperations, useProjectProvider } from "../../../context/ProjectContext";
-import { InputHook } from "../../../hooks/InputHook";
+import { InputHook } from "../../../hooks/useInput";
 import Button from "../../Button/Button";
 import Input from "../../Input/Input";
 import "./NewCardForm.css";

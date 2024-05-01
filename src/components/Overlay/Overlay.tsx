@@ -1,4 +1,4 @@
-import useOverlay from "../../hooks/OverlayHook";
+import useOverlay from "../../hooks/useOverlay";
 import "./Overlay.css";
 
 type OverlayProps = {
@@ -13,7 +13,7 @@ const Overlay = ({ clickable = false, isVisible, setIsVisible, children }: Overl
 
   return isVisible ? (
     <div className="overlay" ref={overlayRef} onClick={() => clickable ? setIsVisible(false) : null}>
-      <div style={{ alignItems: "center", display: "flex", height: "100%" }} onClick={stopPropagation}>
+      <div onClick={stopPropagation}>
         {children}
       </div>
     </div>

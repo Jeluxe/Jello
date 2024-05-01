@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "../components";
 import { useAuthProvider } from "../context/AuthContext";
-import { LoginProps } from "../hooks/AuthHook";
+import { LoginProps } from "../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
