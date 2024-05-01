@@ -5,7 +5,7 @@ import { Dots } from '..';
 
 // Icons and images
 import { ExitIcon, ThemeIcon } from '../../assets/icons';
-import monica from '../assets/monic.jpg';
+import monica from '../../assets/monic.jpg';
 
 // Types and styles
 import { ImageBackgroundStyle } from '../../helpers';
