@@ -4,46 +4,6 @@
   height: 100%;
 }
 
-.project-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid black;
-  padding: 5px 10px;
-  background-color: rgba(255, 255, 255, 0.336);
-  width: 100%;
-}
-
-.project-title {
-  font-size: 22px;
-  font-weight: 600;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.project-options {
-  display: flex;
-  gap: 10px;
-}
-
-.project-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  box-shadow: 0 0 2px 1px rgba(151, 151, 151, 0.36);
-  width: 35px;
-  height: 35px;
-}
-
-.project-body {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px;
-  overflow: auto;
-  height: 100vh;
-}
-
 .error-message {
   position: absolute;
   bottom: 0;

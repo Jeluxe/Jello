@@ -9,3 +9,10 @@ export const separateClasses = (...args: any[]): string => {
   const flattenedArgs = args.flattenArray();
   return flattenedArgs.join(" ");
 };
+
+export const ImageBackgroundStyle = (img: string) => ({
+  background: `url(${img})`,
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center center"
+});

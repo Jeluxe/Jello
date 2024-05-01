@@ -12,6 +12,8 @@ import Item from "./Item/Item";
 import Modal from './Modal/Modal';
 import Navbar from './Navbar/Navbar';
 import Overlay from './Overlay/Overlay';
+import ProjectBody from './ProjectBody/ProjectBody';
+import ProjectHeader from './ProjectHeader/ProjectHeader';
 
 export {
   AuthLayout,
@@ -27,6 +29,8 @@ export {
   NewCardForm,
   NewContainerForm,
   Overlay,
+  ProjectBody,
+  ProjectHeader,
   TrashContainer
 };
 
