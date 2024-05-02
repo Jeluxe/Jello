@@ -14,6 +14,7 @@ const NewContainer = ({ setIsOpen }: NewContainerProps) => {
     <div className='container new-container'>
       <Input
         className={"container-input"}
+        type='text'
         value={value}
         onKeydown={onKeyDown}
         onChange={handleChange}

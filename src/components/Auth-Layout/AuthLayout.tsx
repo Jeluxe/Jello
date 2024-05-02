@@ -26,6 +26,7 @@ const AuthLayout = ({ header, fields, onClick }: Props) => {
                   <span>{field.toCapitalize()}</span>
                   <Input
                     className="auth-input"
+                    type={field === "password" || field === "confirm password" ? "password" : "text"}
                     value={userInfo[field]}
                     onChange={({ target: { value } }) => (
                       setUserInfo(prevInfo => ({ ...prevInfo, [field]: value })
