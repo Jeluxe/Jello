@@ -13,22 +13,16 @@ import { ImageBackgroundStyle } from '../helpers';
 import useDragOperations from '../hooks/useDragOperations';
 import "./Project.css";
 
-type ProjectContextOperations = Pick<ProjectProviderOperations, "setProjectData" | "setActiveItem" | "removeCard" | "findContainer" | "setIsTrashable" | "setIsOverTrash" | "setIsModalOpen">
+type ProjectContextOperations = Pick<ProjectProviderOperations, "setIsModalOpen">
 
 const Project: React.FC = () => {
   const {
     isModalOpen,
     modalData,
-    projectData,
     setIsModalOpen,
-    setProjectData,
-    setActiveItem,
-    removeCard,
-    findContainer,
-    setIsTrashable,
-    setIsOverTrash
   }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
-  const operations = useDragOperations({ projectData, setProjectData, setActiveItem, removeCard, findContainer, setIsTrashable, setIsOverTrash })
+
+  const operations = useDragOperations()
 
   return (
     <div className="project-container" style={ImageBackgroundStyle(monica)}>

@@ -1,7 +1,9 @@
+import { useCallback } from "react";
+
 import { PointerSensor, TouchSensor, closestCenter, getFirstCollision, pointerWithin, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useCallback } from "react";
-import { ProjectProviderData, ProjectProviderOperations } from "../context/ProjectContext";
+
+import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from "../context/ProjectContext";
 import { ContainerMapProps } from "../types/global";
 
 type dragOperationsProps = {
@@ -12,7 +14,14 @@ type dragOperationsProps = {
 
 type ProjectContextOperations = Pick<ProjectProviderOperations, "setProjectData" | "setActiveItem" | "removeCard" | "findContainer" | "setIsTrashable" | "setIsOverTrash">
 
-const useDragOperations = ({ projectData, setProjectData, setActiveItem, removeCard, findContainer, setIsTrashable, setIsOverTrash }: Pick<ProjectProviderData, "projectData"> & ProjectContextOperations) => {
+const useDragOperations = () => {
+  const {
+    projectData, setProjectData,
+    setActiveItem, removeCard,
+    findContainer, setIsTrashable,
+    setIsOverTrash
+  }: Pick<ProjectProviderData, "projectData"> & ProjectContextOperations = useProjectProvider()
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

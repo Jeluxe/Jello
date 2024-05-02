@@ -184,6 +184,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     <ProjectContext.Provider value={{
       projectData,
       activeItem,
+      setProjectData,
       addContainer,
       addCard,
       addTag,
