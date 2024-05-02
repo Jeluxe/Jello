@@ -6,10 +6,11 @@ type InputProps = {
   value: string,
   onChange: (e: any) => void,
   onKeydown?: (e: any) => void,
-  maxLength?: number
+  maxLength?: number,
+  accept?: ".jpg, .jpeg, .png"
 }
 
-const Input = ({ className = "", type = "text", value = "", onChange, onKeydown, maxLength }: InputProps) => {
+const Input = ({ className = "", type = "text", value = "", onChange, onKeydown, maxLength, accept }: InputProps) => {
   return (
     <input
       className={className}
@@ -18,6 +19,7 @@ const Input = ({ className = "", type = "text", value = "", onChange, onKeydown,
       onChange={onChange}
       onKeyDown={onKeydown}
       maxLength={maxLength}
+      accept={accept}
       autoFocus
     />
   )
