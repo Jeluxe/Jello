@@ -34,7 +34,7 @@ const Sidebar = () => {
                   <span>new-theme</span>
                 </div>
                 {themeList.map((theme, idx) =>
-                  <div key={idx} className="sidebar-theme-item button" style={isThemeImage(theme)} onClick={onPreview}>
+                  <div key={idx} className="sidebar-theme-item button" style={isThemeImage(theme)} onClick={() => onPreview(theme)}>
                     <span className="sidebar-theme-item-title">{theme.name}</span>
                   </div>
                 )}
