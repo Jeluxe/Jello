@@ -1,6 +1,6 @@
 import "./Divider.css";
 
-const Divider = ({ type }: { type: string }) => {
+const Divider = ({ type = "h", color }: { type?: string, color?: string }) => {
   const verticalStyle = {
     minHeight: "100%",
     width: "1px",
@@ -23,7 +23,7 @@ const Divider = ({ type }: { type: string }) => {
   }
 
   return (
-    <div className="divider" style={findStyle(type)}></div>
+    <div className="divider" style={{ ...findStyle(type), background: color }}></div>
   )
 }
 
