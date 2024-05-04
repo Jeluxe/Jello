@@ -5,7 +5,7 @@ type Props = {
   className?: string | string[],
   size?: number,
   style?: any,
-  title: any,
+  title: string,
   onClick: (e: any) => void,
 }
 const Button = ({ className, size, style, title, onClick }: Props) => {
