@@ -10,9 +10,15 @@ export const separateClasses = (...args: any[]): string => {
   return flattenedArgs.join(" ");
 };
 
-export const ImageBackgroundStyle = (img: string) => ({
+const ImageBackgroundStyle = (img: string) => ({
   background: `url(${img})`,
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center center"
 });
+
+export const isThemeImage = (theme: any, themePreview?: any) => {
+  const { image, background } = themePreview ?? theme
+
+  return image ? ImageBackgroundStyle(background) : { background }
+}
