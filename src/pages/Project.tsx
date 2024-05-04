@@ -1,14 +1,16 @@
+// External libraries
 import { useState } from 'react';
 
 // DnD Kit
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 
 // Project components and contexts
-import { Modal, ProjectBody, ProjectHeader, ProjectPreview, Sidebar } from '../components';
+import { Modal, ProjectHeader, ProjectPreview, Sidebar, ProjectBody, Container, Card } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
 import useDragOperations from '../hooks/useDragOperations';
 
-// images
+// Images
 import monica from '../assets/monic.jpg';
 
 // Types and styles
@@ -17,7 +19,6 @@ import { SidebarProps, ThemeProps } from '../types/global';
 import "./Project.css";
 
 type ProjectContextOperations = Pick<ProjectProviderOperations, "setIsModalOpen">
-
 const Project = () => {
   const [isPreview, setIsPreview] = useState<boolean>(false)
   const [theme, setTheme] = useState<ThemeProps>({ name: "monica", background: monica, image: true })
@@ -25,6 +26,8 @@ const Project = () => {
   const [sidebarData, setSidebarData] = useState<SidebarProps>({ type: "themes", isOpen: false });
 
   const {
+    projectData,
+    activeItem,
     isModalOpen,
     modalData,
     setIsModalOpen,
@@ -52,7 +55,24 @@ const Project = () => {
           <ProjectPreview onSave={onSave} onRevert={closePreview} /> :
           <>
             <DndContext {...operations}>
-              <ProjectBody />
+              <SortableContext
+                id='container-list'
+                items={Object.keys(projectData)}
+                strategy={horizontalListSortingStrategy}
+              >
+                <ProjectBody />
+              </SortableContext>
+              <DragOverlay>
+                {
+                  activeItem ?
+                    ('list' in activeItem) ?
+                      <Container key={activeItem.id + "overlay"} {...activeItem} /> :
+                      ('content' in activeItem) ?
+                        <Card key={activeItem.id + "overlay"} {...activeItem} /> :
+                        null :
+                    null
+                }
+              </DragOverlay>
             </DndContext>
             <Sidebar sidebarData={sidebarData} setSidebarData={setSidebarData} setThemePreview={setThemePreview} setIsPreview={setIsPreview} />
             <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />

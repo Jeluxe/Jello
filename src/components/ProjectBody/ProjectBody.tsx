@@ -1,9 +1,8 @@
 // DnD Kit
-import { DragOverlay, useDroppable } from '@dnd-kit/core';
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
 
 // Project components and contexts
-import { Card, Container, NewContainerForm, TrashContainer } from '..';
+import { Container, NewContainerForm, TrashContainer } from '..';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../../context/ProjectContext';
 
 // Types and styles
@@ -18,7 +17,6 @@ const ProjectBody = ({ }: ProjectBodyProps) => {
 
   const {
     projectData,
-    activeItem,
     isTrashable,
     isOverTrash,
     newContainer,
@@ -26,32 +24,13 @@ const ProjectBody = ({ }: ProjectBodyProps) => {
   }: ProjectProviderData & ProjectProviderOperations = useProjectProvider();
 
   return (
-    <>
-      <SortableContext
-        id='container-list'
-        items={Object.keys(projectData)}
-        strategy={horizontalListSortingStrategy}
-      >
-        <div className="project-body" ref={setNodeRef}>
-          {Object.entries(projectData).map(([key, value]: [string, ItemProps[]]) => (
-            <Container key={key} id={key} title={key} list={value} />
-          ))}
-          {newContainer && <NewContainerForm setIsOpen={setNewContainer} />}
-          {isTrashable && <TrashContainer onTrash={isOverTrash} />}
-        </div>
-      </SortableContext>
-      <DragOverlay>
-        {
-          activeItem ?
-            ('list' in activeItem) ?
-              <Container key={activeItem.id + "overlay"} {...activeItem} /> :
-              ('content' in activeItem) ?
-                <Card key={activeItem.id + "overlay"} {...activeItem} /> :
-                null :
-            null
-        }
-      </DragOverlay>
-    </>
+    <div className="project-body" ref={setNodeRef}>
+      {Object.entries(projectData).map(([key, value]: [string, ItemProps[]]) => (
+        <Container key={key} id={key} title={key} list={value} />
+      ))}
+      {newContainer && <NewContainerForm setIsOpen={setNewContainer} />}
+      {isTrashable && <TrashContainer onTrash={isOverTrash} />}
+    </div>
   )
 };
 
