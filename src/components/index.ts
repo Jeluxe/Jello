@@ -14,6 +14,8 @@ import Navbar from './Navbar/Navbar';
 import Overlay from './Overlay/Overlay';
 import ProjectBody from './ProjectBody/ProjectBody';
 import ProjectHeader from './ProjectHeader/ProjectHeader';
+import ProjectPreview from './ProjectPreview/ProjectPreview';
+import Sidebar from './Sidebar/Sidebar';
 
 export {
   AuthLayout,
@@ -31,6 +33,8 @@ export {
   Overlay,
   ProjectBody,
   ProjectHeader,
+  ProjectPreview,
+  Sidebar,
   TrashContainer
 };
 

@@ -1,0 +1,10 @@
+.sidebar-body:has(.sidebar-new-theme-form) {
+  display: flex;
+  height: calc(100% - 23px);
+}
+
+.sidebar-new-theme-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}

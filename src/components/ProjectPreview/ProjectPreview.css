@@ -1,0 +1,15 @@
+.project-preview {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.project-preview-wrapper {
+  background: rgba(154, 154, 154, 0.252);
+  padding: 10px 20px;
+  display: flex;
+  gap: 10px;
+  border-radius: 10px 10px 0 0;
+}

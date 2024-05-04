@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { PROJECT_DATA } from "../assets/global";
 import useModal from "../hooks/useModal";
 import { ActiveProps, ContainerMapProps, ItemProps } from "../types/global";
 
@@ -9,6 +10,7 @@ export type ProjectProviderData = {
   modalData: ItemProps,
   isTrashable: boolean,
   isOverTrash: boolean,
+  newContainer: boolean
 }
 
 export type ProjectProviderOperations = {
@@ -29,20 +31,16 @@ export type ProjectProviderOperations = {
   setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
-  setActiveItem: React.Dispatch<ActiveProps | null>
+  setActiveItem: React.Dispatch<ActiveProps | null>,
+  setNewContainer: React.Dispatch<boolean>,
 }
 
 export const ProjectContext = createContext<any>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
   const { isModalOpen, modalData, setIsModalOpen, setModalData, } = useModal();
-  const [projectData, setProjectData] = useState<ContainerMapProps>({
-    Planned: [{ id: "1", title: "Mofus", content: "ffooso", tags: ["bug", "info", "inspire", "danger", "frog"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "2", title: "Yofus", content: "ffooso1", tags: [], participants: [] }, { id: "3", title: "Bofus", content: "ffasooso", tags: [], participants: [] }],
-    InProgress: [{ id: "4", title: "Rofus", content: " Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis assumenda commodi sunt animi praesentium tempora est inventore eveniet nostrum incidunt. Quasi minus voluptas ea quo! Iste, tempora omnis. At, eaque.", tags: ["bug", "info"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "5", title: "Gofus", content: "ff2eeooso", tags: [], participants: [] }, { id: "6", title: "Nofus", content: "fsdssfooso", tags: [], participants: [] }],
-    Completed: [{ id: "7", title: "Dofus", content: "ffoosoef32q", tags: ["info", "inspire"], participants: [{ id: "432t7gyf7wsef", username: "froooste", avatar: null }, { id: "432t7g7345wsef", username: "groooste11", avatar: null }, { id: "432t7g7345wsef1", username: "aroooste11", avatar: null }] }, { id: "8", title: "Jofus", content: "ffoosofsdf3", tags: [], participants: [] }, { id: "9", title: "Aofus", content: "fdfosadoso", tags: [], participants: [] }],
-    Dropped: []
-  });
-
+  const [projectData, setProjectData] = useState<ContainerMapProps>(PROJECT_DATA);
+  const [newContainer, setNewContainer] = useState<boolean>(false);
   const [isTrashable, setIsTrashable] = useState<boolean>(false);
   const [isOverTrash, setIsOverTrash] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState<ActiveProps | null>(null);
@@ -206,6 +204,8 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       setIsTrashable,
       setIsOverTrash,
       setActiveItem,
+      newContainer,
+      setNewContainer
     }}>
       {children}
     </ProjectContext.Provider>

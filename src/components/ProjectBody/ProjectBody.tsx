@@ -1,12 +1,9 @@
-// External libraries
-import { useState } from 'react';
-
 // DnD Kit
 import { DragOverlay, useDroppable } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 
 // Project components and contexts
-import { Button, Card, Container, NewContainerForm, TrashContainer } from '..';
+import { Card, Container, NewContainerForm, TrashContainer } from '..';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../../context/ProjectContext';
 
 // Types and styles
@@ -17,14 +14,15 @@ interface ProjectBodyProps {
 }
 
 const ProjectBody = ({ }: ProjectBodyProps) => {
-  const [newContainer, setNewContainer] = useState<boolean>(false);
   const { setNodeRef } = useDroppable({ id: "container-list" });
 
   const {
     projectData,
     activeItem,
     isTrashable,
-    isOverTrash
+    isOverTrash,
+    newContainer,
+    setNewContainer
   }: ProjectProviderData & ProjectProviderOperations = useProjectProvider();
 
   return (
@@ -38,16 +36,7 @@ const ProjectBody = ({ }: ProjectBodyProps) => {
           {Object.entries(projectData).map(([key, value]: [string, ItemProps[]]) => (
             <Container key={key} id={key} title={key} list={value} />
           ))}
-          {
-            newContainer ?
-              <NewContainerForm setIsOpen={setNewContainer} /> :
-              !activeItem &&
-              <Button
-                title='add container'
-                style={{ minWidth: 280, backgroundColor: "rgb(123 124 125 / 59%)" }}
-                onClick={() => setNewContainer(!newContainer)}
-              />
-          }
+          {newContainer && <NewContainerForm setIsOpen={setNewContainer} />}
           {isTrashable && <TrashContainer onTrash={isOverTrash} />}
         </div>
       </SortableContext>
