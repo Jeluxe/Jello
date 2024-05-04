@@ -3,25 +3,33 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 // Project components and contexts
 import { Button } from '..';
+import { useProjectProvider, ProjectProviderData, ProjectProviderOperations } from '../../context/ProjectContext';
+import { SidebarProviderData, SidebarProviderOperations, useSidebarProvider } from '../../context/SidebarContext';
 
 // Icons and images
 import { ExitIcon, ThemeIcon } from '../../assets/icons';
 
-// Types and styles
+// Helpers
 import { isThemeImage } from '../../helpers';
-import { SidebarAction, ThemeProps } from '../../types/global';
-import './ProjectHeader.css';
-import { useProjectProvider, ProjectProviderData, ProjectProviderOperations } from '../../context/ProjectContext';
 
-const ProjectHeader = ({ setSidebarData, isPreview, theme }: SidebarAction & { isPreview: boolean, theme: ThemeProps }) => {
+// Styles
+import './ProjectHeader.css';
+
+const ProjectHeader = () => {
   const navigate = useNavigate();
   const params = useParams();
 
   const {
     activeItem,
     newContainer,
-    setNewContainer
+    setNewContainer,
   }: ProjectProviderData & ProjectProviderOperations = useProjectProvider();
+
+  const {
+    isPreview,
+    theme,
+    setSidebarData
+  }: SidebarProviderData & Pick<SidebarProviderOperations, "setSidebarData"> = useSidebarProvider()
 
   const onClick = (fn: any) => {
     if (!isPreview) fn();
@@ -35,7 +43,7 @@ const ProjectHeader = ({ setSidebarData, isPreview, theme }: SidebarAction & { i
       </div>
       <div className='project-options'>
         {!activeItem && !newContainer && <Button title={"Add Container"} className={"project-option"} style={{ width: "auto" }} onClick={() => setNewContainer(true)} />}
-        <div className='project-option button' style={isThemeImage(theme)} onClick={() => onClick(() => setSidebarData({ type: "themes", isOpen: true }))}>
+        <div className='project-option button' style={isThemeImage(theme)} onClick={() => onClick(() => setSidebarData({ isOpen: true }))}>
           <ThemeIcon color='white' size={20} />
         </div>
       </div>

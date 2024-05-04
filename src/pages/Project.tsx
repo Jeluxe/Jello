@@ -1,30 +1,20 @@
-// External libraries
-import { useState } from 'react';
-
 // DnD Kit
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 
-// Project components and contexts
+// Project components and contexts and hooks
 import { Modal, ProjectHeader, ProjectPreview, Sidebar, ProjectBody, Container, Card } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
+import { SidebarProviderData, useSidebarProvider } from '../context/SidebarContext';
 import useDragOperations from '../hooks/useDragOperations';
-
-// Images
-import monica from '../assets/monic.jpg';
 
 // Types and styles
 import { isThemeImage } from '../helpers';
-import { SidebarProps, ThemeProps } from '../types/global';
 import "./Project.css";
 
 type ProjectContextOperations = Pick<ProjectProviderOperations, "setIsModalOpen">
-const Project = () => {
-  const [isPreview, setIsPreview] = useState<boolean>(false)
-  const [theme, setTheme] = useState<ThemeProps>({ name: "monica", background: monica, image: true })
-  const [themePreview, setThemePreview] = useState<ThemeProps | null>(null)
-  const [sidebarData, setSidebarData] = useState<SidebarProps>({ type: "themes", isOpen: false });
 
+const Project = () => {
   const {
     projectData,
     activeItem,
@@ -33,26 +23,20 @@ const Project = () => {
     setIsModalOpen,
   }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
 
+  const {
+    theme,
+    themePreview,
+    isPreview,
+  }: Exclude<SidebarProviderData, "sidebarData"> = useSidebarProvider()
+
   const operations = useDragOperations()
-
-  const closePreview = () => {
-    setThemePreview(null);
-    setIsPreview(false);
-  }
-
-  const onSave = () => {
-    if (themePreview) {
-      setTheme(themePreview);
-    }
-    closePreview();
-  }
 
   return (
     <div className="project-container" style={isThemeImage(theme, themePreview)}>
-      <ProjectHeader setSidebarData={setSidebarData} isPreview={isPreview} theme={theme} />
+      <ProjectHeader />
       {
         isPreview ?
-          <ProjectPreview onSave={onSave} onRevert={closePreview} /> :
+          <ProjectPreview /> :
           <>
             <DndContext {...operations}>
               <SortableContext
@@ -74,7 +58,7 @@ const Project = () => {
                 }
               </DragOverlay>
             </DndContext>
-            <Sidebar sidebarData={sidebarData} setSidebarData={setSidebarData} setThemePreview={setThemePreview} setIsPreview={setIsPreview} />
+            <Sidebar />
             <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
           </>
       }

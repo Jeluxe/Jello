@@ -1,37 +1,49 @@
+// External libraries
+import { useState } from "react";
+
+// Components and context
 import { Overlay } from "..";
-import { SidebarType, ThemeProps } from "../../types/global";
+import NewThemeFormSidebar from "./NewThemeForm/NewThemeForm";
+import { SidebarProviderOperations, useSidebarProvider } from "../../context/SidebarContext";
+
+// Helpers and static data
+import { isThemeImage } from "../../helpers";
+import { PREDEFINED_THEMES } from "../../assets/global";
+
+// Types and icons and styles
+import { SidebarType, ThemeProps, } from "../../types/global";
+import { PlusIcon } from "../../assets/icons";
 import './Sidebar.css';
-import ThemesSidebar from "./ThemesSidebar/ThemesSidebar";
 
-type Theme = { setThemePreview: React.Dispatch<ThemeProps>, setIsPreview: React.Dispatch<boolean> }
-
-const Sidebar = ({ sidebarData, setSidebarData, setThemePreview, setIsPreview }: SidebarType & Theme) => {
-  const closeSidebar = () => {
-    setSidebarData((prev) => ({ ...prev, isOpen: false }))
-  }
-
-  const onPreview = (theme: any) => {
-    setThemePreview(theme)
-    setIsPreview(true)
-    closeSidebar();
-  }
+const Sidebar = () => {
+  const [newThemeForm, setNewThemeForm] = useState(false);
+  const [themeList, setThemeList] = useState<ThemeProps[]>(PREDEFINED_THEMES);
+  const { sidebarData, onPreview, closeSidebar }: SidebarType & SidebarProviderOperations = useSidebarProvider();
 
   return (
     <Overlay clickable isVisible={sidebarData.isOpen} setIsVisible={closeSidebar}>
       <div className='sidebar'>
-        {selectSidebarType(sidebarData.type, onPreview)}
+        <h3>Themes</h3>
+        <div className="sidebar-body">
+          {
+            newThemeForm ?
+              <NewThemeFormSidebar themeList={themeList} setThemeList={setThemeList} setNewThemeForm={setNewThemeForm} /> :
+              <>
+                <div className="sidebar-theme-item button new-theme-button" onClick={() => setNewThemeForm(true)}>
+                  <PlusIcon size={24} />
+                  <span>new-theme</span>
+                </div>
+                {themeList.map((theme, idx) =>
+                  <div key={idx} className="sidebar-theme-item button" style={isThemeImage(theme)} onClick={onPreview}>
+                    <span className="sidebar-theme-item-title">{theme.name}</span>
+                  </div>
+                )}
+              </>
+          }
+        </div>
       </div>
     </Overlay >
   )
 };
-
-const selectSidebarType = (type: string, onClick: (theme: any) => void) => {
-  switch (type) {
-    case "themes":
-      return <ThemesSidebar onClick={onClick} />
-    default:
-      <div>Error</div>
-  }
-}
 
 export default Sidebar;

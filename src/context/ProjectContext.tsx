@@ -1,16 +1,21 @@
+// External libraries
 import { createContext, useContext, useState } from "react";
-import { PROJECT_DATA } from "../assets/global";
+
+// Hooks
 import useModal from "../hooks/useModal";
-import { ActiveProps, ContainerMapProps, ItemProps } from "../types/global";
+
+// Types and static data
+import { ActiveProps, ContainerMapProps, ItemProps, ModalProps } from "../types/global";
+import { PROJECT_DATA } from "../assets/global";
 
 export type ProjectProviderData = {
   projectData: ContainerMapProps,
   activeItem: ActiveProps,
   isModalOpen: boolean,
-  modalData: ItemProps,
+  modalData: ModalProps,
   isTrashable: boolean,
   isOverTrash: boolean,
-  newContainer: boolean
+  newContainer: boolean,
 }
 
 export type ProjectProviderOperations = {
@@ -25,13 +30,13 @@ export type ProjectProviderOperations = {
   removeTag: (id: string) => void,
   findContainer: (id: string) => string | undefined,
   findItemById: (id: string) => ItemProps | null,
-  setIsModalOpen: React.Dispatch<boolean>,
-  setModalData: React.Dispatch<ItemProps>,
   openModal: (id: string) => void,
+  setIsModalOpen: React.Dispatch<boolean>,
+  setModalData: React.Dispatch<ModalProps>,
   setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
-  setActiveItem: React.Dispatch<ActiveProps | null>,
+  setActiveItem: React.Dispatch<ActiveProps>,
   setNewContainer: React.Dispatch<boolean>,
 }
 
@@ -43,7 +48,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   const [newContainer, setNewContainer] = useState<boolean>(false);
   const [isTrashable, setIsTrashable] = useState<boolean>(false);
   const [isOverTrash, setIsOverTrash] = useState<boolean>(false);
-  const [activeItem, setActiveItem] = useState<ActiveProps | null>(null);
+  const [activeItem, setActiveItem] = useState<ActiveProps>(null);
 
   const getNewId = (list: any[]): number => {
     let totalLength: number = 0;

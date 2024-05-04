@@ -34,10 +34,11 @@ export interface ContainerProps extends SharedProps {
   list: ItemProps[],
 }
 
-export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>);
+export type ModalProps = ItemProps & { containerId: string } | null;
+
+export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>) | null;
 
 export type SidebarProps = {
-  type: "themes" | "settings",
   isOpen: boolean,
 }
 

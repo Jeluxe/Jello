@@ -1,3 +1,4 @@
+// External libraries
 import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
@@ -5,27 +6,36 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
+// Components and contexts
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ProjectProvider } from './context/ProjectContext';
+import { SidebarProvider } from './context/SidebarContext';
+
+// Pages and routes
+import { About, Contact, Login, Profile, Project, Projects, Signup, Welcome } from './pages';
+import ProtectedRoute from './routes/protectedRoute';
+
+// Extensions and styles
 import './extensions';
 import './index.css';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Login from './pages/Login';
-import Profile from './pages/Profile';
-import Project from './pages/Project';
-import Projects from './pages/Projects';
-import Signup from './pages/Signup';
-import Welcome from './pages/Welcome';
-import ProtectedRoute from './routes/protectedRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
       <Route index element={<Welcome />} />
       <Route path='my-projects' element={<ProtectedRoute><Projects /></ProtectedRoute>} />
-      <Route path='my-projects/:id' element={<ProtectedRoute><ProjectProvider><Project /></ProjectProvider></ProtectedRoute>} />
+
+      <Route path='my-projects/:id' element={
+        <ProtectedRoute>
+          <ProjectProvider>
+            <SidebarProvider>
+              <Project />
+            </SidebarProvider>
+          </ProjectProvider>
+        </ProtectedRoute>
+      } />
       <Route path='contact' element={<Contact />} />
       <Route path='about' element={<About />} />
       <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
