@@ -13,10 +13,10 @@ type ModalProps = {
 const style = { display: "flex", justifyContent: "space-between" }
 
 const Modal = ({ isModalOpen, setIsModalOpen, modalData }: ModalProps) => {
+  if (!modalData || !isModalOpen) return;
+
   const { id, title, content, tags, participants, containerId } = modalData;
   const { addTag }: Pick<ProjectProviderOperations, "addTag"> = useProjectProvider()
-
-  if (!isModalOpen) return;
 
   return (
     <Overlay clickable isVisible={isModalOpen} setIsVisible={setIsModalOpen}>
