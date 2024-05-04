@@ -34,7 +34,7 @@ export interface ContainerProps extends SharedProps {
   list: ItemProps[],
 }
 
-export type ModalProps = ItemProps & { containerId: string } | null;
+export type ModalDataProps = ItemProps & { containerId: string };
 
 export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>) | null;
 

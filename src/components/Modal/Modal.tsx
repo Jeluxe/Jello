@@ -1,13 +1,13 @@
 import { Divider, Dots, Overlay } from "..";
 import { PlusIcon } from "../../assets/icons";
 import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext";
-import { Colors } from "../../types/global";
+import { Colors, ModalDataProps } from "../../types/global";
 import "./Modal.css";
 
 type ModalProps = {
   isModalOpen: boolean,
   setIsModalOpen: React.Dispatch<boolean>,
-  modalData: any
+  modalData: ModalDataProps
 }
 
 const style = { display: "flex", justifyContent: "space-between" }

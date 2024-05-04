@@ -5,14 +5,14 @@ import { createContext, useContext, useState } from "react";
 import useModal from "../hooks/useModal";
 
 // Types and static data
-import { ActiveProps, ContainerMapProps, ItemProps, ModalProps } from "../types/global";
+import { ActiveProps, ContainerMapProps, ItemProps, ModalDataProps } from "../types/global";
 import { PROJECT_DATA } from "../assets/global";
 
 export type ProjectProviderData = {
   projectData: ContainerMapProps,
   activeItem: ActiveProps,
   isModalOpen: boolean,
-  modalData: ModalProps,
+  modalData: ModalDataProps,
   isTrashable: boolean,
   isOverTrash: boolean,
   newContainer: boolean,
@@ -32,7 +32,7 @@ export type ProjectProviderOperations = {
   findItemById: (id: string) => ItemProps | null,
   openModal: (id: string) => void,
   setIsModalOpen: React.Dispatch<boolean>,
-  setModalData: React.Dispatch<ModalProps>,
+  setModalData: React.Dispatch<ModalDataProps>,
   setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
