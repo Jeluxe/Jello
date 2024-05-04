@@ -5,6 +5,8 @@ export enum Colors {
   danger = "red"
 }
 
+export type AcceptableImagesExtensions = [".jpg", ".jpeg", ".png"]
+
 export type ContainerMapProps = {
   [key: string]: ItemProps[]
 }
@@ -33,3 +35,27 @@ export interface ContainerProps extends SharedProps {
 }
 
 export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>);
+
+export type SidebarProps = {
+  type: "themes" | "settings",
+  isOpen: boolean,
+}
+
+export type SidebarAction = {
+  setSidebarData: React.Dispatch<React.SetStateAction<SidebarProps>>
+}
+
+export type SidebarType = {
+  sidebarData: SidebarProps
+} & SidebarAction;
+
+export type ThemeProps = {
+  name: string,
+  background: string,
+  image?: boolean
+}
+
+export type ThemeActions = {
+  setThemeList: React.Dispatch<React.SetStateAction<ThemeProps[]>>,
+  setNewThemeForm: React.Dispatch<boolean>
+}
