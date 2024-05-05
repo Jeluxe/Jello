@@ -4,6 +4,7 @@ import { HiOutlinePhoto } from "react-icons/hi2";
 import { IoExitOutline, IoSettingsSharp } from "react-icons/io5";
 import { MdDragIndicator } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { TbArrowBack } from "react-icons/tb";
 
 
 export {
@@ -13,6 +14,7 @@ export {
   FaPlus as PlusIcon,
   IoSettingsSharp as SettingsIcon,
   HiOutlinePhoto as ThemeIcon,
-  FaTrash as TrashIcon
+  FaTrash as TrashIcon,
+  TbArrowBack as BackIcon
 };
 
