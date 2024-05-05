@@ -2,3 +2,15 @@
   display: flex;
   border: 1px solid rgba(158, 158, 158, 0.377);
 }
+
+.divider.h {
+  min-width: 100%;
+  height: 1px;
+  justify-content: center
+}
+
+.divider.v {
+  min-height: 100%;
+  width: 1px;
+  align-items: center
+}
