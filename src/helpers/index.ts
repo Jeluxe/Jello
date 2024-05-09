@@ -1,3 +1,5 @@
+import { ThemeProps } from "../types/global";
+
 export const arrayToObject = (array: string[]) => {
   return array.reduce((obj: { [key: string]: string }, item: string) => {
     obj[item.toLowerCase()] = '';
@@ -17,7 +19,9 @@ const ImageBackgroundStyle = (img: string) => ({
   backgroundPosition: "center center"
 });
 
-export const isThemeImage = (theme: any, themePreview?: any) => {
+type ThemeImageProps = Omit<ThemeProps, "name">
+
+export const isThemeImage = (theme: ThemeImageProps, themePreview?: ThemeImageProps | null) => {
   const { image, background } = themePreview ?? theme
 
   return image ? ImageBackgroundStyle(background) : { background }

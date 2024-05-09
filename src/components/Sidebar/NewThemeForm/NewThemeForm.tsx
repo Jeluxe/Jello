@@ -1,8 +1,9 @@
 // External libraries
 import { useEffect, useRef, useState } from "react";
 
-// Components 
+// Components and contexts
 import { Button, Divider, Input } from "../..";
+import { useSidebarProvider } from "../../../context/SidebarContext";
 
 // Helpers and static data
 import { ACCEPTABLE_IMAGE_FILE_EXTENSIONS } from "../../../assets/global";
@@ -10,14 +11,22 @@ import { isThemeImage } from "../../../helpers";
 
 // Types and styles
 import { ThemeActions, ThemeProps } from "../../../types/global";
+import { BackIcon } from "../../../assets/icons";
 import "./NewThemeForm.css"
 
-const NewThemeForm = ({ themeList, setThemeList, setNewThemeForm }: { themeList: ThemeProps[] } & ThemeActions) => {
+const NewThemeForm = () => {
   const previewRef = useRef<HTMLImageElement>(null);
   const [newTheme, setNewTheme] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
+  const [color, setColor] = useState<string | null>(null);
+  const [customName, setCustomName] = useState<string>("");
+  const {
+    setThemeList,
+    setNewThemeForm,
+  }: ThemeActions = useSidebarProvider();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+
+  const watchFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (!e || !e.target || !e.target.files) {
       return;
     }
@@ -38,10 +47,16 @@ const NewThemeForm = ({ themeList, setThemeList, setNewThemeForm }: { themeList:
 
   const onSubmit = () => {
     if (file) {
-      setThemeList((prev: ThemeProps[]) => [{ name: file?.name, background: URL.createObjectURL(file), image: true }, ...prev])
+      setThemeList((prev: ThemeProps[]) => [{ name: customName || file?.name, background: URL.createObjectURL(file), image: true }, ...prev])
+      onReturn();
+    }
+    else if (color) {
+      setThemeList((prev: ThemeProps[]) => [{ name: customName || color, background: color }, ...prev])
     }
 
-    onReturn();
+    if (file || color) {
+      onReturn();
+    }
   }
 
   const onReturn = () => {
@@ -54,6 +69,14 @@ const NewThemeForm = ({ themeList, setThemeList, setNewThemeForm }: { themeList:
     setNewTheme(false);
   }
 
+  const watchColorPicker = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setColor(e.target.value)
+  }
+
+  const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomName(e.target.value)
+  }
+
   useEffect(() => {
     return () => {
       if (previewRef.current) {
@@ -64,17 +87,29 @@ const NewThemeForm = ({ themeList, setThemeList, setNewThemeForm }: { themeList:
 
   return (
     <div className="sidebar-new-theme-form">
-      <img ref={previewRef} width={300} height={250} style={isThemeImage({ name: file?.name ?? `Theme${themeList.length}`, background: previewRef.current?.src }) && { display: newTheme ? "block" : "none" }} />
+      <img
+        ref={previewRef}
+        width={300}
+        height={250}
+        style={
+          isThemeImage({ background: previewRef.current?.src ?? "" }) &&
+          { display: newTheme ? "block" : "none" }
+        }
+      />
       {
         !newTheme ?
-          <Input type="file" value="" onChange={onChange} accept=".jpg, .jpeg, .png" /> :
-          <>
-            <Button title={"X"} onClick={removeImg} />
-            <Button title={"Add New Theme"} onClick={onSubmit} />
-          </>
+          <Input type="file" value="" onChange={watchFileChange} />
+          : <Button title={"X"} onClick={removeImg} />
       }
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}><Divider color="black" /><span style={{ padding: "0 10px" }}>or</span><Divider color="black" /></div>
-      <Button title={"<-"} onClick={onReturn} />
+      <div className="form-divider">
+        <Divider color="black" />
+        <span style={{ padding: "0 10px" }}>or</span>
+        <Divider color="black" />
+      </div>
+      <Input type="color" value={color ?? ""} onChange={watchColorPicker} />
+      custom name: <Input type="text" value={customName} onChange={changeName} />
+      <Button title={"Add New Theme"} onClick={onSubmit} />
+      <Button title={<BackIcon />} onClick={onReturn} />
     </div>
   )
 }

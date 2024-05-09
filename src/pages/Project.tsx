@@ -27,7 +27,7 @@ const Project = () => {
     theme,
     themePreview,
     isPreview,
-  }: Exclude<SidebarProviderData, "sidebarData"> = useSidebarProvider()
+  }: Omit<SidebarProviderData, "sidebarData" | "themeList"> = useSidebarProvider()
 
   const operations = useDragOperations()
 

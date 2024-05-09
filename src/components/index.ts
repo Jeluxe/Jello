@@ -16,6 +16,7 @@ import ProjectBody from './ProjectBody/ProjectBody';
 import ProjectHeader from './ProjectHeader/ProjectHeader';
 import ProjectPreview from './ProjectPreview/ProjectPreview';
 import Sidebar from './Sidebar/Sidebar';
+import NewThemeForm from "./Sidebar/NewThemeForm/NewThemeForm";
 
 export {
   AuthLayout,
@@ -35,6 +36,7 @@ export {
   ProjectHeader,
   ProjectPreview,
   Sidebar,
-  TrashContainer
+  TrashContainer,
+  NewThemeForm
 };
 

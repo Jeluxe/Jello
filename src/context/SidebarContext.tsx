@@ -4,19 +4,21 @@ import { createContext, useContext, useState } from "react";
 // Types and image
 import { SidebarProps, ThemeProps } from "../types/global";
 import monica from "../assets/monic.jpg"
+import { PREDEFINED_THEMES } from "../assets/global";
 
 export type SidebarProviderData = {
   sidebarData: SidebarProps,
-  theme: ThemeProps,
-  themePreview: ThemeProps | null,
   isPreview: boolean,
+  newThemeForm: boolean,
+  themePreview: ThemeProps | null,
+  theme: ThemeProps,
+  themeList: ThemeProps[]
 }
 
 export type SidebarProviderOperations = {
-  setIsPreview: React.Dispatch<boolean>,
   setSidebarData: React.Dispatch<SidebarProps>
-  setTheme: React.Dispatch<ThemeProps>,
-  setThemePreview: React.Dispatch<ThemeProps | null>,
+  setNewThemeForm: React.Dispatch<boolean>,
+  setThemeList: React.Dispatch<ThemeProps[]>,
   onSave: () => void,
   closePreview: () => void
   closeSidebar: () => void,
@@ -27,15 +29,18 @@ export const SidebarContext = createContext<any>(null);
 
 export const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
   const [sidebarData, setSidebarData] = useState<SidebarProps>({ isOpen: false });
-  const [isPreview, setIsPreview] = useState<boolean>(false)
   const [theme, setTheme] = useState<ThemeProps>({ name: "monica", background: monica, image: true })
+  const [themeList, setThemeList] = useState<ThemeProps[]>(PREDEFINED_THEMES);
+  const [newThemeForm, setNewThemeForm] = useState<boolean>(false);
+  const [isPreview, setIsPreview] = useState<boolean>(false)
   const [themePreview, setThemePreview] = useState<ThemeProps | null>(null)
 
   const closeSidebar = () => {
     setSidebarData((prev) => ({ ...prev, isOpen: false }))
+    setNewThemeForm(false)
   }
 
-  const onPreview = (theme: any) => {
+  const onPreview = (theme: ThemeProps) => {
     setThemePreview(theme)
     setIsPreview(true)
     closeSidebar();
@@ -56,16 +61,17 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
   return (
     <SidebarContext.Provider value={{
       sidebarData,
-      setSidebarData,
       isPreview,
       theme,
+      themeList,
       themePreview,
-      setIsPreview,
-      setTheme,
-      setThemePreview,
+      newThemeForm,
+      setSidebarData,
       closeSidebar,
       closePreview,
       onPreview,
+      setNewThemeForm,
+      setThemeList,
       onSave
     }}>
       {children}

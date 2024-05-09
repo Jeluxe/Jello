@@ -1,24 +1,27 @@
-// External libraries
-import { useState } from "react";
-
 // Components and context
-import { Overlay } from "..";
-import NewThemeFormSidebar from "./NewThemeForm/NewThemeForm";
-import { SidebarProviderOperations, useSidebarProvider } from "../../context/SidebarContext";
+import { Overlay, NewThemeForm } from "..";
+import { SidebarProviderData, SidebarProviderOperations, useSidebarProvider } from "../../context/SidebarContext";
 
-// Helpers and static data
+// Helpers 
 import { isThemeImage } from "../../helpers";
-import { PREDEFINED_THEMES } from "../../assets/global";
 
 // Types and icons and styles
-import { SidebarType, ThemeProps, } from "../../types/global";
+import { SidebarType, } from "../../types/global";
 import { PlusIcon } from "../../assets/icons";
 import './Sidebar.css';
 
+type SidebarContext = SidebarType & Pick<SidebarProviderData, "newThemeForm" | "themeList"> & Pick<SidebarProviderOperations, "onPreview" | "closeSidebar" | "setNewThemeForm">
+
 const Sidebar = () => {
-  const [newThemeForm, setNewThemeForm] = useState(false);
-  const [themeList, setThemeList] = useState<ThemeProps[]>(PREDEFINED_THEMES);
-  const { sidebarData, onPreview, closeSidebar }: SidebarType & SidebarProviderOperations = useSidebarProvider();
+
+  const {
+    sidebarData,
+    newThemeForm,
+    themeList,
+    onPreview,
+    closeSidebar,
+    setNewThemeForm
+  }: SidebarContext = useSidebarProvider();
 
   return (
     <Overlay clickable isVisible={sidebarData.isOpen} setIsVisible={closeSidebar}>
@@ -27,7 +30,7 @@ const Sidebar = () => {
         <div className="sidebar-body">
           {
             newThemeForm ?
-              <NewThemeFormSidebar themeList={themeList} setThemeList={setThemeList} setNewThemeForm={setNewThemeForm} /> :
+              <NewThemeForm /> :
               <>
                 <div className="sidebar-theme-item button new-theme-button" onClick={() => setNewThemeForm(true)}>
                   <PlusIcon size={24} />
