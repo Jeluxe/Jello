@@ -2,24 +2,48 @@ import "./Input.css"
 
 type InputProps = {
   className?: string,
-  type: "text" | "password" | "file",
+  type: "text" | "password" | "file" | "color",
   value: string,
-  onChange: (e: any) => void,
-  onKeydown?: (e: any) => void,
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onKeydown?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   maxLength?: number,
-  accept?: ".jpg, .jpeg, .png"
+  style?: React.CSSProperties
 }
 
-const Input = ({ className = "", type = "text", value = "", onChange, onKeydown, maxLength, accept }: InputProps) => {
+type TextInputProps = {
+  value: string,
+  onKeydown?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  maxLength?: number
+}
+
+type FileInputProps = { accept: string }
+
+type ColorInputProps = { value: string }
+
+type customInputProps = TextInputProps | FileInputProps | ColorInputProps | {}
+
+const Input = ({ className = "", type = "text", value = "", onChange, onKeydown, maxLength, style }: InputProps) => {
+  const getInputProps = (): customInputProps => {
+    switch (type) {
+      case "text":
+      case "password":
+        return { value, onKeydown, maxLength }
+      case "file":
+        return { accept: ".jpg, .jpeg, .png" }
+      case "color":
+        return { value }
+      default:
+        return {};
+    }
+  }
+
   return (
     <input
       className={className}
       type={type}
-      value={value}
       onChange={onChange}
-      onKeyDown={onKeydown}
-      maxLength={maxLength}
-      accept={accept}
+      {...getInputProps()}
+      style={style}
       autoFocus
     />
   )
