@@ -107,7 +107,7 @@ const NewThemeForm = () => {
         <Divider color="black" />
       </div>
       <Input type="color" value={color ?? ""} onChange={watchColorPicker} />
-      custom name: <Input type="text" value={customName} onChange={changeName} />
+      custom name: <Input value={customName} onChange={changeName} />
       <Button title={"Add New Theme"} onClick={onSubmit} />
       <Button title={<BackIcon />} onClick={onReturn} />
     </div>

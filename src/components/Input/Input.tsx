@@ -2,7 +2,7 @@ import "./Input.css"
 
 type InputProps = {
   className?: string,
-  type: "text" | "password" | "file" | "color",
+  type?: "text" | "password" | "file" | "color",
   value: string,
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onKeyDown?: (e: React.KeyboardEvent) => void,
