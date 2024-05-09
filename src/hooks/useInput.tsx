@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useCallback, useState } from 'react';
 
-export const InputHook = (setter: React.Dispatch<any>, setIsOpen: React.Dispatch<boolean>) => {
+export const useInput = (setter: React.Dispatch<any>, setIsOpen: React.Dispatch<boolean>) => {
   const [value, setValue] = useState("")
   const [error, setError] = useState({ error: false, message: "" })
 

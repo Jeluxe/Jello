@@ -5,14 +5,14 @@ type InputProps = {
   type: "text" | "password" | "file" | "color",
   value: string,
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onKeydown?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onKeyDown?: (e: React.KeyboardEvent) => void,
   maxLength?: number,
   style?: React.CSSProperties
 }
 
 type TextInputProps = {
   value: string,
-  onKeydown?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onKeyDown?: (e: React.KeyboardEvent) => void,
   maxLength?: number
 }
 
@@ -22,12 +22,12 @@ type ColorInputProps = { value: string }
 
 type customInputProps = TextInputProps | FileInputProps | ColorInputProps | {}
 
-const Input = ({ className = "", type = "text", value = "", onChange, onKeydown, maxLength, style }: InputProps) => {
+const Input = ({ className = "", type = "text", value = "", onChange, onKeyDown, maxLength, style }: InputProps) => {
   const getInputProps = (): customInputProps => {
     switch (type) {
       case "text":
       case "password":
-        return { value, onKeydown, maxLength }
+        return { value, onKeyDown, maxLength }
       case "file":
         return { accept: ".jpg, .jpeg, .png" }
       case "color":

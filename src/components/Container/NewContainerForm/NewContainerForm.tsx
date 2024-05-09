@@ -1,6 +1,6 @@
 import { PlusIcon } from '../../../assets/icons';
 import { ProjectProviderOperations, useProjectProvider } from '../../../context/ProjectContext';
-import { InputHook } from '../../../hooks/useInput';
+import { useInput } from '../../../hooks/useInput';
 import Input from '../../Input/Input';
 import './NewContainerForm.css';
 
@@ -8,7 +8,7 @@ type NewContainerProps = { setIsOpen: React.Dispatch<boolean> }
 
 const NewContainer = ({ setIsOpen }: NewContainerProps) => {
   const { addContainer }: Pick<ProjectProviderOperations, "addContainer"> = useProjectProvider();
-  const { value, error, handleChange, onAction, onKeyDown } = InputHook(addContainer, setIsOpen)
+  const { value, error, handleChange, onAction, onKeyDown } = useInput(addContainer, setIsOpen)
 
   return (
     <div className='container new-container'>
@@ -16,7 +16,7 @@ const NewContainer = ({ setIsOpen }: NewContainerProps) => {
         className={"container-input"}
         type='text'
         value={value}
-        onKeydown={onKeyDown}
+        onKeyDown={onKeyDown}
         onChange={handleChange}
         maxLength={24}
       />
