@@ -5,6 +5,11 @@ export enum Colors {
   danger = "red"
 }
 
+export interface ErrorProps {
+  error: boolean,
+  message: string | null
+}
+
 export type AcceptableImagesExtensions = [".jpg", ".jpeg", ".png"]
 
 export type ContainerMapProps = {
@@ -34,26 +39,20 @@ export interface ContainerProps extends SharedProps {
   list: ItemProps[],
 }
 
-export type ModalDataProps = ItemProps & { containerId: string };
-
 export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>) | null;
 
-export type SidebarProps = {
-  isOpen: boolean,
-}
+export type ModalTypes = "card" | "container" | "theme" | null;
 
-export type SidebarAction = {
-  setSidebarData: React.Dispatch<React.SetStateAction<SidebarProps>>
-}
+export type ModalCardDataProps = ItemProps & { containerId: string };
 
-export type SidebarType = {
-  sidebarData: SidebarProps
-} & SidebarAction;
+export type ModalContainerDataProps = any;
+
+export type ModalDataTypes = ModalCardDataProps | ModalContainerDataProps
 
 export type ThemeProps = {
   name: string,
   background: string,
-  image?: boolean
+  isImage?: boolean
 }
 
 export type ThemeActions = {

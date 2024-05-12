@@ -5,11 +5,11 @@ import {
   Route,
 } from "react-router-dom";
 
-// Components and contexts
+// Components and Providers
 import App from '../App';
-import { AuthProvider } from '../context/AuthContext';
-import { ProjectProvider } from '../context/ProjectContext';
-import { SidebarProvider } from '../context/SidebarContext';
+import AuthProvider from '../context/AuthContext';
+import ProjectProvider from '../context/ProjectContext';
+import ThemeProvider from '../context/ThemeContext';
 
 // Pages and routes
 import { About, Contact, Login, Profile, Project, Projects, Signup, Welcome } from '../pages';
@@ -19,13 +19,19 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='' element={<AuthProvider><App /></AuthProvider>}>
       <Route index element={< Welcome />} />
-      < Route path='my-projects' element={< ProtectedRoute > <Projects /></ProtectedRoute >} />
+      < Route path='my-projects' element={
+        < ProtectedRoute >
+          <ThemeProvider>
+            <Projects />
+          </ThemeProvider>
+        </ProtectedRoute >
+      } />
       < Route path='my-projects/:id' element={
         < ProtectedRoute >
           <ProjectProvider>
-            <SidebarProvider>
+            <ThemeProvider>
               <Project />
-            </SidebarProvider>
+            </ThemeProvider>
           </ProjectProvider>
         </ProtectedRoute>
       } />

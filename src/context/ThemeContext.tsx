@@ -2,45 +2,50 @@
 import { createContext, useContext, useState } from "react";
 
 // Types and image
-import { SidebarProps, ThemeProps } from "../types/global";
-import monica from "../assets/monic.jpg"
+import { ModalTypes, ThemeProps } from "../types/global";
 import { PREDEFINED_THEMES } from "../assets/global";
+import useModal from "../hooks/useModal";
 
-export type SidebarProviderData = {
-  sidebarData: SidebarProps,
+export type ThemeProviderData = {
+  isSidebarOpen: boolean,
   isPreview: boolean,
   newThemeForm: boolean,
   themePreview: ThemeProps | null,
   theme: ThemeProps,
-  themeList: ThemeProps[]
+  themeList: ThemeProps[],
+  modalType: ModalTypes,
+  isModalOpen: boolean
 }
 
-export type SidebarProviderOperations = {
-  setSidebarData: React.Dispatch<SidebarProps>
+export type ThemeProviderOperations = {
+  setIsSidebarOpen: React.Dispatch<boolean>,
   setNewThemeForm: React.Dispatch<boolean>,
   setThemeList: React.Dispatch<ThemeProps[]>,
-  onSave: () => void,
+  setThemePreview: React.Dispatch<ThemeProps | null>,
+  setIsModalOpen: React.Dispatch<boolean>,
+  saveTheme: () => void,
   closePreview: () => void
   closeSidebar: () => void,
-  onPreview: (theme: any) => void,
+  previewTheme: (theme: any) => void,
 }
 
-export const SidebarContext = createContext<any>(null);
+export const ThemeContext = createContext<any>(null);
 
-export const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarData, setSidebarData] = useState<SidebarProps>({ isOpen: false });
-  const [theme, setTheme] = useState<ThemeProps>({ name: "monica", background: monica, image: true })
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const { modalType, isModalOpen, setIsModalOpen } = useModal("theme");
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<ThemeProps>(PREDEFINED_THEMES[0])
   const [themeList, setThemeList] = useState<ThemeProps[]>(PREDEFINED_THEMES);
   const [newThemeForm, setNewThemeForm] = useState<boolean>(false);
   const [isPreview, setIsPreview] = useState<boolean>(false)
   const [themePreview, setThemePreview] = useState<ThemeProps | null>(null)
 
   const closeSidebar = () => {
-    setSidebarData((prev) => ({ ...prev, isOpen: false }))
+    setIsSidebarOpen(false)
     setNewThemeForm(false)
   }
 
-  const onPreview = (theme: ThemeProps) => {
+  const previewTheme = (theme: ThemeProps) => {
     setThemePreview(theme)
     setIsPreview(true)
     closeSidebar();
@@ -51,7 +56,7 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
     setIsPreview(false);
   }
 
-  const onSave = () => {
+  const saveTheme = () => {
     if (themePreview) {
       setTheme(themePreview);
     }
@@ -59,24 +64,29 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
   }
 
   return (
-    <SidebarContext.Provider value={{
-      sidebarData,
+    <ThemeContext.Provider value={{
+      isSidebarOpen,
       isPreview,
       theme,
       themeList,
       themePreview,
       newThemeForm,
-      setSidebarData,
+      modalType,
+      isModalOpen,
       closeSidebar,
       closePreview,
-      onPreview,
+      previewTheme,
       setNewThemeForm,
       setThemeList,
-      onSave
+      setThemePreview,
+      saveTheme,
+      setIsModalOpen
     }}>
       {children}
-    </SidebarContext.Provider>
+    </ThemeContext.Provider>
   )
 }
 
-export const useSidebarProvider = () => useContext(SidebarContext);
+export default ThemeProvider;
+
+export const useThemeProvider = () => useContext(ThemeContext);

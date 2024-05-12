@@ -5,14 +5,14 @@ import { createContext, useContext, useState } from "react";
 import useModal from "../hooks/useModal";
 
 // Types and static data
-import { ActiveProps, ContainerMapProps, ItemProps, ModalDataProps } from "../types/global";
+import { ActiveProps, ContainerMapProps, ItemProps, ModalDataTypes } from "../types/global";
 import { PROJECT_DATA } from "../assets/global";
 
 export type ProjectProviderData = {
   projectData: ContainerMapProps,
   activeItem: ActiveProps,
   isModalOpen: boolean,
-  modalData: ModalDataProps,
+  modalData: ModalDataTypes,
   isTrashable: boolean,
   isOverTrash: boolean,
   newContainer: boolean,
@@ -32,7 +32,7 @@ export type ProjectProviderOperations = {
   findItemById: (id: string) => ItemProps | null,
   openModal: (id: string) => void,
   setIsModalOpen: React.Dispatch<boolean>,
-  setModalData: React.Dispatch<ModalDataProps>,
+  setModalData: React.Dispatch<ModalDataTypes>,
   setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
   setIsTrashable: React.Dispatch<boolean>,
   setIsOverTrash: React.Dispatch<boolean>,
@@ -43,7 +43,7 @@ export type ProjectProviderOperations = {
 export const ProjectContext = createContext<any>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isModalOpen, modalData, setIsModalOpen, setModalData, } = useModal();
+  const { isModalOpen, modalData, modalType, setIsModalOpen, setModalData, setModalType } = useModal();
   const [projectData, setProjectData] = useState<ContainerMapProps>(PROJECT_DATA);
   const [newContainer, setNewContainer] = useState<boolean>(false);
   const [isTrashable, setIsTrashable] = useState<boolean>(false);
@@ -104,17 +104,17 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
         if (card.id === id) {
           if (card.tags.includes(newTag)) return card;
 
-          const updatedCardTags = {
+          const updatedCard = {
             ...card,
             tags: (card.tags.length) ? [...card.tags, newTag] : [newTag]
           }
 
           setModalData({
-            ...updatedCardTags,
+            ...updatedCard,
             containerId: selectedContainer
           })
 
-          return updatedCardTags
+          return updatedCard
         }
         return card;
       })]
@@ -201,8 +201,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       findContainer,
       isModalOpen,
       modalData,
+      modalType,
       setIsModalOpen,
       setModalData,
+      setModalType,
       openModal,
       isTrashable,
       isOverTrash,
@@ -216,5 +218,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     </ProjectContext.Provider>
   )
 }
+
+export default ProjectProvider;
 
 export const useProjectProvider = () => useContext(ProjectContext);
