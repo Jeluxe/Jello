@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ModalDataProps } from "../types/global";
+import { ModalDataTypes, ModalTypes } from "../types/global";
 
-const useModal = () => {
+const useModal = (type: ModalTypes) => {
+  const modalType: ModalTypes = type;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<ModalDataProps | null>(null)
+  const [modalData, setModalData] = useState<ModalDataTypes | null>(null)
 
-  return { isModalOpen, setIsModalOpen, modalData, setModalData }
+  return { modalType, isModalOpen, setIsModalOpen, modalData, setModalData }
 }
 
 export default useModal
