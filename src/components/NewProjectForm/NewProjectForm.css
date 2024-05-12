@@ -1,0 +1,38 @@
+.new-project-form {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-field-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-theme-field {
+  border: 1px solid black;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 120px;
+  width: 100%;
+  min-height: 70px;
+  cursor: pointer;
+}
+
+.form-theme-display {
+  height: 70px;
+  width: 120px;
+  border: 1px solid black;
+  border-radius: 6px;
+}
