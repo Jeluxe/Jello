@@ -3,16 +3,15 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 
 // Project components and contexts and hooks
-import { Modal, ProjectHeader, ProjectPreview, Sidebar, ProjectBody, Container, Card } from '../components';
+import { ProjectHeader, ProjectPreview, Sidebar, ProjectBody, Container, Card, Modal } from '../components';
 import { ProjectProviderData, ProjectProviderOperations, useProjectProvider } from '../context/ProjectContext';
-import { SidebarProviderData, useSidebarProvider } from '../context/SidebarContext';
+import { ThemeProviderData, useThemeProvider } from '../context/ThemeContext';
 import useDragOperations from '../hooks/useDragOperations';
 
 // Types and styles
 import { isThemeImage } from '../helpers';
 import "./Project.css";
 
-type ProjectContextOperations = Pick<ProjectProviderOperations, "setIsModalOpen">
 
 const Project = () => {
   const {
@@ -21,13 +20,13 @@ const Project = () => {
     isModalOpen,
     modalData,
     setIsModalOpen,
-  }: ProjectProviderData & ProjectContextOperations = useProjectProvider();
+  }: ProjectProviderData & ProjectProviderOperations = useProjectProvider();
 
   const {
     theme,
     themePreview,
     isPreview,
-  }: Omit<SidebarProviderData, "sidebarData" | "themeList"> = useSidebarProvider()
+  }: Omit<ThemeProviderData, "isSidebarOpen" | "newThemeForm" | "themeList"> = useThemeProvider()
 
   const operations = useDragOperations()
 
@@ -59,7 +58,7 @@ const Project = () => {
               </DragOverlay>
             </DndContext>
             <Sidebar />
-            <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
+            <Modal modalType="card" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
           </>
       }
     </div>
