@@ -21,6 +21,11 @@
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+}
+
+.projects-container:has(.new-project-form) .projects-header-title {
+  text-align: center;
 }
 
 .projects-wrapper {
