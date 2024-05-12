@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 // Components and contexts
 import { Button, Divider, Input } from "../..";
-import { useSidebarProvider } from "../../../context/SidebarContext";
+import { useThemeProvider } from "../../../context/ThemeContext";
 
 // Helpers and static data
 import { ACCEPTABLE_IMAGE_FILE_EXTENSIONS } from "../../../assets/global";
@@ -23,7 +23,7 @@ const NewThemeForm = () => {
   const {
     setThemeList,
     setNewThemeForm,
-  }: ThemeActions = useSidebarProvider();
+  }: ThemeActions = useThemeProvider();
 
 
   const watchFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -47,7 +47,7 @@ const NewThemeForm = () => {
 
   const onSubmit = () => {
     if (file) {
-      setThemeList((prev: ThemeProps[]) => [{ name: customName || file?.name, background: URL.createObjectURL(file), image: true }, ...prev])
+      setThemeList((prev: ThemeProps[]) => [{ name: customName || file?.name, background: URL.createObjectURL(file), isImage: true }, ...prev])
       onReturn();
     }
     else if (color) {

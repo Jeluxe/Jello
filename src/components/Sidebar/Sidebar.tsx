@@ -1,30 +1,28 @@
 // Components and context
 import { Overlay, NewThemeForm } from "..";
-import { SidebarProviderData, SidebarProviderOperations, useSidebarProvider } from "../../context/SidebarContext";
+import { ThemeProviderData, ThemeProviderOperations, useThemeProvider } from "../../context/ThemeContext";
 
 // Helpers 
 import { isThemeImage } from "../../helpers";
 
 // Types and icons and styles
-import { SidebarType, } from "../../types/global";
 import { PlusIcon } from "../../assets/icons";
 import './Sidebar.css';
 
-type SidebarContext = SidebarType & Pick<SidebarProviderData, "newThemeForm" | "themeList"> & Pick<SidebarProviderOperations, "onPreview" | "closeSidebar" | "setNewThemeForm">
+type SidebarContext = Pick<ThemeProviderData, "isSidebarOpen" | "newThemeForm" | "themeList"> & Pick<ThemeProviderOperations, "closeSidebar" | "previewTheme" | "setNewThemeForm">
 
 const Sidebar = () => {
-
   const {
-    sidebarData,
     newThemeForm,
     themeList,
-    onPreview,
+    isSidebarOpen,
+    previewTheme,
     closeSidebar,
     setNewThemeForm
-  }: SidebarContext = useSidebarProvider();
+  }: SidebarContext = useThemeProvider();
 
   return (
-    <Overlay clickable isVisible={sidebarData.isOpen} setIsVisible={closeSidebar}>
+    <Overlay clickable isVisible={isSidebarOpen} setIsVisible={closeSidebar}>
       <div className='sidebar'>
         <h3>Themes</h3>
         <div className="sidebar-body">
@@ -37,7 +35,7 @@ const Sidebar = () => {
                   <span>new-theme</span>
                 </div>
                 {themeList.map((theme, idx) =>
-                  <div key={idx} className="sidebar-theme-item button" style={isThemeImage(theme)} onClick={() => onPreview(theme)}>
+                  <div key={idx} className="sidebar-theme-item button" style={isThemeImage(theme)} onClick={() => previewTheme(theme)}>
                     <span className="sidebar-theme-item-title">{theme.name}</span>
                   </div>
                 )}
