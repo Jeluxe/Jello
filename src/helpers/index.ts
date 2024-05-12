@@ -22,7 +22,10 @@ const ImageBackgroundStyle = (img: string) => ({
 type ThemeImageProps = Omit<ThemeProps, "name">
 
 export const isThemeImage = (theme: ThemeImageProps, themePreview?: ThemeImageProps | null) => {
-  const { image, background } = themePreview ?? theme
+  const availableTheme = themePreview ?? theme;
 
-  return image ? ImageBackgroundStyle(background) : { background }
+  if (!availableTheme) return;
+
+  const { background, isImage } = availableTheme;
+  return isImage ? ImageBackgroundStyle(background) : { background }
 }
