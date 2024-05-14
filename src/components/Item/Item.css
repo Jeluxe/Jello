@@ -1,16 +1,19 @@
 .item-container {
   display: flex;
+  position: relative;
   min-width: 300px;
   height: 160px;
-  position: relative;
   border-radius: 15px;
+  padding: 0;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.418);
+  text-align: start;
+  overflow: hidden;
   cursor: pointer;
 }
 
-a.item-container {
-  padding: 0;
-  text-align: start;
+.item-container>div:first-child {
+  width: 100%;
+  height: auto;
 }
 
 .item-container img {
@@ -21,7 +24,7 @@ a.item-container {
   border-radius: 15px;
 }
 
-.item-container div {
+.item-container .item-title {
   z-index: 1;
   position: absolute;
   bottom: 0;
@@ -29,4 +32,23 @@ a.item-container {
   width: 100%;
   padding: 3px 10px;
   border-radius: 0 0 15px 15px;
+}
+
+.item-container .dots {
+  padding: 4px 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.item-container .dots:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.item-container .dots:active {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.pos-t-r {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
