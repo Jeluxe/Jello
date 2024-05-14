@@ -26,7 +26,7 @@ type SharedProps = {
   key?: React.Key | null | undefined,
   title: string,
   id: string,
-  openModal?: (data: any) => void
+  openModal?: (id: string, type: string) => void
 }
 
 export interface ItemProps extends SharedProps {
