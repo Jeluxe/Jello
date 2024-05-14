@@ -19,6 +19,7 @@ const Project = () => {
     activeItem,
     isModalOpen,
     modalData,
+    modalType,
     setIsModalOpen,
   }: ProjectProviderData & ProjectProviderOperations = useProjectProvider();
 
@@ -58,7 +59,7 @@ const Project = () => {
               </DragOverlay>
             </DndContext>
             <Sidebar />
-            <Modal modalType="card" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
+            <Modal modalType={modalType} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalData={modalData} />
           </>
       }
     </div>
