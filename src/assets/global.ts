@@ -27,9 +27,12 @@ export const PROJECT_DATA: ContainerMapProps = {
   Dropped: []
 }
 
-interface ProjectCardProps {
+interface ProjectProps {
   name: string,
-  theme: ThemeProps
+  theme: ThemeProps,
+  projectData?: ContainerMapProps
 }
 
-export const STATIC_DATA: ProjectCardProps[] = Array(5).fill({ name: "goosse" }).map((item, idx) => ({ name: `${item.name}${idx}`, theme: Math.floor(Math.random() * 10) < 5 ? { name: "foseol", background: monica, isImage: true } : { name: "foseol", background: "black" } }))
+export type ProjectPropsWithoutList = Omit<ProjectProps, "projectData">[];
+
+export const STATIC_DATA: ProjectProps[] = Array(5).fill({ name: "goosse" }).map((item, idx) => ({ name: `${item.name}${idx}`, theme: Math.floor(Math.random() * 10) < 5 ? { name: "foseol", background: monica, isImage: true } : { name: "foseol", background: "black" }, projectData: PROJECT_DATA }))
