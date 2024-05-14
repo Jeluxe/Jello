@@ -3,6 +3,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { useState } from "react"
 
 import { Card, NewCardForm } from ".."
+import { ProjectProviderOperations, useProjectProvider } from "../../context/ProjectContext"
 
 import { DragIcon, PlusIcon, SettingsIcon } from "../../assets/icons"
 import { ContainerProps } from "../../types/global"
@@ -19,6 +20,7 @@ const Container = ({ id, title, list }: ContainerProps) => {
     transition,
     setActivatorNodeRef
   } = useSortable({ id });
+  const { openModal }: Pick<ProjectProviderOperations, "openModal"> = useProjectProvider();
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -38,7 +40,7 @@ const Container = ({ id, title, list }: ContainerProps) => {
               size={24}
               id="settings"
               className="button"
-            // onClick={openMenu}
+              onClick={() => openModal(id, "container")}
             />
             <div className="container-title">{title}</div>
             <div style={{ display: "flex", alignItems: "center" }}>

@@ -69,7 +69,7 @@ const Card = ({ id, title, content, tags, participants }: ItemProps) => {
               />
               <DescriptionIcon
                 className="button"
-                onClick={() => openModal(id)}
+                onClick={() => openModal(id, "card")}
               />
               <div>july 15</div>
             </div>
