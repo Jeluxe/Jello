@@ -5,14 +5,18 @@ import { createContext, useContext, useState } from "react";
 import useModal from "../hooks/useModal";
 
 // Types and static data
-import { ActiveProps, ContainerMapProps, ItemProps, ModalDataTypes } from "../types/global";
+import { ActiveProps, ContainerMapProps, ItemProps, ModalDataTypes, ModalTypes } from "../types/global";
 import { PROJECT_DATA } from "../assets/global";
+import { renameKey } from "../helpers";
+
+type ModalTypesWithoutTheme = Exclude<ModalTypes, "theme">;
 
 export type ProjectProviderData = {
   projectData: ContainerMapProps,
   activeItem: ActiveProps,
   isModalOpen: boolean,
   modalData: ModalDataTypes,
+  modalType: ModalTypes,
   isTrashable: boolean,
   isOverTrash: boolean,
   newContainer: boolean,
@@ -22,7 +26,7 @@ export type ProjectProviderOperations = {
   addContainer: (name: string) => void,
   addCard: (containerId: string, name: string) => void,
   addTag: (e?: any, id?: string, containerId?: string) => void,
-  updateContainer: () => void,
+  updateContainer: (id: string, updatedName: string) => void,
   updateCard: () => void,
   updateTag: () => void,
   removeContainer: (id: string) => void,
@@ -30,7 +34,7 @@ export type ProjectProviderOperations = {
   removeTag: (id: string) => void,
   findContainer: (id: string) => string | undefined,
   findItemById: (id: string) => ItemProps | null,
-  openModal: (id: string) => void,
+  openModal: (id: string, type: ModalTypesWithoutTheme) => void,
   setIsModalOpen: React.Dispatch<boolean>,
   setModalData: React.Dispatch<ModalDataTypes>,
   setProjectData: React.Dispatch<React.SetStateAction<ContainerMapProps>>
@@ -43,14 +47,14 @@ export type ProjectProviderOperations = {
 export const ProjectContext = createContext<any>(null);
 
 export const ProjectProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isModalOpen, modalData, modalType, setIsModalOpen, setModalData, setModalType } = useModal();
+  const { isModalOpen, modalData, modalType, setIsModalOpen, setModalData, setModalType } = useModal("card");
   const [projectData, setProjectData] = useState<ContainerMapProps>(PROJECT_DATA);
   const [newContainer, setNewContainer] = useState<boolean>(false);
   const [isTrashable, setIsTrashable] = useState<boolean>(false);
   const [isOverTrash, setIsOverTrash] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState<ActiveProps>(null);
 
-  const getNewId = (list: any[]): number => {
+  const getNewId = (list: ContainerMapProps): number => {
     let totalLength: number = 0;
 
     Object.keys(list).forEach((key: any) => {
@@ -73,7 +77,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
   }
 
   const addCard: ProjectProviderOperations["addCard"] = (containerId, name) => {
-    setProjectData((prev: any) => {
+    setProjectData((prev: ContainerMapProps) => {
       if (containerId) {
         if (prev[containerId].length === 20) {
           return prev;
@@ -82,7 +86,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
           ...prev,
           [containerId]: [
             ...prev[containerId],
-            { id: getNewId(prev), title: name, tags: [], participants: [] }
+            { id: `${getNewId(prev)}`, title: name, content: "", tags: [], participants: [] }
           ]
         }
       } else {
@@ -98,7 +102,7 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
 
     const newTag = "danger";
 
-    setProjectData((prev: any) => ({
+    setProjectData((prev: ContainerMapProps) => ({
       ...prev,
       [selectedContainer]: [...prev[selectedContainer].map((card: any) => {
         if (card.id === id) {
@@ -121,14 +125,28 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     }))
   }
 
-  const updateContainer: ProjectProviderOperations["updateContainer"] = () => { }
+  const updateContainer: ProjectProviderOperations["updateContainer"] = (id: string, updatedName: string) => {
+    setProjectData((prev: ContainerMapProps) => renameKey(prev, id, updatedName))
+  }
 
   const updateCard: ProjectProviderOperations["updateCard"] = () => { }
 
   const updateTag: ProjectProviderOperations["updateTag"] = () => { }
 
   const removeContainer: ProjectProviderOperations["removeContainer"] = (id) => {
-    console.log(id)
+    if (projectData[id].length) {
+      if (confirm("There are still items in the container,\n are you sure you want to delete this container?\n Once you have deleted you can't return the data")) {
+        setProjectData((items: ContainerMapProps) => {
+          delete items[id]
+          return items;
+        });
+      }
+    } else {
+      setProjectData((items: ContainerMapProps) => {
+        delete items[id]
+        return items;
+      });
+    }
   }
 
   const removeCard: ProjectProviderOperations["removeCard"] = (activeId) => {
@@ -137,10 +155,10 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     if (!activeContainer) return;
 
     if (confirm("will you delete this item?")) {
-      setProjectData((items: any) => {
+      setProjectData((prev: ContainerMapProps) => {
         return ({
-          ...items,
-          [activeContainer]: [...items[activeContainer].filter(({ id }: { id: string }) => id !== activeId)]
+          ...prev,
+          [activeContainer]: [...prev[activeContainer].filter(({ id }: { id: string }) => id !== activeId)]
         });
       });
     }
@@ -172,13 +190,18 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
     return null;
   }
 
-  const openModal: ProjectProviderOperations["openModal"] = (id: string) => {
+  const openModal: ProjectProviderOperations["openModal"] = (id: string, type: ModalTypesWithoutTheme) => {
     const containerId = findContainer(id);
     if (id && containerId) {
-      const returnedCard = findItemById(id);
-      if (returnedCard) {
-        setIsModalOpen(true);
-        setModalData({ ...returnedCard, containerId });
+      setModalType(type)
+      setIsModalOpen(true);
+      if (id !== containerId) {
+        const returnedCard = findItemById(id);
+        if (returnedCard) {
+          setModalData({ ...returnedCard, containerId });
+        }
+      } else {
+        setModalData({ name: containerId, containerData: projectData[containerId] })
       }
     }
   }
@@ -204,7 +227,6 @@ export const ProjectProvider = ({ children }: { children: React.ReactNode }) => 
       modalType,
       setIsModalOpen,
       setModalData,
-      setModalType,
       openModal,
       isTrashable,
       isOverTrash,
