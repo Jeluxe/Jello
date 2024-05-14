@@ -1,21 +1,13 @@
 import { useState } from "react"
 import { Button, Item, Modal, NewProjectForm } from "../components"
-
-import { BackIcon, PlusIcon } from "../assets/icons"
-import { STATIC_DATA } from "../assets/global"
-
-import { ThemeProps } from "../types/global"
-import "./Projects.css"
 import { ThemeProviderData, ThemeProviderOperations, useThemeProvider } from "../context/ThemeContext"
-
-interface ProjectCardProps {
-  name: string,
-  theme: ThemeProps
-}
+import { BackIcon, PlusIcon } from "../assets/icons"
+import { ProjectPropsWithoutList, STATIC_DATA } from "../assets/global"
+import "./Projects.css"
 
 const Projects = () => {
   const { modalType, isModalOpen, setIsModalOpen }: Pick<ThemeProviderData, "modalType" | "isModalOpen"> & Pick<ThemeProviderOperations, "setIsModalOpen"> = useThemeProvider();
-  const [projectList, setProjectList] = useState<ProjectCardProps[]>(STATIC_DATA.map(({ projectData, ...props }) => props))
+  const [projectList, setProjectList] = useState<ProjectPropsWithoutList>(STATIC_DATA.map(({ projectData, ...props }) => props))
   const [isNewProjectFormOpen, setIsNewProjectFormOpen] = useState<boolean>(false);
 
   return (

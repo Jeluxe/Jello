@@ -1,20 +1,14 @@
 import { useState } from "react";
-
 import { Input, Button } from ".."
-import { isThemeImage } from "../../helpers";
-
-import { ErrorProps, ThemeProps, } from "../../types/global";
-import './NewProjectForm.css'
 import { ThemeProviderData, useThemeProvider } from "../../context/ThemeContext";
-
-interface ProjectCardProps {
-  name: string,
-  theme: ThemeProps
-}
+import { isThemeImage } from "../../helpers";
+import { ProjectPropsWithoutList } from "../../assets/global";
+import { ErrorProps, } from "../../types/global";
+import './NewProjectForm.css'
 
 interface NewProjectFormProps {
-  projectList: ProjectCardProps[],
-  setProjectList: React.Dispatch<React.SetStateAction<ProjectCardProps[]>>,
+  projectList: ProjectPropsWithoutList,
+  setProjectList: React.Dispatch<React.SetStateAction<ProjectPropsWithoutList>>,
   setIsNewProjectFormOpen: React.Dispatch<boolean>,
   setIsModalOpen: React.Dispatch<boolean>,
 }
@@ -41,7 +35,7 @@ const NewProjectForm = ({ projectList, setProjectList, setIsNewProjectFormOpen, 
       return;
     }
 
-    setProjectList((prev: ProjectCardProps[]) => [...prev, { name, theme: themePreview }])
+    setProjectList((prev: ProjectPropsWithoutList) => [...prev, { name, theme: themePreview }])
     setIsNewProjectFormOpen(false);
   }
 
