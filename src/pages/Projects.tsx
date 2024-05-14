@@ -15,7 +15,7 @@ interface ProjectCardProps {
 
 const Projects = () => {
   const { modalType, isModalOpen, setIsModalOpen }: Pick<ThemeProviderData, "modalType" | "isModalOpen"> & Pick<ThemeProviderOperations, "setIsModalOpen"> = useThemeProvider();
-  const [projectList, setProjectList] = useState<ProjectCardProps[]>(STATIC_DATA)
+  const [projectList, setProjectList] = useState<ProjectCardProps[]>(STATIC_DATA.map(({ projectData, ...props }) => props))
   const [isNewProjectFormOpen, setIsNewProjectFormOpen] = useState<boolean>(false);
 
   return (
