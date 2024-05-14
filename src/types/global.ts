@@ -39,6 +39,8 @@ export interface ContainerProps extends SharedProps {
   list: ItemProps[],
 }
 
+export type ThemeImageProps = Omit<ThemeProps, "name">
+
 export type ActiveProps = (Omit<ItemProps, 'key'> | Omit<ContainerProps, 'key'>) | null;
 
 export type ModalTypes = "card" | "container" | "theme" | null;

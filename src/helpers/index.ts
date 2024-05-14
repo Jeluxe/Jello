@@ -1,4 +1,4 @@
-import { ThemeProps } from "../types/global";
+import { ThemeImageProps } from "../types/global";
 
 export const arrayToObject = (array: string[]) => {
   return array.reduce((obj: { [key: string]: string }, item: string) => {
@@ -19,8 +19,6 @@ const ImageBackgroundStyle = (img: string) => ({
   backgroundPosition: "center center"
 });
 
-type ThemeImageProps = Omit<ThemeProps, "name">
-
 export const isThemeImage = (theme: ThemeImageProps, themePreview?: ThemeImageProps | null) => {
   const availableTheme = themePreview ?? theme;
 
@@ -28,4 +26,12 @@ export const isThemeImage = (theme: ThemeImageProps, themePreview?: ThemeImagePr
 
   const { background, isImage } = availableTheme;
   return isImage ? ImageBackgroundStyle(background) : { background }
+}
+
+export const renameKey = <T extends Record<string, any>>(obj: T, oldKey: string, newKey: string) => {
+  const updatedEntries = Object.entries(obj).map(([key, value]) =>
+    (key === oldKey) ? [newKey, value] : [key, value]
+  )
+
+  return Object.fromEntries(updatedEntries) as T;
 }
